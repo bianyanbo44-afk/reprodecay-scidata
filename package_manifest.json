@@ -3,14 +3,19 @@
   "created_from": "reprodecay_scidata workspace",
   "files": [
     {
+      "bytes": 115,
+      "path": ".gitignore",
+      "sha256": "8b17a0c543d80ea91622ac04e5c3c2c0930039a14a7bec0a040b5160ad230701"
+    },
+    {
       "bytes": 1131,
       "path": "CITATION.cff",
-      "sha256": "ed864bf90770ed62096ede4be082a4dcaa12c18566103cf302c25c97ad774f35"
+      "sha256": "4a789ec3a5124fb3f793d494cc80e7df91dce6a4f5f4e761bbf17b408fc39b83"
     },
     {
       "bytes": 1205,
       "path": "CITATION.cff.template",
-      "sha256": "75ea64729655852a5dd2f3e4791f28eca59baa110bdf1da2009f80a3d8482920"
+      "sha256": "740ceed73064f25d0408f945146c1282bf7bca9cc4bdf910fa7c46f1c10978f9"
     },
     {
       "bytes": 1068,
@@ -30,12 +35,12 @@
     {
       "bytes": 3643,
       "path": "README.md",
-      "sha256": "f0fd9225adad9e3e09b6a9b7fb9f6634d70ecdc74e2ad25cfbc8727bbfdf8654"
+      "sha256": "d92fc3f7c212d88d06f80267665e8bb7870908a6991a56ec65c45f59e984e074"
     },
     {
       "bytes": 3968,
       "path": "REPRODUCE.md",
-      "sha256": "5f4cf3bc11ee4ed6029b047f94334945e8382fd487c7281db6784d0055a59726"
+      "sha256": "db58cc9ca631e144ea830598050407c9452b4de930b01bc51c7bbe1c929bda3d"
     },
     {
       "bytes": 1485,
@@ -300,12 +305,12 @@
     {
       "bytes": 24082,
       "path": "manuscript/main.tex",
-      "sha256": "eedb0a8515f28057f2ed20a62777277c3ace4fa49c1210c380d67af285605396"
+      "sha256": "28063898822a1c7d08a16599942c76a191378abbe98c57b4ad8e8779a67f9356"
     },
     {
-      "bytes": 721148,
+      "bytes": 721149,
       "path": "manuscript/paper.pdf",
-      "sha256": "2940956bbcea900a79648b0fa4fe017827fb4d7aad3e8976d91f22a9df5dec5b"
+      "sha256": "fb2d1758a4dd582379d0b06436cba10ee20cb7ed4e0afc6c0060f881eddfe0c5"
     },
     {
       "bytes": 7179,
@@ -320,7 +325,7 @@
     {
       "bytes": 1536,
       "path": "release_metadata_template.yml",
-      "sha256": "8f16337f6dbd97a85acb192a5538478c389d3a100728a914ff184e9763a6e2b2"
+      "sha256": "9280ba6b815daac5a08eb911a4ff4b72eb90b9d8314d8e8b90df7c05bf2d6458"
     },
     {
       "bytes": 34,
@@ -345,7 +350,7 @@
     {
       "bytes": 4019,
       "path": "rights_and_release_plan_v0.2.md",
-      "sha256": "ff72d959a5278ae69e063436e4970ad2455a02088ac8cb77a3bc2ee19676c11a"
+      "sha256": "d604335f61d1ee3caa6937bbb44ea675f428c1c416c19f15a52aaca0bd32947c"
     },
     {
       "bytes": 15720,
@@ -473,9 +478,9 @@
       "sha256": "d3edae300ac92e2d3deed2461de7cbc819142fedee1d70038e52f12bcb1deace"
     },
     {
-      "bytes": 11886,
+      "bytes": 12265,
       "path": "scripts/verify_release_candidate.py",
-      "sha256": "d70da767ce9bbce230c06edb9e59f124e74668cc0be250dc8b896de2812d8820"
+      "sha256": "4ae51b52793f4cab2e022e218bbfb7aa016472717e077c7764f8cc16c0f64520"
     },
     {
       "bytes": 1720,
@@ -528,9 +533,9 @@
       "sha256": "390acd7d61585103634c547be44adbbb49227b24b646e019d7e95defb62c3e02"
     },
     {
-      "bytes": 2398,
+      "bytes": 2898,
       "path": "tests/test_release_privacy.py",
-      "sha256": "f3f31747b881dd831ea46cb4889df629fd951e02303bc5fa45fa1626336cc6fb"
+      "sha256": "6115f8fc684c060072951596cbac49bf906f66e542f673e925a125f26a6690cd"
     },
     {
       "bytes": 4681,

@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from audit_release_privacy import scan_paths  # noqa: E402
+from verify_release_candidate import is_transient_artifact  # noqa: E402
 
 
 class ReleasePrivacyTests(unittest.TestCase):
@@ -51,6 +52,12 @@ class ReleasePrivacyTests(unittest.TestCase):
             )
             findings = scan_paths(root, [table.relative_to(root).as_posix()])
             self.assertEqual(findings, [{"path": "data/census_v0.2/tables/api_symbol_records.csv", "line": 3, "rule": "github_token"}])
+
+    def test_release_verifier_ignores_runtime_caches(self) -> None:
+        self.assertTrue(is_transient_artifact(Path("scripts/__pycache__/audit_release_privacy.pyc")))
+        self.assertTrue(is_transient_artifact(Path(".pytest_cache/v/cache/nodeids")))
+        self.assertTrue(is_transient_artifact(Path(".git/objects/ab/cdef")))
+        self.assertFalse(is_transient_artifact(Path("scripts/verify_release_candidate.py")))
 
 
 if __name__ == "__main__":

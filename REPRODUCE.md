@@ -72,7 +72,7 @@ is claimed only when the cached immutable inputs are available.
 
 `release_metadata_template.yml` must be completed with verified creators,
 the formal data repository, persistent identifiers and licences before public
-deposition. The verified GitHub repository and v0.2.0 release URL are already
+deposition. The verified GitHub repository and v0.2.1 release URL are already
 filled. No DOI is inferred by the pipeline.
 
 ## Optional Word regeneration

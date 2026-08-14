@@ -8,7 +8,7 @@ reproduction code for the Scientific Data Data Descriptor:
 research software**
 
 Repository: https://github.com/bianyanbo44-afk/reprodecay-scidata  
-Versioned release: https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.0
+Versioned release: https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.1
 
 ## Frozen data object
 

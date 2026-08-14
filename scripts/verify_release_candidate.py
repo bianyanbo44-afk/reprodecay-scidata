@@ -67,6 +67,12 @@ EXPECTED_SNAPSHOT_PROVIDERS = {
 }
 
 EXPECTED_CODE_REPOSITORY = "https://github.com/bianyanbo44-afk/reprodecay-scidata"
+TRANSIENT_PATH_PARTS = {".git", "__pycache__", ".pytest_cache"}
+TRANSIENT_SUFFIXES = {".pyc", ".pyo"}
+
+
+def is_transient_artifact(relative: Path) -> bool:
+    return bool(TRANSIENT_PATH_PARTS.intersection(relative.parts)) or relative.suffix in TRANSIENT_SUFFIXES
 
 
 def sha256(path: Path) -> str:
@@ -136,7 +142,7 @@ def verify_citation_file(root: Path, failures: list[str]) -> None:
         failures.append("citation_cff_placeholder_present")
     if citation.get("repository-code") != EXPECTED_CODE_REPOSITORY:
         failures.append("citation_cff_repository_mismatch")
-    if str(citation.get("version")) != "0.2.0":
+    if str(citation.get("version")) != "0.2.1":
         failures.append("citation_cff_release_version_mismatch")
 
 
@@ -180,11 +186,13 @@ def verify(root: Path) -> dict[str, object]:
         if relative.replace("\\", "/").startswith("data/raw/"):
             failures.append(f"raw_archive_path_present:{relative}")
 
-    actual_payload = {
-        path.relative_to(root).as_posix()
-        for path in root.rglob("*")
-        if path.is_file() and path.name not in {"package_manifest.json", "checksums.sha256"}
-    }
+    actual_payload = set()
+    for path in root.rglob("*"):
+        if not path.is_file() or path.name in {"package_manifest.json", "checksums.sha256"}:
+            continue
+        relative = path.relative_to(root)
+        if not is_transient_artifact(relative):
+            actual_payload.add(relative.as_posix())
     if actual_payload != set(expected):
         missing = sorted(set(expected) - actual_payload)
         extra = sorted(actual_payload - set(expected))

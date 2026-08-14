@@ -1,0 +1,8 @@
+data/raw/
+data/interim/
+data/pilot/logs/
+data/pilot/worktrees/
+data/pilot/cache/
+*.pyc
+__pycache__/
+.pytest_cache/

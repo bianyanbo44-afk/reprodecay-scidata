@@ -11,7 +11,7 @@ authors:
     family-names: "Wang"
     affiliation: "Beijing Jiaotong University"
     email: "zhhwang@bjtu.edu.cn"
-version: 0.2.0
+version: 0.2.1
 date-released: 2026-08-15
 license: CC-BY-4.0
 doi: "<DATASET_DOI>"
