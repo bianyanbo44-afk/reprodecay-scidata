@@ -1,0 +1,235 @@
+{
+  "profile": "data-package",
+  "name": "reprodecay-census-v0-2",
+  "title": "Version-paired dependency and interface evolution in Python research software",
+  "version": "0.2.0",
+  "description": "Seven relational CSV tables derived by static analysis of publication and endpoint snapshots for 345 JOSS-associated Python projects.",
+  "resources": [
+    {
+      "name": "project-records",
+      "path": "../data/census_v0.2/tables/project_records.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "utf-8-sig",
+      "schema": {
+        "fields": [
+          {"name": "project_id", "type": "string", "constraints": {"required": true, "unique": true, "pattern": "^doi_10_21105_joss_[0-9]{5}$"}},
+          {"name": "pair_id", "type": "string", "constraints": {"required": true, "unique": true, "pattern": "^doi_10_21105_joss_[0-9]{5}__[0-9a-f]{12}__[0-9a-f]{12}$"}},
+          {"name": "scholarly_doi", "type": "string", "constraints": {"required": true, "unique": true, "pattern": "^10\\.21105/joss\\.[0-9]{5}$"}},
+          {"name": "title", "type": "string", "constraints": {"required": true}},
+          {"name": "publication_date", "type": "date", "constraints": {"required": true}},
+          {"name": "joss_url", "type": "string", "format": "uri", "constraints": {"required": true}},
+          {"name": "input_repository_url", "type": "string", "format": "uri", "constraints": {"required": true}},
+          {"name": "resolved_repository_url", "type": "string", "format": "uri", "constraints": {"required": true}},
+          {"name": "selection_rank", "type": "integer", "constraints": {"required": true, "unique": true, "minimum": 1}},
+          {"name": "selected_role", "type": "string", "constraints": {"required": true, "enum": ["census_provisional"]}},
+          {"name": "publication_archive_doi", "type": "string", "constraints": {"required": true, "pattern": "^10\\."}},
+          {"name": "publication_snapshot_id", "type": "string", "constraints": {"required": true, "unique": true}},
+          {"name": "endpoint_snapshot_id", "type": "string", "constraints": {"required": true, "unique": true}},
+          {"name": "endpoint_policy", "type": "string", "constraints": {"required": true, "enum": ["latest_stable_release_else_default_branch_head"]}},
+          {"name": "endpoint_ref_type", "type": "string", "constraints": {"required": true, "enum": ["release", "default_branch"]}},
+          {"name": "endpoint_ref_name", "type": "string", "constraints": {"required": true}},
+          {"name": "endpoint_commit_sha", "type": "string", "constraints": {"required": true, "pattern": "^[0-9a-f]{40}$"}},
+          {"name": "repository_archived_at_endpoint", "type": "boolean", "constraints": {"required": true}},
+          {"name": "repository_license_spdx_at_endpoint", "type": "string"}
+        ],
+        "primaryKey": "project_id"
+      }
+    },
+    {
+      "name": "snapshot-records",
+      "path": "../data/census_v0.2/tables/snapshot_records.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "utf-8-sig",
+      "schema": {
+        "fields": [
+          {"name": "snapshot_id", "type": "string", "constraints": {"required": true, "unique": true, "pattern": "^doi_10_21105_joss_[0-9]{5}__(publication|endpoint)__[0-9a-f]{16}$"}},
+          {"name": "project_id", "type": "string", "constraints": {"required": true}},
+          {"name": "pair_id", "type": "string", "constraints": {"required": true}},
+          {"name": "snapshot_role", "type": "string", "constraints": {"required": true, "enum": ["publication", "endpoint"]}},
+          {"name": "source_provider", "type": "string", "constraints": {"required": true, "enum": ["zenodo", "figshare", "caltechdata", "github"]}},
+          {"name": "source_identifier", "type": "string", "constraints": {"required": true}},
+          {"name": "source_ref", "type": "string", "constraints": {"required": true}},
+          {"name": "commit_sha", "type": "string", "constraints": {"pattern": "^$|^[0-9a-f]{40}$"}},
+          {"name": "source_url", "type": "string", "format": "uri", "constraints": {"required": true}},
+          {"name": "archive_bytes", "type": "integer", "constraints": {"required": true, "minimum": 1}},
+          {"name": "archive_sha256", "type": "string", "constraints": {"required": true, "pattern": "^[0-9a-f]{64}$"}},
+          {"name": "upstream_checksum", "type": "string"},
+          {"name": "parser_version", "type": "string", "constraints": {"required": true}},
+          {"name": "third_party_code_executed", "type": "boolean", "constraints": {"required": true, "enum": [false]}}
+        ],
+        "primaryKey": "snapshot_id",
+        "foreignKeys": [
+          {"fields": "project_id", "reference": {"resource": "project-records", "fields": "project_id"}},
+          {"fields": "pair_id", "reference": {"resource": "project-records", "fields": "pair_id"}}
+        ]
+      }
+    },
+    {
+      "name": "structure-records",
+      "path": "../data/census_v0.2/tables/structure_records.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "utf-8-sig",
+      "schema": {
+        "fields": [
+          {"name": "snapshot_id", "type": "string", "constraints": {"required": true, "unique": true}},
+          {"name": "project_id", "type": "string", "constraints": {"required": true}},
+          {"name": "snapshot_role", "type": "string", "constraints": {"required": true, "enum": ["publication", "endpoint"]}},
+          {"name": "archive_type", "type": "string", "constraints": {"required": true, "enum": ["zip", "tar"]}},
+          {"name": "archive_member_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
+          {"name": "archive_bytes", "type": "integer", "constraints": {"required": true, "minimum": 1}},
+          {"name": "archive_sha256", "type": "string", "constraints": {"required": true, "pattern": "^[0-9a-f]{64}$"}},
+          {"name": "suspicious_member_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
+          {"name": "link_member_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
+          {"name": "duplicate_normalized_member_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
+          {"name": "skipped_large_text_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
+          {"name": "packaging_files", "type": "array", "constraints": {"required": true}},
+          {"name": "build_backends", "type": "array", "constraints": {"required": true}},
+          {"name": "python_constraints", "type": "array", "constraints": {"required": true}},
+          {"name": "declared_dependency_record_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
+          {"name": "unparsed_dependency_record_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
+          {"name": "source_python_file_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
+          {"name": "source_python_line_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
+          {"name": "ast_parse_failure_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
+          {"name": "syntactic_api_symbol_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
+          {"name": "test_python_file_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
+          {"name": "ci_workflow_file_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
+          {"name": "ci_providers", "type": "array", "constraints": {"required": true}},
+          {"name": "citation_cff", "type": "boolean", "constraints": {"required": true}},
+          {"name": "codemeta", "type": "boolean", "constraints": {"required": true}},
+          {"name": "zenodo_metadata", "type": "boolean", "constraints": {"required": true}},
+          {"name": "contributing", "type": "boolean", "constraints": {"required": true}},
+          {"name": "code_of_conduct", "type": "boolean", "constraints": {"required": true}},
+          {"name": "security_policy", "type": "boolean", "constraints": {"required": true}},
+          {"name": "changelog", "type": "boolean", "constraints": {"required": true}},
+          {"name": "dependency_parse_complete", "type": "boolean", "constraints": {"required": true}},
+          {"name": "api_parse_complete", "type": "boolean", "constraints": {"required": true}},
+          {"name": "parser_issues", "type": "array", "constraints": {"required": true}},
+          {"name": "parser_version", "type": "string", "constraints": {"required": true}},
+          {"name": "third_party_code_executed", "type": "boolean", "constraints": {"required": true, "enum": [false]}}
+        ],
+        "primaryKey": "snapshot_id",
+        "foreignKeys": [
+          {"fields": "snapshot_id", "reference": {"resource": "snapshot-records", "fields": "snapshot_id"}},
+          {"fields": "project_id", "reference": {"resource": "project-records", "fields": "project_id"}}
+        ]
+      }
+    },
+    {
+      "name": "dependency-records",
+      "path": "../data/census_v0.2/tables/dependency_records.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "utf-8-sig",
+      "schema": {
+        "fields": [
+          {"name": "snapshot_id", "type": "string", "constraints": {"required": true}},
+          {"name": "project_id", "type": "string", "constraints": {"required": true}},
+          {"name": "snapshot_role", "type": "string", "constraints": {"required": true, "enum": ["publication", "endpoint"]}},
+          {"name": "source_file", "type": "string", "constraints": {"required": true}},
+          {"name": "source_kind", "type": "string", "constraints": {"required": true}},
+          {"name": "dependency_group", "type": "string", "constraints": {"required": true}},
+          {"name": "normalized_name", "type": "string"},
+          {"name": "raw_declaration", "type": "string", "constraints": {"required": true}},
+          {"name": "specifier", "type": "string"},
+          {"name": "marker", "type": "string"},
+          {"name": "extras", "type": "string"},
+          {"name": "parse_status", "type": "string", "constraints": {"required": true, "enum": ["parsed", "parsed_non_pep508", "parsed_poetry", "directive", "unparsed"]}},
+          {"name": "parse_error", "type": "string"}
+        ],
+        "foreignKeys": [
+          {"fields": "snapshot_id", "reference": {"resource": "snapshot-records", "fields": "snapshot_id"}},
+          {"fields": "project_id", "reference": {"resource": "project-records", "fields": "project_id"}}
+        ]
+      }
+    },
+    {
+      "name": "api-symbol-records",
+      "path": "../data/census_v0.2/tables/api_symbol_records.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "utf-8-sig",
+      "schema": {
+        "fields": [
+          {"name": "snapshot_id", "type": "string", "constraints": {"required": true}},
+          {"name": "project_id", "type": "string", "constraints": {"required": true}},
+          {"name": "snapshot_role", "type": "string", "constraints": {"required": true, "enum": ["publication", "endpoint"]}},
+          {"name": "symbol_key", "type": "string", "constraints": {"required": true}},
+          {"name": "source_file", "type": "string", "constraints": {"required": true}},
+          {"name": "module", "type": "string", "constraints": {"required": true}},
+          {"name": "symbol_kind", "type": "string", "constraints": {"required": true, "enum": ["class", "constructor", "method", "function", "async_function"]}},
+          {"name": "qualified_name", "type": "string", "constraints": {"required": true}},
+          {"name": "signature", "type": "string"},
+          {"name": "decorators", "type": "array", "constraints": {"required": true}},
+          {"name": "export_evidence", "type": "string", "constraints": {"required": true, "enum": ["literal_all", "lexical_nonprivate", "class_member"]}},
+          {"name": "line_start", "type": "integer", "constraints": {"required": true, "minimum": 1}},
+          {"name": "line_end", "type": "integer", "constraints": {"required": true, "minimum": 1}},
+          {"name": "variant_count", "type": "integer", "constraints": {"required": true, "minimum": 1}}
+        ],
+        "primaryKey": ["snapshot_id", "symbol_key"],
+        "foreignKeys": [
+          {"fields": "snapshot_id", "reference": {"resource": "snapshot-records", "fields": "snapshot_id"}},
+          {"fields": "project_id", "reference": {"resource": "project-records", "fields": "project_id"}}
+        ]
+      }
+    },
+    {
+      "name": "pair-delta-records",
+      "path": "../data/census_v0.2/tables/pair_delta_records.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "utf-8-sig",
+      "schema": {
+        "fields": [
+          {"name": "pair_id", "type": "string", "constraints": {"required": true}},
+          {"name": "project_id", "type": "string", "constraints": {"required": true}},
+          {"name": "family", "type": "string", "constraints": {"required": true, "enum": ["api", "dependency", "structure"]}},
+          {"name": "feature_group", "type": "string", "constraints": {"required": true}},
+          {"name": "feature_key", "type": "string", "constraints": {"required": true}},
+          {"name": "publication_value", "type": "string"},
+          {"name": "endpoint_value", "type": "string"},
+          {"name": "delta_type", "type": "string", "constraints": {"required": true, "enum": ["added", "removed", "changed", "unchanged", "unavailable"]}},
+          {"name": "comparison_status", "type": "string", "constraints": {"required": true, "enum": ["comparable", "partial_parse", "unavailable"]}},
+          {"name": "publication_evidence", "type": "string"},
+          {"name": "endpoint_evidence", "type": "string"}
+        ],
+        "primaryKey": ["pair_id", "family", "feature_group", "feature_key"],
+        "foreignKeys": [
+          {"fields": "project_id", "reference": {"resource": "project-records", "fields": "project_id"}},
+          {"fields": "pair_id", "reference": {"resource": "project-records", "fields": "pair_id"}}
+        ]
+      }
+    },
+    {
+      "name": "validation-records",
+      "path": "../data/census_v0.2/tables/validation_records.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "utf-8-sig",
+      "schema": {
+        "fields": [
+          {"name": "snapshot_id", "type": "string", "constraints": {"required": true}},
+          {"name": "project_id", "type": "string", "constraints": {"required": true}},
+          {"name": "snapshot_role", "type": "string", "constraints": {"required": true, "enum": ["publication", "endpoint"]}},
+          {"name": "check_name", "type": "string", "constraints": {"required": true}},
+          {"name": "status", "type": "string", "constraints": {"required": true, "enum": ["pass", "warning", "error"]}},
+          {"name": "evidence", "type": "string"},
+          {"name": "detail", "type": "string"}
+        ],
+        "foreignKeys": [
+          {"fields": "snapshot_id", "reference": {"resource": "snapshot-records", "fields": "snapshot_id"}},
+          {"fields": "project_id", "reference": {"resource": "project-records", "fields": "project_id"}}
+        ]
+      }
+    }
+  ]
+}

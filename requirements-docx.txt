@@ -1,0 +1,2 @@
+# Optional: only needed to regenerate the local Word submission artifacts.
+python-docx==1.2.0

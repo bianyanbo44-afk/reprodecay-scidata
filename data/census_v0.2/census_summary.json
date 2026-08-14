@@ -1,0 +1,740 @@
+{
+  "analysis_design": {
+    "aggregation_unit": "project",
+    "analysis_scope": "descriptive summaries of the observed census dataset",
+    "bootstrap_method": "nonparametric percentile interval",
+    "bootstrap_replicates": 2000,
+    "bootstrap_seed": 20260814,
+    "bootstrap_unit": "project",
+    "causal_inference_performed": false,
+    "sampling_unit": "project",
+    "significance_tests_performed": false,
+    "third_party_code_executed": false
+  },
+  "bootstrap_95_ci_median_change": {
+    "declared_dependency_records": [
+      0.0,
+      0.0
+    ],
+    "source_python_lines": [
+      87.0,
+      370.0
+    ],
+    "syntactic_api_symbols": [
+      1.0,
+      7.0
+    ]
+  },
+  "bootstrap_replicates": 2000,
+  "bootstrap_seed": 20260814,
+  "endpoint_ref_types": {
+    "default_branch": 18,
+    "release": 327
+  },
+  "family_project_summary": [
+    {
+      "delta_type": "added",
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "api",
+      "project_denominator": 345,
+      "project_proportion": 0.634783,
+      "projects_missing_or_incomplete": 28,
+      "projects_with_at_least_one": 219,
+      "scope": "all_extracted_projects_observed"
+    },
+    {
+      "delta_type": "removed",
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "api",
+      "project_denominator": 345,
+      "project_proportion": 0.489855,
+      "projects_missing_or_incomplete": 28,
+      "projects_with_at_least_one": 169,
+      "scope": "all_extracted_projects_observed"
+    },
+    {
+      "delta_type": "changed",
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "api",
+      "project_denominator": 345,
+      "project_proportion": 0.518841,
+      "projects_missing_or_incomplete": 28,
+      "projects_with_at_least_one": 179,
+      "scope": "all_extracted_projects_observed"
+    },
+    {
+      "delta_type": "unchanged",
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "api",
+      "project_denominator": 345,
+      "project_proportion": 0.913043,
+      "projects_missing_or_incomplete": 28,
+      "projects_with_at_least_one": 315,
+      "scope": "all_extracted_projects_observed"
+    },
+    {
+      "delta_type": "added",
+      "denominator_definition": "projects with complete publication and endpoint parsing for the family",
+      "family": "api",
+      "project_denominator": 317,
+      "project_proportion": 0.637224,
+      "projects_missing_or_incomplete": 28,
+      "projects_with_at_least_one": 202,
+      "scope": "complete_family_comparisons"
+    },
+    {
+      "delta_type": "removed",
+      "denominator_definition": "projects with complete publication and endpoint parsing for the family",
+      "family": "api",
+      "project_denominator": 317,
+      "project_proportion": 0.492114,
+      "projects_missing_or_incomplete": 28,
+      "projects_with_at_least_one": 156,
+      "scope": "complete_family_comparisons"
+    },
+    {
+      "delta_type": "changed",
+      "denominator_definition": "projects with complete publication and endpoint parsing for the family",
+      "family": "api",
+      "project_denominator": 317,
+      "project_proportion": 0.529968,
+      "projects_missing_or_incomplete": 28,
+      "projects_with_at_least_one": 168,
+      "scope": "complete_family_comparisons"
+    },
+    {
+      "delta_type": "unchanged",
+      "denominator_definition": "projects with complete publication and endpoint parsing for the family",
+      "family": "api",
+      "project_denominator": 317,
+      "project_proportion": 0.917981,
+      "projects_missing_or_incomplete": 28,
+      "projects_with_at_least_one": 291,
+      "scope": "complete_family_comparisons"
+    },
+    {
+      "delta_type": "added",
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "dependency",
+      "project_denominator": 345,
+      "project_proportion": 0.518841,
+      "projects_missing_or_incomplete": 107,
+      "projects_with_at_least_one": 179,
+      "scope": "all_extracted_projects_observed"
+    },
+    {
+      "delta_type": "removed",
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "dependency",
+      "project_denominator": 345,
+      "project_proportion": 0.356522,
+      "projects_missing_or_incomplete": 107,
+      "projects_with_at_least_one": 123,
+      "scope": "all_extracted_projects_observed"
+    },
+    {
+      "delta_type": "changed",
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "dependency",
+      "project_denominator": 345,
+      "project_proportion": 0.362319,
+      "projects_missing_or_incomplete": 107,
+      "projects_with_at_least_one": 125,
+      "scope": "all_extracted_projects_observed"
+    },
+    {
+      "delta_type": "unchanged",
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "dependency",
+      "project_denominator": 345,
+      "project_proportion": 0.733333,
+      "projects_missing_or_incomplete": 107,
+      "projects_with_at_least_one": 253,
+      "scope": "all_extracted_projects_observed"
+    },
+    {
+      "delta_type": "added",
+      "denominator_definition": "projects with complete publication and endpoint parsing for the family",
+      "family": "dependency",
+      "project_denominator": 238,
+      "project_proportion": 0.508403,
+      "projects_missing_or_incomplete": 107,
+      "projects_with_at_least_one": 121,
+      "scope": "complete_family_comparisons"
+    },
+    {
+      "delta_type": "removed",
+      "denominator_definition": "projects with complete publication and endpoint parsing for the family",
+      "family": "dependency",
+      "project_denominator": 238,
+      "project_proportion": 0.310924,
+      "projects_missing_or_incomplete": 107,
+      "projects_with_at_least_one": 74,
+      "scope": "complete_family_comparisons"
+    },
+    {
+      "delta_type": "changed",
+      "denominator_definition": "projects with complete publication and endpoint parsing for the family",
+      "family": "dependency",
+      "project_denominator": 238,
+      "project_proportion": 0.331933,
+      "projects_missing_or_incomplete": 107,
+      "projects_with_at_least_one": 79,
+      "scope": "complete_family_comparisons"
+    },
+    {
+      "delta_type": "unchanged",
+      "denominator_definition": "projects with complete publication and endpoint parsing for the family",
+      "family": "dependency",
+      "project_denominator": 238,
+      "project_proportion": 0.752101,
+      "projects_missing_or_incomplete": 107,
+      "projects_with_at_least_one": 179,
+      "scope": "complete_family_comparisons"
+    },
+    {
+      "delta_type": "added",
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "structure",
+      "project_denominator": 345,
+      "project_proportion": 0.530435,
+      "projects_missing_or_incomplete": 0,
+      "projects_with_at_least_one": 183,
+      "scope": "all_extracted_projects_observed"
+    },
+    {
+      "delta_type": "removed",
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "structure",
+      "project_denominator": 345,
+      "project_proportion": 0.489855,
+      "projects_missing_or_incomplete": 0,
+      "projects_with_at_least_one": 169,
+      "scope": "all_extracted_projects_observed"
+    },
+    {
+      "delta_type": "changed",
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "structure",
+      "project_denominator": 345,
+      "project_proportion": 0.701449,
+      "projects_missing_or_incomplete": 0,
+      "projects_with_at_least_one": 242,
+      "scope": "all_extracted_projects_observed"
+    },
+    {
+      "delta_type": "unchanged",
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "structure",
+      "project_denominator": 345,
+      "project_proportion": 1.0,
+      "projects_missing_or_incomplete": 0,
+      "projects_with_at_least_one": 345,
+      "scope": "all_extracted_projects_observed"
+    },
+    {
+      "delta_type": "added",
+      "denominator_definition": "projects with complete publication and endpoint parsing for the family",
+      "family": "structure",
+      "project_denominator": 345,
+      "project_proportion": 0.530435,
+      "projects_missing_or_incomplete": 0,
+      "projects_with_at_least_one": 183,
+      "scope": "complete_family_comparisons"
+    },
+    {
+      "delta_type": "removed",
+      "denominator_definition": "projects with complete publication and endpoint parsing for the family",
+      "family": "structure",
+      "project_denominator": 345,
+      "project_proportion": 0.489855,
+      "projects_missing_or_incomplete": 0,
+      "projects_with_at_least_one": 169,
+      "scope": "complete_family_comparisons"
+    },
+    {
+      "delta_type": "changed",
+      "denominator_definition": "projects with complete publication and endpoint parsing for the family",
+      "family": "structure",
+      "project_denominator": 345,
+      "project_proportion": 0.701449,
+      "projects_missing_or_incomplete": 0,
+      "projects_with_at_least_one": 242,
+      "scope": "complete_family_comparisons"
+    },
+    {
+      "delta_type": "unchanged",
+      "denominator_definition": "projects with complete publication and endpoint parsing for the family",
+      "family": "structure",
+      "project_denominator": 345,
+      "project_proportion": 1.0,
+      "projects_missing_or_incomplete": 0,
+      "projects_with_at_least_one": 345,
+      "scope": "complete_family_comparisons"
+    }
+  ],
+  "input_files": {
+    "api_symbol_records": {
+      "available": true,
+      "path": "data/census_v0.2/tables/api_symbol_records.csv",
+      "sha256": "ebd2098170fba9ec89b10f8cce64bc2bc633f6dc09d17a0188eb5dd65cd20cd5"
+    },
+    "archive_eligibility_ledger": {
+      "available": true,
+      "path": "data/census_frame_v0.2/archive_eligibility_ledger.csv",
+      "sha256": "ebc678cf602b33cd2704a65f69772cfa91ba0e385550394c78b21767ad0596e3"
+    },
+    "dependency_records": {
+      "available": true,
+      "path": "data/census_v0.2/tables/dependency_records.csv",
+      "sha256": "b1ecf91063ff09fc48e05ce548f9950903f9f1dbee79b17e7d9195b3e3f91c4a"
+    },
+    "endpoint_resolution": {
+      "available": true,
+      "path": "data/census_v0.2/endpoint_resolution.csv",
+      "sha256": "12b5bdd613f91ee4ef79654d0fd2fd1b659c5374b2e20061e157fe210564117c"
+    },
+    "pair_delta_records": {
+      "available": true,
+      "path": "data/census_v0.2/tables/pair_delta_records.csv",
+      "sha256": "a17573d9f2552fe27eb06a797da584b2578c2031315919be1d4be1e55d05b61f"
+    },
+    "project_records": {
+      "available": true,
+      "path": "data/census_v0.2/tables/project_records.csv",
+      "sha256": "f12c6b677694f72cd40fb418b6dea6fae1e469a10f7f4aa88cd8a93de12a7c0f"
+    },
+    "screening_ledger": {
+      "available": true,
+      "path": "data/census_frame_v0.2/screening_ledger.csv",
+      "sha256": "e13a4227d04ecb532625834eea0a126cd3ab6d13c34b738b41424c214f79fad5"
+    },
+    "snapshot_records": {
+      "available": true,
+      "path": "data/census_v0.2/tables/snapshot_records.csv",
+      "sha256": "02897352f22262f083cb7fd1ce537ec5eb151e633e8bf2a7da28e9075cf0a0f0"
+    },
+    "structure_records": {
+      "available": true,
+      "path": "data/census_v0.2/tables/structure_records.csv",
+      "sha256": "6d5626434443bbeaae9b744ad91dc5d9076b02803fa89100fd3e98315885361d"
+    },
+    "validation_records": {
+      "available": true,
+      "path": "data/census_v0.2/tables/validation_records.csv",
+      "sha256": "1c96584710c38dd90d83a046bc5a8efb827d1b803dcde63a73cde82b4d1a560f"
+    }
+  },
+  "large_project_sensitivity": {
+    "analysis_table": {
+      "path": "data/census_v0.2/summary_tables/large_project_sensitivity.csv",
+      "rows": 36,
+      "sha256": "90a47fe7d748dc0e808608f2d42fb105d55fbe4393e7596bd6fe48cc1559eda3"
+    },
+    "exclusion_rule": "remove the largest ceil(fraction * n rank-complete projects), ties ordered by project_id",
+    "fractions": [
+      0.01,
+      0.05
+    ],
+    "ranking_metrics": [
+      "publication_archive_bytes",
+      "publication_source_python_line_count"
+    ]
+  },
+  "median_change": {
+    "declared_dependency_records": 0.0,
+    "source_python_lines": 193.0,
+    "syntactic_api_symbols": 3.0
+  },
+  "missingness_policy": "Empty or invalid source values remain missing; denominators and missing counts are emitted explicitly. Zero is never imputed for a missing value.",
+  "output_tables": {
+    "endpoint_type_summary": {
+      "path": "data/census_v0.2/summary_tables/endpoint_type_summary.csv",
+      "rows": 7,
+      "sha256": "39f050cc360c4c955b4ed59d95af31c35faf0cc3a733af69f08d2d0847dde4e6"
+    },
+    "family_project_summary": {
+      "path": "data/census_v0.2/summary_tables/family_project_summary.csv",
+      "rows": 24,
+      "sha256": "321e1f4d84192f1209565ef9d32a46b05ad36a13a24caf9e8c51c5054dd47b68"
+    },
+    "large_project_sensitivity": {
+      "path": "data/census_v0.2/summary_tables/large_project_sensitivity.csv",
+      "rows": 36,
+      "sha256": "90a47fe7d748dc0e808608f2d42fb105d55fbe4393e7596bd6fe48cc1559eda3"
+    },
+    "paired_change_summary": {
+      "path": "data/census_v0.2/summary_tables/paired_change_summary.csv",
+      "rows": 6,
+      "sha256": "b702feb28fc4593508cd230c69a3e1314d5a28be96f876e499ed19fc01424de9"
+    },
+    "paired_changes": {
+      "path": "data/census_v0.2/summary_tables/publication_endpoint_paired_changes.csv",
+      "rows": 2070,
+      "sha256": "7b0129159179fef2ed43e243a0bb3c8f607ad3035c1fcec829669793d2a4d672"
+    },
+    "parsing_completeness_summary": {
+      "path": "data/census_v0.2/summary_tables/parsing_completeness_summary.csv",
+      "rows": 9,
+      "sha256": "213ead04d2d48f2a56a819db3933abc935208b403ddb8e1adbd9a28de6459fa9"
+    },
+    "project_family_metrics": {
+      "path": "data/census_v0.2/summary_tables/project_family_delta_metrics.csv",
+      "rows": 1035,
+      "sha256": "aebd2cf4e51d288ac110d98197346177b73c7454f195699d3f06d12e2cbf1e51"
+    },
+    "project_metrics": {
+      "path": "data/census_v0.2/summary_tables/project_level_metrics.csv",
+      "rows": 345,
+      "sha256": "9b37d0889c06d56fb57b8fe07418fa348491420a56d4857597d088ab24448c84"
+    },
+    "project_parsing_completeness": {
+      "path": "data/census_v0.2/summary_tables/project_parsing_completeness.csv",
+      "rows": 1035,
+      "sha256": "0fd2a38ad15b256f11ddf67f904d816abdc70a80c7b4ef1226fe81a246132e83"
+    },
+    "selection_attrition": {
+      "path": "data/census_v0.2/summary_tables/selection_attrition.csv",
+      "rows": 5,
+      "sha256": "bfb2e2b7af1c9058afa30192acba7b4bccfccccdc3d667cca8e088a92403a040"
+    },
+    "selection_status_counts": {
+      "path": "data/census_v0.2/summary_tables/selection_status_counts.csv",
+      "rows": 20,
+      "sha256": "60a35f29e82ff6edb394cd147cff0227fbcf6ac5384b8c63eadd094e8c489196"
+    }
+  },
+  "paired_change_summary": [
+    {
+      "absolute_change_max": 123544.0,
+      "absolute_change_mean": 3424.965217,
+      "absolute_change_median": 193.0,
+      "absolute_change_min": -7887.0,
+      "absolute_change_q1": 0.0,
+      "absolute_change_q3": 2169.0,
+      "bootstrap_median_95_lower": 87.0,
+      "bootstrap_median_95_upper": 370.0,
+      "bootstrap_replicates": 2000,
+      "bootstrap_seed": 20260814,
+      "bootstrap_unit": "project",
+      "complete_pair_projects": 345,
+      "endpoint_paired_median": 3402.0,
+      "endpoint_value_projects": 345,
+      "metric": "source_python_line_count",
+      "missing_pair_projects": 0,
+      "proportional_change_bootstrap_median_95_lower": 0.049862,
+      "proportional_change_bootstrap_median_95_upper": 0.168694,
+      "proportional_change_defined_projects": 339,
+      "proportional_change_median": 0.104948,
+      "proportional_change_missing_projects": 0,
+      "proportional_change_zero_denominator_projects": 6,
+      "publication_paired_median": 2613.0,
+      "publication_value_projects": 345,
+      "total_project_denominator": 345
+    },
+    {
+      "absolute_change_max": 146.0,
+      "absolute_change_mean": 7.255072,
+      "absolute_change_median": 0.0,
+      "absolute_change_min": -34.0,
+      "absolute_change_q1": 0.0,
+      "absolute_change_q3": 4.0,
+      "bootstrap_median_95_lower": 0.0,
+      "bootstrap_median_95_upper": 0.0,
+      "bootstrap_replicates": 2000,
+      "bootstrap_seed": 20260814,
+      "bootstrap_unit": "project",
+      "complete_pair_projects": 345,
+      "endpoint_paired_median": 12.0,
+      "endpoint_value_projects": 345,
+      "metric": "source_python_file_count",
+      "missing_pair_projects": 0,
+      "proportional_change_bootstrap_median_95_lower": 0.0,
+      "proportional_change_bootstrap_median_95_upper": 0.0,
+      "proportional_change_defined_projects": 340,
+      "proportional_change_median": 0.0,
+      "proportional_change_missing_projects": 0,
+      "proportional_change_zero_denominator_projects": 5,
+      "publication_paired_median": 10.0,
+      "publication_value_projects": 345,
+      "total_project_denominator": 345
+    },
+    {
+      "absolute_change_max": 2279.0,
+      "absolute_change_mean": 69.678261,
+      "absolute_change_median": 3.0,
+      "absolute_change_min": -187.0,
+      "absolute_change_q1": 0.0,
+      "absolute_change_q3": 45.0,
+      "bootstrap_median_95_lower": 1.0,
+      "bootstrap_median_95_upper": 7.0,
+      "bootstrap_replicates": 2000,
+      "bootstrap_seed": 20260814,
+      "bootstrap_unit": "project",
+      "complete_pair_projects": 345,
+      "endpoint_paired_median": 84.0,
+      "endpoint_value_projects": 345,
+      "metric": "syntactic_api_symbol_count",
+      "missing_pair_projects": 0,
+      "proportional_change_bootstrap_median_95_lower": 0.022149,
+      "proportional_change_bootstrap_median_95_upper": 0.118644,
+      "proportional_change_defined_projects": 336,
+      "proportional_change_median": 0.061691,
+      "proportional_change_missing_projects": 0,
+      "proportional_change_zero_denominator_projects": 9,
+      "publication_paired_median": 65.0,
+      "publication_value_projects": 345,
+      "total_project_denominator": 345
+    },
+    {
+      "absolute_change_max": 113.0,
+      "absolute_change_mean": 4.568116,
+      "absolute_change_median": 0.0,
+      "absolute_change_min": -28.0,
+      "absolute_change_q1": 0.0,
+      "absolute_change_q3": 6.0,
+      "bootstrap_median_95_lower": 0.0,
+      "bootstrap_median_95_upper": 0.0,
+      "bootstrap_replicates": 2000,
+      "bootstrap_seed": 20260814,
+      "bootstrap_unit": "project",
+      "complete_pair_projects": 345,
+      "endpoint_paired_median": 11.0,
+      "endpoint_value_projects": 345,
+      "metric": "declared_dependency_record_count",
+      "missing_pair_projects": 0,
+      "proportional_change_bootstrap_median_95_lower": 0.0,
+      "proportional_change_bootstrap_median_95_upper": 0.0,
+      "proportional_change_defined_projects": 311,
+      "proportional_change_median": 0.0,
+      "proportional_change_missing_projects": 0,
+      "proportional_change_zero_denominator_projects": 34,
+      "publication_paired_median": 8.0,
+      "publication_value_projects": 345,
+      "total_project_denominator": 345
+    },
+    {
+      "absolute_change_max": 319.0,
+      "absolute_change_mean": 6.142029,
+      "absolute_change_median": 0.0,
+      "absolute_change_min": -28.0,
+      "absolute_change_q1": 0.0,
+      "absolute_change_q3": 4.0,
+      "bootstrap_median_95_lower": 0.0,
+      "bootstrap_median_95_upper": 0.0,
+      "bootstrap_replicates": 2000,
+      "bootstrap_seed": 20260814,
+      "bootstrap_unit": "project",
+      "complete_pair_projects": 345,
+      "endpoint_paired_median": 7.0,
+      "endpoint_value_projects": 345,
+      "metric": "test_python_file_count",
+      "missing_pair_projects": 0,
+      "proportional_change_bootstrap_median_95_lower": 0.0,
+      "proportional_change_bootstrap_median_95_upper": 0.0,
+      "proportional_change_defined_projects": 304,
+      "proportional_change_median": 0.0,
+      "proportional_change_missing_projects": 0,
+      "proportional_change_zero_denominator_projects": 41,
+      "publication_paired_median": 5.0,
+      "publication_value_projects": 345,
+      "total_project_denominator": 345
+    },
+    {
+      "absolute_change_max": 17.0,
+      "absolute_change_mean": 1.365217,
+      "absolute_change_median": 0.0,
+      "absolute_change_min": -1.0,
+      "absolute_change_q1": 0.0,
+      "absolute_change_q3": 2.0,
+      "bootstrap_median_95_lower": 0.0,
+      "bootstrap_median_95_upper": 0.0,
+      "bootstrap_replicates": 2000,
+      "bootstrap_seed": 20260814,
+      "bootstrap_unit": "project",
+      "complete_pair_projects": 345,
+      "endpoint_paired_median": 0.0,
+      "endpoint_value_projects": 345,
+      "metric": "ci_workflow_file_count",
+      "missing_pair_projects": 0,
+      "proportional_change_bootstrap_median_95_lower": 0.0,
+      "proportional_change_bootstrap_median_95_upper": 1.0,
+      "proportional_change_defined_projects": 30,
+      "proportional_change_median": 0.0,
+      "proportional_change_missing_projects": 0,
+      "proportional_change_zero_denominator_projects": 315,
+      "publication_paired_median": 0.0,
+      "publication_value_projects": 345,
+      "total_project_denominator": 345
+    }
+  ],
+  "parsing_completeness": [
+    {
+      "complete_projects": 322,
+      "complete_proportion": 0.933333,
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "api",
+      "incomplete_projects": 23,
+      "missing_status_projects": 0,
+      "scope": "publication_snapshot",
+      "total_project_denominator": 345
+    },
+    {
+      "complete_projects": 320,
+      "complete_proportion": 0.927536,
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "api",
+      "incomplete_projects": 25,
+      "missing_status_projects": 0,
+      "scope": "endpoint_snapshot",
+      "total_project_denominator": 345
+    },
+    {
+      "complete_projects": 317,
+      "complete_proportion": 0.918841,
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "api",
+      "incomplete_projects": 28,
+      "missing_status_projects": 0,
+      "scope": "paired_snapshots",
+      "total_project_denominator": 345
+    },
+    {
+      "complete_projects": 250,
+      "complete_proportion": 0.724638,
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "dependency",
+      "incomplete_projects": 95,
+      "missing_status_projects": 0,
+      "scope": "publication_snapshot",
+      "total_project_denominator": 345
+    },
+    {
+      "complete_projects": 265,
+      "complete_proportion": 0.768116,
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "dependency",
+      "incomplete_projects": 80,
+      "missing_status_projects": 0,
+      "scope": "endpoint_snapshot",
+      "total_project_denominator": 345
+    },
+    {
+      "complete_projects": 238,
+      "complete_proportion": 0.689855,
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "dependency",
+      "incomplete_projects": 107,
+      "missing_status_projects": 0,
+      "scope": "paired_snapshots",
+      "total_project_denominator": 345
+    },
+    {
+      "complete_projects": 345,
+      "complete_proportion": 1.0,
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "structure",
+      "incomplete_projects": 0,
+      "missing_status_projects": 0,
+      "scope": "publication_snapshot",
+      "total_project_denominator": 345
+    },
+    {
+      "complete_projects": 345,
+      "complete_proportion": 1.0,
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "structure",
+      "incomplete_projects": 0,
+      "missing_status_projects": 0,
+      "scope": "endpoint_snapshot",
+      "total_project_denominator": 345
+    },
+    {
+      "complete_projects": 345,
+      "complete_proportion": 1.0,
+      "denominator_definition": "all projects in project_records.csv",
+      "family": "structure",
+      "incomplete_projects": 0,
+      "missing_status_projects": 0,
+      "scope": "paired_snapshots",
+      "total_project_denominator": 345
+    }
+  ],
+  "projects": 345,
+  "records": {
+    "api_symbols": 121085,
+    "dependencies": 9074,
+    "pair_deltas": 95787,
+    "validation": 2876
+  },
+  "schema_version": "0.3",
+  "selection_attrition": [
+    {
+      "assessed_projects": 940,
+      "denominator_stage": "self",
+      "excluded_projects": 0,
+      "not_assessed_projects": 0,
+      "retained_projects": 940,
+      "retention_proportion": 1.0,
+      "source_available": true,
+      "stage": "joss_records_screened",
+      "stage_denominator_projects": 940,
+      "stage_order": 1,
+      "unresolved_projects": 0
+    },
+    {
+      "assessed_projects": 940,
+      "denominator_stage": "joss_records_screened",
+      "excluded_projects": 537,
+      "not_assessed_projects": 0,
+      "retained_projects": 396,
+      "retention_proportion": 0.421277,
+      "source_available": true,
+      "stage": "metadata_eligible",
+      "stage_denominator_projects": 940,
+      "stage_order": 2,
+      "unresolved_projects": 7
+    },
+    {
+      "assessed_projects": 396,
+      "denominator_stage": "metadata_eligible",
+      "excluded_projects": 20,
+      "not_assessed_projects": 0,
+      "retained_projects": 372,
+      "retention_proportion": 0.939394,
+      "source_available": true,
+      "stage": "publication_archive_eligible",
+      "stage_denominator_projects": 396,
+      "stage_order": 3,
+      "unresolved_projects": 4
+    },
+    {
+      "assessed_projects": 372,
+      "denominator_stage": "publication_archive_eligible",
+      "excluded_projects": 0,
+      "not_assessed_projects": 0,
+      "retained_projects": 345,
+      "retention_proportion": 0.927419,
+      "source_available": true,
+      "stage": "endpoint_resolved",
+      "stage_denominator_projects": 372,
+      "stage_order": 4,
+      "unresolved_projects": 27
+    },
+    {
+      "assessed_projects": 345,
+      "denominator_stage": "endpoint_resolved",
+      "excluded_projects": 0,
+      "not_assessed_projects": 0,
+      "retained_projects": 345,
+      "retention_proportion": 1.0,
+      "source_available": true,
+      "stage": "paired_dataset_extracted",
+      "stage_denominator_projects": 345,
+      "stage_order": 5,
+      "unresolved_projects": 0
+    }
+  ],
+  "snapshots": 690,
+  "third_party_code_executed": false
+}

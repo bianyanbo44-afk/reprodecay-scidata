@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use this release, cite the versioned dataset and the associated Data Descriptor."
+title: "A version-paired dataset of dependency and interface evolution in Python research software"
+type: dataset
+authors:
+  - given-names: "Yanbo"
+    family-names: "Bian"
+    affiliation: "Beijing Jiaotong University"
+    email: "24722081@bjtu.edu.cn"
+  - given-names: "Zhihai"
+    family-names: "Wang"
+    affiliation: "Beijing Jiaotong University"
+    email: "zhhwang@bjtu.edu.cn"
+version: 0.2.0
+date-released: 2026-08-15
+license: CC-BY-4.0
+repository-code: "https://github.com/bianyanbo44-afk/reprodecay-scidata"
+url: "https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.0"
+keywords:
+  - research software
+  - Python
+  - software evolution
+  - dependency metadata
+  - syntactic interface
+preferred-citation:
+  type: article
+  title: "A version-paired dataset of dependency and interface evolution in Python research software"
+  authors:
+    - given-names: "Yanbo"
+      family-names: "Bian"
+    - given-names: "Zhihai"
+      family-names: "Wang"
+  journal: "Scientific Data"
+  year: 2026

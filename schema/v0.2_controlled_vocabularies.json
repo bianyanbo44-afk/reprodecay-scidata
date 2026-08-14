@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/research-software-evolution/v0.2/controlled-vocabularies.json",
+  "title": "Controlled vocabularies for version-paired research-software tables",
+  "type": "object",
+  "properties": {
+    "snapshot_role": {"enum": ["publication", "endpoint"]},
+    "source_provider": {"enum": ["zenodo", "figshare", "caltechdata", "github"]},
+    "endpoint_ref_type": {"enum": ["release", "default_branch"]},
+    "selected_role": {"enum": ["primary", "replacement", "census_provisional"]},
+    "dependency_parse_status": {
+      "enum": ["parsed", "parsed_non_pep508", "parsed_poetry", "directive", "unparsed"]
+    },
+    "api_symbol_kind": {
+      "enum": ["class", "constructor", "method", "function", "async_function"]
+    },
+    "api_export_evidence": {
+      "enum": ["literal_all", "lexical_nonprivate", "class_member"]
+    },
+    "delta_family": {"enum": ["api", "dependency", "structure"]},
+    "delta_type": {"enum": ["added", "removed", "changed", "unchanged", "unavailable"]},
+    "comparison_status": {"enum": ["comparable", "partial_parse", "unavailable"]},
+    "validation_status": {"enum": ["pass", "warning", "error"]},
+    "boolean_text": {"enum": ["true", "false"]}
+  },
+  "additionalProperties": false
+}

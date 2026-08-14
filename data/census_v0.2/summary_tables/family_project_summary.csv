@@ -1,0 +1,25 @@
+﻿family,delta_type,scope,projects_with_at_least_one,project_denominator,project_proportion,projects_missing_or_incomplete,denominator_definition
+api,added,all_extracted_projects_observed,219,345,0.634783,28,all projects in project_records.csv
+api,removed,all_extracted_projects_observed,169,345,0.489855,28,all projects in project_records.csv
+api,changed,all_extracted_projects_observed,179,345,0.518841,28,all projects in project_records.csv
+api,unchanged,all_extracted_projects_observed,315,345,0.913043,28,all projects in project_records.csv
+api,added,complete_family_comparisons,202,317,0.637224,28,projects with complete publication and endpoint parsing for the family
+api,removed,complete_family_comparisons,156,317,0.492114,28,projects with complete publication and endpoint parsing for the family
+api,changed,complete_family_comparisons,168,317,0.529968,28,projects with complete publication and endpoint parsing for the family
+api,unchanged,complete_family_comparisons,291,317,0.917981,28,projects with complete publication and endpoint parsing for the family
+dependency,added,all_extracted_projects_observed,179,345,0.518841,107,all projects in project_records.csv
+dependency,removed,all_extracted_projects_observed,123,345,0.356522,107,all projects in project_records.csv
+dependency,changed,all_extracted_projects_observed,125,345,0.362319,107,all projects in project_records.csv
+dependency,unchanged,all_extracted_projects_observed,253,345,0.733333,107,all projects in project_records.csv
+dependency,added,complete_family_comparisons,121,238,0.508403,107,projects with complete publication and endpoint parsing for the family
+dependency,removed,complete_family_comparisons,74,238,0.310924,107,projects with complete publication and endpoint parsing for the family
+dependency,changed,complete_family_comparisons,79,238,0.331933,107,projects with complete publication and endpoint parsing for the family
+dependency,unchanged,complete_family_comparisons,179,238,0.752101,107,projects with complete publication and endpoint parsing for the family
+structure,added,all_extracted_projects_observed,183,345,0.530435,0,all projects in project_records.csv
+structure,removed,all_extracted_projects_observed,169,345,0.489855,0,all projects in project_records.csv
+structure,changed,all_extracted_projects_observed,242,345,0.701449,0,all projects in project_records.csv
+structure,unchanged,all_extracted_projects_observed,345,345,1.0,0,all projects in project_records.csv
+structure,added,complete_family_comparisons,183,345,0.530435,0,projects with complete publication and endpoint parsing for the family
+structure,removed,complete_family_comparisons,169,345,0.489855,0,projects with complete publication and endpoint parsing for the family
+structure,changed,complete_family_comparisons,242,345,0.701449,0,projects with complete publication and endpoint parsing for the family
+structure,unchanged,complete_family_comparisons,345,345,1.0,0,projects with complete publication and endpoint parsing for the family

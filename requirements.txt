@@ -1,0 +1,7 @@
+# Reference runtime for the v0.2 census pipeline (Python 3.12.10).
+# These are direct runtime dependencies; the static extractors otherwise use
+# the Python standard library.
+matplotlib==3.10.8
+numpy==1.26.4
+packaging==26.0
+PyYAML==6.0.3

@@ -1,0 +1,25 @@
+{
+  "captured_at": "2026-08-14",
+  "reference_platform": {
+    "os": "Microsoft Windows 10.0.26200",
+    "os_architecture": "x86_64",
+    "powershell": "5.1.26100.9168"
+  },
+  "runtime": {
+    "python": "3.12.10",
+    "pip": "26.0.1"
+  },
+  "external_tools": {
+    "curl": "8.21.0",
+    "git": "2.45.1.windows.1",
+    "latexmk": "4.88",
+    "pdftex": "3.141592653-2.6-1.40.29 (TeX Live 2026)",
+    "pandoc": "unavailable in the reference shell; DOCX was generated and checked with the bundled document runtime"
+  },
+  "dependency_lock": {
+    "file": "requirements-lock-win-py312.txt",
+    "scope": "runtime, test, plotting and optional DOCX dependencies",
+    "artifact_scope": "CPython 3.12 Windows x86-64 wheels",
+    "hash_algorithm": "sha256"
+  }
+}
