@@ -1,7 +1,7 @@
 # Scientific Data Requirements Snapshot
 
 Checked against the Scientific Data submission guidelines, data policies and
-editorial/publishing policies on 2026-08-13. Recheck before submission because
+editorial/publishing policies on 2026-08-15. Recheck before submission because
 journal instructions can change.
 
 ## Article type
@@ -54,6 +54,8 @@ Data Descriptor describing a repository-hosted dataset.
 
 - First-round review requires only one readable PDF containing the complete main
   article, figures, tables and captions; a Word file is not required.
+- Scientific Data does not provide, suggest or encourage a LaTeX template; the
+  mandated headings and a legible layout are sufficient for first-round review.
 - A revised manuscript must include one machine-readable main article as either
   `.docx` or `.tex`.
 - The LaTeX route is permitted, so this project does not require a main-manuscript

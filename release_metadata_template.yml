@@ -2,7 +2,7 @@
 # identifier value with verified information before public release.
 schema_version: "1.0"
 dataset:
-  title: "A version-paired dataset of dependency and interface evolution in Python research software"
+  title: "Publication-anchored paired snapshots of Python research software with field-level change records"
   version: "v0.2"
   publication_year: 2026
   resource_type: "dataset"
@@ -19,7 +19,7 @@ dataset:
   doi: "<DATASET_DOI>"
   licence: "CC-BY-4.0"
   related_manuscript: "<MANUSCRIPT_DOI_OR_PREPRINT_URL>"
-  related_code: "https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.1"
+  related_code: "https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.2"
   keywords:
     - research software
     - Python
@@ -28,7 +28,7 @@ dataset:
     - syntactic interface
   access: "<PUBLIC_OR_ANONYMOUS_REVIEW_ACCESS_URL>"
 code:
-  version: "v0.2.1"
+  version: "v0.2.2"
   repository: "https://github.com/bianyanbo44-afk/reprodecay-scidata"
   doi: "<CODE_DOI>"
   licence: "MIT"

@@ -27,6 +27,9 @@ REQUIRED = (
     "data/census_frame_v0.2/archive_inventory_manifest.json",
     "data/census_v0.2/census_dataset_validation.json",
     "data/census_v0.2/census_summary.json",
+    "data/census_v0.2/independent_semantic_audit.json",
+    "data/census_v0.2/independent_semantic_audit.csv",
+    "data/census_v0.2/independent_semantic_audit_sample.csv",
     "data/census_v0.2/tables/extraction_manifest.json",
     "data/census_v0.2/tables/project_records.csv",
     "data/census_v0.2/tables/snapshot_records.csv",
@@ -36,13 +39,18 @@ REQUIRED = (
     "data/census_v0.2/tables/pair_delta_records.csv",
     "data/census_v0.2/tables/validation_records.csv",
     "scripts/validate_census_dataset.py",
+    "scripts/independent_semantic_audit.py",
+    "scripts/make_scidata_figures.py",
     "scripts/prefetch_endpoint_archives.py",
     "schema/datapackage.json",
     "schema/v0.2_controlled_vocabularies.json",
     "manuscript/main.tex",
     "manuscript/references.bib",
     "manuscript/paper.pdf",
-    "manuscript/figures/census_overview.png",
+    "manuscript/figures/fig1_pairing_workflow.pdf",
+    "manuscript/figures/fig2_change_landscape.pdf",
+    "manuscript/figures/fig3_metadata_transitions.pdf",
+    "manuscript/figures/fig4_validation_audit.pdf",
     "requirements.txt",
     "requirements-lock-win-py312.txt",
     "environment_reference.json",
@@ -142,7 +150,7 @@ def verify_citation_file(root: Path, failures: list[str]) -> None:
         failures.append("citation_cff_placeholder_present")
     if citation.get("repository-code") != EXPECTED_CODE_REPOSITORY:
         failures.append("citation_cff_repository_mismatch")
-    if str(citation.get("version")) != "0.2.1":
+    if str(citation.get("version")) != "0.2.2":
         failures.append("citation_cff_release_version_mismatch")
 
 

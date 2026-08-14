@@ -1,0 +1,13 @@
+assessed_projects,denominator_stage,endpoint_default_branch,endpoint_releases,excluded_projects,field,figshare_archives,not_assessed_projects,panel,publication_archives,resolved_projects,retained_projects,retention_proportion,snapshots,source_available,stage,stage_denominator_projects,stage_order,unresolved_projects,value,zenodo_archives
+940,self,,,0,,,0,a_attrition,,,940,1.0,,true,joss_records_screened,940,1,0,,
+940,joss_records_screened,,,537,,,0,a_attrition,,,396,0.421277,,true,metadata_eligible,940,2,7,,
+396,metadata_eligible,,,20,,,0,a_attrition,,,372,0.939394,,true,publication_archive_eligible,396,3,4,,
+372,publication_archive_eligible,,,0,,,0,a_attrition,,,345,0.927419,,true,endpoint_resolved,372,4,27,,
+345,endpoint_resolved,,,0,,,0,a_attrition,,,345,1.0,,true,paired_dataset_extracted,345,5,0,,
+,,18,327,,,4,,b_pair,345,345,,,690,,,,,,,341
+,,,,,projects,,,c_manifest,,,,,,,,,,,345,
+,,,,,snapshots,,,c_manifest,,,,,,,,,,,690,
+,,,,,dependency_records,,,c_manifest,,,,,,,,,,,9074,
+,,,,,api_symbol_records,,,c_manifest,,,,,,,,,,,121085,
+,,,,,pair_delta_records,,,c_manifest,,,,,,,,,,,95787,
+,,,,,validation_records,,,c_manifest,,,,,,,,,,,2876,

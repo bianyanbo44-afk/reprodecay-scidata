@@ -1,6 +1,7 @@
 # Reproduction Protocol
 
-This repository contains the v0.2 version-paired census pipeline. The released
+This repository contains the v0.2 version-paired census pipeline and the public
+v0.2.2 code and derived-data release. The released
 derived tables do not redistribute the 10+ GiB of third-party Zenodo, Figshare
 and GitHub source archives. The archive ledgers retain the public URLs,
 immutable commits, provider checksums and local SHA-256 values needed to
@@ -48,8 +49,9 @@ python scripts/prefetch_endpoint_archives.py
 ```text
 python scripts/validate_census_dataset.py --strict --rerun
 python scripts/independent_reconstruction_audit.py .
+python scripts/independent_semantic_audit.py
 python scripts/summarize_census_dataset.py --summary-dir data/census_v0.2/summary_tables
-python scripts/make_census_overview_figure.py
+python scripts/make_scidata_figures.py
 python -B -m pytest -q tests
 ```
 
@@ -70,10 +72,11 @@ is claimed only when the cached immutable inputs are available.
 
 ## Release metadata
 
-`release_metadata_template.yml` must be completed with verified creators,
-the formal data repository, persistent identifiers and licences before public
-deposition. The verified GitHub repository and v0.2.1 release URL are already
-filled. No DOI is inferred by the pipeline.
+`release_metadata_template.yml` must be completed with the formal data
+repository and persistent identifiers before the second review round. The
+verified GitHub repository and public v0.2.2 release URL provide anonymous
+first-round access and contain the semantic-audit and four-figure additions used
+by the manuscript. No DOI is inferred by the pipeline.
 
 ## Optional Word regeneration
 
@@ -86,7 +89,6 @@ pandoc main.tex -o paper.docx --from latex --to docx --resource-path=. --extract
 python ../../scripts/prepare_word_output.py paper.docx paper.docx --width-inches 4.4
 ```
 
-The preparation step preserves the figure, adds the package-wide PNG content
-type required by strict OOXML validators and keeps the overview figure readable
-with its caption in the Word layout. Run the Word guard and OOXML validator after
-conversion.
+The preparation step preserves figures, adds the package-wide PNG content type
+required by strict OOXML validators and keeps captions readable in the Word
+layout. Run the Word guard and OOXML validator after conversion.

@@ -1,75 +1,88 @@
-# Version-paired research-software evolution dataset v0.2
+# Publication-anchored paired snapshots of Python research software
 
-This release candidate contains the derived data, provenance ledgers, schemas,
-validation outputs, source data for the overview figure, manuscript source and
-reproduction code for the Scientific Data Data Descriptor:
+Version `v0.2.2` is the data, code, figure and manuscript package for a
+Scientific Data Data Descriptor. It links the immutable software archive
+associated with a Journal of Open Source Software (JOSS) article to a later
+immutable GitHub endpoint for 345 Python projects published in 2018-2020.
 
-**A version-paired dataset of dependency and interface evolution in Python
-research software**
+## Released data object
 
-Repository: https://github.com/bianyanbo44-afk/reprodecay-scidata  
-Versioned release: https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.1
+Each resolved project has one publication snapshot and one endpoint snapshot.
+The seven linked core tables contain:
 
-## Frozen data object
+- 345 project pairs and 690 immutable snapshots;
+- 9,074 declared-dependency records;
+- 121,085 syntactic-interface records;
+- 95,787 evidence-linked pair-delta records; and
+- 2,876 validation records.
 
-- 345 projects and 690 immutable source snapshots;
-- 341 Zenodo and 4 Figshare publication snapshots;
-- 345 GitHub endpoint snapshots: 327 stable releases and 18 default-branch
-  commits;
-- 9,074 dependency records, 121,085 syntactic-interface records, 95,787
-  pair-delta records and 2,876 validation records;
-- 27 endpoint-unresolved projects retained in the ledgers with reason codes.
+Selection, publication-archive and endpoint-resolution ledgers retain excluded
+and unresolved records with reason codes. Static extraction never installs,
+imports or executes indexed third-party software. Syntactic differences are not
+runtime compatibility results, dependency declarations are not solved
+environments, and the bounded JOSS/Python cohort is not a prevalence or
+software-quality estimate.
 
-All final project rows have `selected_role=census_provisional`. Extraction is
-static: indexed third-party software was not installed, imported or executed.
+## What is included
 
-## Verify this package
+- `data/census_v0.2/tables/`: seven canonical CSV tables and extraction manifest
+- `data/census_v0.2/summary_tables/`: denominator-aware descriptive summaries
+- `data/census_frame_v0.2/`: frozen screening, archive and endpoint ledgers
+- `schema/`: the data-package descriptor and controlled vocabularies
+- `figures/census_v0.2/`: four publication figures and source-data CSV files
+- `scripts/`: acquisition, extraction, audit, validation and figure code
+- `tests/`: packaged unit and contract tests
+- `manuscript/`: the exact LaTeX source, bibliography, figures and PDF
+- `REPRODUCE.md`: verification and archive-reacquisition instructions
 
-From the extracted package directory, run:
+Raw Zenodo, Figshare and GitHub source archives are not redistributed. The
+released snapshot records retain the archive DOI or immutable commit, source
+URL, provider checksum where available, local SHA-256 and byte size needed to
+reacquire and verify those inputs under the original providers' terms.
+
+## Verify this release
+
+After downloading and extracting the release ZIP, run from the directory that
+contains `release_candidate_v0.2`:
+
+```text
+python release_candidate_v0.2/scripts/verify_release_candidate.py --root release_candidate_v0.2
+python -B -m pytest -q release_candidate_v0.2/tests
+```
+
+From a Git clone, run:
 
 ```text
 python scripts/verify_release_candidate.py --root .
 python -B -m pytest -q tests
 ```
 
-`verify_release_candidate.py` is the authoritative self-check for this derived
-release candidate. It verifies the package manifest and file hashes, required
-files, frozen record counts, provider/role accounting, strict-validation status,
-the no-execution assertion and the absence of raw source archives.
+The expected self-check result is `PASS` for 138 managed files. The reference
+environment is Python 3.12.10; exact versions and a hash-pinned Windows lockfile
+are included.
 
-`scripts/build_release_audit.py` is a maintainer audit for the complete source
-workspace and expects development and pilot artifacts that are intentionally not
-included here. It is not the candidate-package self-check.
+## Validation evidence
 
-## Package layout
+- strict schema, key, vocabulary, archive-hash, path-safety and no-execution checks;
+- a byte-identical rerun of the canonical tables from cached immutable inputs;
+- an independent 24-project, 48-snapshot semantic audit reproducing 22,065 API
+  symbol keys, 658 dependency records and all audited structure values; and
+- a separate 20-project reconstruction matching 40 snapshot hashes and locating
+  38 sampled evidence paths.
 
-- `data/census_v0.2/tables/`: seven core CSV tables and extraction manifest;
-- `data/census_v0.2/summary_tables/`: derived descriptive summaries;
-- `data/census_frame_v0.2/`: screening and publication-archive ledgers;
-- `figures/census_v0.2/`: overview figure PDF, SVG, high-resolution PNG and
-  source-data CSV (the redundant workspace TIFF is not copied into this
-  candidate);
-- `schema/`: schemas and controlled vocabularies;
-- `scripts/` and `tests/`: construction, validation and test code;
-- `manuscript/`: LaTeX source, bibliography, figure and compiled PDF;
-- `REPRODUCE.md`: archive-aware reconstruction protocol.
-- `LICENSE-DATA`, `LICENSE-CODE` and `LICENSES.md`: explicit data, code and
-  third-party rights boundaries;
-- `requirements-lock-win-py312.txt` and `environment_reference.json`: the
-  hash-pinned reference environment and external-tool versions.
+These are bounded reconstruction and exact-agreement checks. They are not a
+population parser-accuracy estimate or a runtime test.
 
-## Archive and rights boundary
+## Access, citation and licences
 
-The package does not redistribute the approximately 10.9 GiB of third-party
-Zenodo, Figshare or GitHub source archives. Released rows retain public archive
-DOIs or immutable commits, provider checksums and locally computed SHA-256 values
-for reacquisition under the original providers' terms.
+The public GitHub repository and tagged release provide anonymous first-round
+review access. A formal data-repository record and archived code DOI will be
+added before the second review round; no DOI is inferred in this package.
 
-This GitHub release is the versioned code and derived-data release candidate;
-the formal dataset repository record and DOI are still pending. Data and code
-licences are fixed as CC BY 4.0 and MIT, respectively. The two author names, Beijing Jiaotong
-University affiliation, public institutional emails, no-external-funding
-statement and no-competing-interests declaration are confirmed. Before public
-dataset deposition, CRediT roles, any ORCIDs, the dataset DOI, a code-archive
-DOI and the final anonymous-review access URL still require author confirmation. Yanbo Bian and
-Zhihai Wang are designated as joint corresponding authors.
+- Derived tabular data: CC BY 4.0 (`LICENSE-DATA`)
+- Custom code: MIT (`LICENSE-CODE`)
+- Third-party source archives: not redistributed and not relicensed
+
+Use `CITATION.cff` for versioned citation metadata. The repository is
+https://github.com/bianyanbo44-afk/reprodecay-scidata and the release page is
+https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.2.

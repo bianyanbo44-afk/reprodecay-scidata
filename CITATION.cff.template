@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "Cite both the deposited dataset record and the associated Data Descriptor."
-title: "A version-paired dataset of dependency and interface evolution in Python research software"
+title: "Publication-anchored paired snapshots of Python research software with field-level change records"
 type: dataset
 authors:
   - given-names: "Yanbo"
@@ -11,7 +11,7 @@ authors:
     family-names: "Wang"
     affiliation: "Beijing Jiaotong University"
     email: "zhhwang@bjtu.edu.cn"
-version: 0.2.1
+version: 0.2.2
 date-released: 2026-08-15
 license: CC-BY-4.0
 doi: "<DATASET_DOI>"
@@ -28,7 +28,7 @@ keywords:
   - syntactic interface
 preferred-citation:
   type: article
-  title: "A version-paired dataset of dependency and interface evolution in Python research software"
+  title: "Publication-anchored paired snapshots of Python research software with field-level change records"
   authors:
     - given-names: "Yanbo"
       family-names: "Bian"
