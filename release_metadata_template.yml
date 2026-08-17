@@ -19,7 +19,7 @@ dataset:
   doi: "<DATASET_DOI>"
   licence: "CC-BY-4.0"
   related_manuscript: "<MANUSCRIPT_DOI_OR_PREPRINT_URL>"
-  related_code: "https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.2"
+  related_code: "https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.3"
   keywords:
     - research software
     - Python
@@ -28,7 +28,7 @@ dataset:
     - syntactic interface
   access: "<PUBLIC_OR_ANONYMOUS_REVIEW_ACCESS_URL>"
 code:
-  version: "v0.2.2"
+  version: "v0.2.3"
   repository: "https://github.com/bianyanbo44-afk/reprodecay-scidata"
   doi: "<CODE_DOI>"
   licence: "MIT"

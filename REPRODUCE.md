@@ -1,7 +1,7 @@
 # Reproduction Protocol
 
 This repository contains the v0.2 version-paired census pipeline and the public
-v0.2.2 code and derived-data release. The released
+v0.2.3 code and derived-data release. The released
 derived tables do not redistribute the 10+ GiB of third-party Zenodo, Figshare
 and GitHub source archives. The archive ledgers retain the public URLs,
 immutable commits, provider checksums and local SHA-256 values needed to
@@ -74,7 +74,7 @@ is claimed only when the cached immutable inputs are available.
 
 `release_metadata_template.yml` must be completed with the formal data
 repository and persistent identifiers before the second review round. The
-verified GitHub repository and public v0.2.2 release URL provide anonymous
+verified GitHub repository and public v0.2.3 release URL provide anonymous
 first-round access and contain the semantic-audit and four-figure additions used
 by the manuscript. No DOI is inferred by the pipeline.
 

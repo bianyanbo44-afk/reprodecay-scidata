@@ -58,7 +58,7 @@ Source data: `fig4_validation_audit_source_data.csv`.
 ## Acceptance checks
 
 The current PDF contains all four figures with self-contained captions. The
-public v0.2.2 package contains this contract, the four source-data CSVs and the
+public v0.2.3 package contains this contract, the four source-data CSVs and the
 figure-generation script. A final submission build must repeat the PDF render
 check after any manuscript-layout change; Scientific Data does not require or
 recommend a journal-specific LaTeX template.

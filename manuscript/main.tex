@@ -54,6 +54,14 @@ We constructed the paired resource from the frozen Crossref frame of JOSS articl
 
 The resource is organized around a project-level pair. A \code{project\_id} is derived from the normalized JOSS DOI, a \code{pair\_id} identifies the two snapshots, and each child row retains its parent \code{snapshot\_id} or \code{pair\_id}. A resolved project therefore has exactly one publication snapshot and one endpoint snapshot. Unresolved endpoint projects remain in the selection and endpoint ledgers but produce no fabricated snapshot or delta rows. This design makes provenance and missingness part of the data object rather than post hoc exclusions.
 
+\subsection{Use of AI-assisted tools}
+
+AI-assisted tools were used for language drafting, code-oriented quality checks and formatting support. They did not make final source-selection, data-curation or scientific-interpretation decisions. The authors reviewed the generated text and code, reran the released validation and test suites, and take responsibility for the final dataset, analyses and claims.
+
+\subsection{Ethics statement}
+
+This work uses public scholarly records and public repository metadata and does not involve human participants, private repositories or interaction with contributors.
+
 \subsection{Frame construction and deterministic screening}
 
 The source frame was acquired from the Crossref journal works endpoint for ISSN 2475-9066 and the date interval above. The frozen frame contains 940 records. DOIs were normalized to lowercase and assigned a deterministic SHA-256 rank using the frozen screening salt. The rank controlled processing order only; it was not a sampling weight or eligibility feature. Every frame record was retained in a screening ledger with its status and reason code.
@@ -97,7 +105,7 @@ To test semantic agreement independently of the production extractor, we selecte
 
 \section{Data Records}
 
-The v0.2.2 release contains seven UTF-8 CSV core tables, JSON manifests, schemas, controlled vocabularies, selection and endpoint ledgers, validation reports, summary tables and figure source data. The exact package is available for anonymous download from the public \href{https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.2}{GitHub release}. Empty strings mean that an upstream value was unavailable or not applicable; they are not imputed zeros or false values. JSON-valued cells use sorted keys and no insignificant whitespace. The core table contract is summarized in Table~\ref{tab:core_tables}; the accompanying manifests bind row counts, schema versions and table hashes.
+The v0.2.3 release contains seven UTF-8 CSV core tables, JSON manifests, schemas, controlled vocabularies, selection and endpoint ledgers, validation reports, summary tables and figure source data. The exact package is available for anonymous download from the public \href{https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.3}{GitHub release} and is formally cited as a dataset here \cite{bian2026paired}. Empty strings mean that an upstream value was unavailable or not applicable; they are not imputed zeros or false values. JSON-valued cells use sorted keys and no insignificant whitespace. The core table contract is summarized in Table~\ref{tab:core_tables}; the accompanying manifests bind row counts, schema versions and table hashes.
 
 \begin{table}[H]
 \centering
@@ -180,11 +188,11 @@ The syntactic interface heuristic excludes private names and selected non-source
 
 \section*{Data Availability}
 
-The derived dataset supporting this Data Descriptor is available for anonymous download in the public \href{https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.2}{v0.2.2 release}. The package contains the seven core tables, schemas, manifests, controlled vocabularies, selection and endpoint ledgers, validation products, figure source data and checksums under the Creative Commons Attribution 4.0 International licence. Raw third-party source archives are not redistributed; each source snapshot is identified by a public archive DOI or immutable Git commit together with a local SHA-256 value. A DOI-bearing formal data-repository record will replace or supplement this first-round access route before the second round of review.
+The derived dataset supporting this Data Descriptor is available for anonymous download in the public \href{https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.3}{v0.2.3 release} and is cited as \cite{bian2026paired}. The package contains the seven core tables, schemas, manifests, controlled vocabularies, selection and endpoint ledgers, validation products, figure source data and checksums under the Creative Commons Attribution 4.0 International licence. Raw third-party source archives are not redistributed; each source snapshot is identified by a public archive DOI or immutable Git commit together with a local SHA-256 value. A DOI-bearing formal data-repository record will replace or supplement this first-round access route before the second round of review.
 
 \section*{Code Availability}
 
-The custom code used to construct the frame, resolve endpoints, inspect archives, extract static records, construct deltas, run the independent audits, generate the four figures and validate the release is available from the public \href{https://github.com/bianyanbo44-afk/reprodecay-scidata}{GitHub repository} and its versioned \href{https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.2}{v0.2.2 release} under the MIT License. The release includes the pinned reference environment, figure source-data exports and the exact manuscript package. A DOI-minted archival copy will be linked before the second round of review.
+The custom code used to construct the frame, resolve endpoints, inspect archives, extract static records, construct deltas, run the independent audits, generate the four figures and validate the release is available from the public \href{https://github.com/bianyanbo44-afk/reprodecay-scidata}{GitHub repository} and its versioned \href{https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.3}{v0.2.3 release} under the MIT License. The release includes the pinned reference environment, figure source-data exports and the exact manuscript package. A DOI-minted archival copy will be linked before the second round of review.
 
 {\small
 \bibliographystyle{unsrt}
@@ -193,7 +201,7 @@ The custom code used to construct the frame, resolve endpoints, inspect archives
 
 \section*{Author Contributions}
 
-Author contributions are provided in the journal submission system.
+Yanbo Bian led the conceptualization, methodology, software implementation, data curation, formal analysis and visualization. Zhihai Wang provided supervision, methodological review and manuscript review and editing. Both authors contributed to interpretation, approved the final manuscript and accept responsibility for the integrity of the work.
 
 \section*{Competing Interests}
 
@@ -206,9 +214,5 @@ The authors acknowledge the public Crossref, JOSS, Zenodo, Figshare and GitHub s
 \section*{Funding}
 
 This work received no external funding.
-
-\section*{Ethics Statement}
-
-This work uses public scholarly records and public repository metadata and does not involve human participants, private repositories or interaction with contributors. The release plan excludes raw third-party archives unless redistribution rights are established and follows the access and licence conditions of the original providers.
 
 \end{document}

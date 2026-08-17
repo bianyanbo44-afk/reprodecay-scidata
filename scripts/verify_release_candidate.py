@@ -75,6 +75,7 @@ EXPECTED_SNAPSHOT_PROVIDERS = {
 }
 
 EXPECTED_CODE_REPOSITORY = "https://github.com/bianyanbo44-afk/reprodecay-scidata"
+EXPECTED_RELEASE_VERSION = "0.2.3"
 TRANSIENT_PATH_PARTS = {".git", "__pycache__", ".pytest_cache"}
 TRANSIENT_SUFFIXES = {".pyc", ".pyo"}
 
@@ -150,7 +151,7 @@ def verify_citation_file(root: Path, failures: list[str]) -> None:
         failures.append("citation_cff_placeholder_present")
     if citation.get("repository-code") != EXPECTED_CODE_REPOSITORY:
         failures.append("citation_cff_repository_mismatch")
-    if str(citation.get("version")) != "0.2.2":
+    if str(citation.get("version")) != EXPECTED_RELEASE_VERSION:
         failures.append("citation_cff_release_version_mismatch")
 
 

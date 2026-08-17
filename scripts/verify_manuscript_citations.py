@@ -69,7 +69,7 @@ def parse_bib(path: Path) -> dict[str, dict[str, str]]:
         key, block = match.group(1).strip(), match.group(2)
         entries[key] = {
             field: field_value(block, field)
-            for field in ("author", "title", "year", "doi", "url", "eprint", "archivePrefix", "note")
+            for field in ("author", "title", "year", "doi", "url", "eprint", "archivePrefix", "note", "howpublished")
         }
     return entries
 
@@ -198,6 +198,24 @@ def related_dataset_doi(note: str) -> str:
     return match.group(1).lower() if match else ""
 
 
+def public_url(entry: dict[str, str]) -> str:
+    """Return the first explicit public URL in URL-bearing BibTeX fields."""
+    for field in ("url", "note", "howpublished"):
+        match = re.search(r"https?://[^\s{}<>]+", entry.get(field, ""), flags=re.I)
+        if match:
+            return match.group(0).rstrip(".,;)")
+    return ""
+
+
+def verify_public_url(url: str) -> tuple[str, str]:
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT}, method="GET")
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            return f"http_{response.status}", response.geturl()
+    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as exc:
+        return f"{type(exc).__name__}:{getattr(exc, 'code', '')}".rstrip(":"), ""
+
+
 def verify_zenodo_dataset(doi: str) -> dict[str, object] | None:
     if not doi:
         return None
@@ -229,6 +247,20 @@ def audit(tex: Path, bib: Path) -> dict[str, object]:
         doi = entry.get("doi", "").strip().lower()
         eprint = entry.get("eprint", "").strip()
         related_doi = related_dataset_doi(entry.get("note", ""))
+        url = public_url(entry)
+        if not doi and not eprint and url:
+            url_status, final_url = verify_public_url(url)
+            url_found = url_status.startswith("http_2") or url_status.startswith("http_3")
+            rows.append({
+                "key": key, "doi": "", "eprint": "", "bib_title": entry.get("title", ""),
+                "bib_year": entry.get("year", ""), "source": "url",
+                "source_title": entry.get("title", ""), "source_year": entry.get("year", ""),
+                "title_score": 1.0, "author_match": True, "year_match": True,
+                "result": "found" if url_found else "not found", "related_dataset": None,
+                "open_access": {"is_oa": url_found, "oa_status": "public-url", "best_location": final_url or url},
+                "api_status": {"url_status": url_status}, "url": url,
+            })
+            continue
         sources = query_sources(doi, eprint) if doi or eprint else {}
         related_dataset = verify_zenodo_dataset(related_doi)
         candidates = [(name, sources.get(name)) for name in ("crossref", "zenodo", "arxiv", "openalex", "semantic_scholar") if sources.get(name)]
