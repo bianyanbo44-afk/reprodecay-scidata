@@ -75,7 +75,7 @@ EXPECTED_SNAPSHOT_PROVIDERS = {
 }
 
 EXPECTED_CODE_REPOSITORY = "https://github.com/bianyanbo44-afk/reprodecay-scidata"
-EXPECTED_RELEASE_VERSION = "0.2.3"
+EXPECTED_RELEASE_VERSION = "0.2.4"
 TRANSIENT_PATH_PARTS = {".git", "__pycache__", ".pytest_cache"}
 TRANSIENT_SUFFIXES = {".pyc", ".pyo"}
 

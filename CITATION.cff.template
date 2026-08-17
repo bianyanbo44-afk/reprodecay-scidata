@@ -5,13 +5,13 @@ type: dataset
 authors:
   - given-names: "Yanbo"
     family-names: "Bian"
-    affiliation: "Beijing Jiaotong University"
+    affiliation: "Weihai International College, Beijing Jiaotong University"
     email: "24722081@bjtu.edu.cn"
   - given-names: "Zhihai"
     family-names: "Wang"
-    affiliation: "Beijing Jiaotong University"
+    affiliation: "School of Computer Science and Technology, Beijing Jiaotong University"
     email: "zhhwang@bjtu.edu.cn"
-version: 0.2.3
+version: 0.2.4
 date-released: 2026-08-17
 license: CC-BY-4.0
 doi: "<DATASET_DOI>"

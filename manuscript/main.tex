@@ -24,9 +24,10 @@
 
 \title{Publication-anchored paired snapshots of Python research software with field-level change records}
 \author[1,*]{Yanbo Bian}
-\author[1,*]{Zhihai Wang}
-\affil[1]{Beijing Jiaotong University, Beijing 100044, China\\
-\href{mailto:24722081@bjtu.edu.cn}{24722081@bjtu.edu.cn};
+\author[2,*]{Zhihai Wang}
+\affil[1]{Weihai International College, Beijing Jiaotong University, Weihai 264401, China\\
+\href{mailto:24722081@bjtu.edu.cn}{24722081@bjtu.edu.cn}}
+\affil[2]{School of Computer Science and Technology, Beijing Jiaotong University, Beijing 100044, China\\
 \href{mailto:zhhwang@bjtu.edu.cn}{zhhwang@bjtu.edu.cn}}
 \affil[*]{Correspondence to Yanbo Bian or Zhihai Wang.}
 \date{}
@@ -105,7 +106,7 @@ To test semantic agreement independently of the production extractor, we selecte
 
 \section{Data Records}
 
-The v0.2.3 release contains seven UTF-8 CSV core tables, JSON manifests, schemas, controlled vocabularies, selection and endpoint ledgers, validation reports, summary tables and figure source data. The exact package is available for anonymous download from the public \href{https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.3}{GitHub release} and is formally cited as a dataset here \cite{bian2026paired}. Empty strings mean that an upstream value was unavailable or not applicable; they are not imputed zeros or false values. JSON-valued cells use sorted keys and no insignificant whitespace. The core table contract is summarized in Table~\ref{tab:core_tables}; the accompanying manifests bind row counts, schema versions and table hashes.
+The v0.2.4 release contains seven UTF-8 CSV core tables, JSON manifests, schemas, controlled vocabularies, selection and endpoint ledgers, validation reports, summary tables and figure source data. The exact package is available for anonymous download from the public \href{https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.4}{GitHub release} and is formally cited as a dataset here \cite{bian2026paired}. Empty strings mean that an upstream value was unavailable or not applicable; they are not imputed zeros or false values. JSON-valued cells use sorted keys and no insignificant whitespace. The core table contract is summarized in Table~\ref{tab:core_tables}; the accompanying manifests bind row counts, schema versions and table hashes.
 
 \begin{table}[H]
 \centering
@@ -188,11 +189,11 @@ The syntactic interface heuristic excludes private names and selected non-source
 
 \section*{Data Availability}
 
-The derived dataset supporting this Data Descriptor is available for anonymous download in the public \href{https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.3}{v0.2.3 release} and is cited as \cite{bian2026paired}. The package contains the seven core tables, schemas, manifests, controlled vocabularies, selection and endpoint ledgers, validation products, figure source data and checksums under the Creative Commons Attribution 4.0 International licence. Raw third-party source archives are not redistributed; each source snapshot is identified by a public archive DOI or immutable Git commit together with a local SHA-256 value. A DOI-bearing formal data-repository record will replace or supplement this first-round access route before the second round of review.
+The derived dataset supporting this Data Descriptor is available for anonymous download in the public \href{https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.4}{v0.2.4 release} and is cited as \cite{bian2026paired}. The package contains the seven core tables, schemas, manifests, controlled vocabularies, selection and endpoint ledgers, validation products, figure source data and checksums under the Creative Commons Attribution 4.0 International licence. Raw third-party source archives are not redistributed; each source snapshot is identified by a public archive DOI or immutable Git commit together with a local SHA-256 value. A DOI-bearing formal data-repository record will replace or supplement this first-round access route before the second round of review.
 
 \section*{Code Availability}
 
-The custom code used to construct the frame, resolve endpoints, inspect archives, extract static records, construct deltas, run the independent audits, generate the four figures and validate the release is available from the public \href{https://github.com/bianyanbo44-afk/reprodecay-scidata}{GitHub repository} and its versioned \href{https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.3}{v0.2.3 release} under the MIT License. The release includes the pinned reference environment, figure source-data exports and the exact manuscript package. A DOI-minted archival copy will be linked before the second round of review.
+The custom code used to construct the frame, resolve endpoints, inspect archives, extract static records, construct deltas, run the independent audits, generate the four figures and validate the release is available from the public \href{https://github.com/bianyanbo44-afk/reprodecay-scidata}{GitHub repository} and its versioned \href{https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.4}{v0.2.4 release} under the MIT License. The release includes the pinned reference environment, figure source-data exports and a technical manuscript package. A DOI-minted archival copy will be linked before the second round of review.
 
 {\small
 \bibliographystyle{unsrt}

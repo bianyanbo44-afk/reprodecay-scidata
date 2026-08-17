@@ -66,7 +66,7 @@ Before every public release:
 
 The version-controlled code and derived release are published at
 `https://github.com/bianyanbo44-afk/reprodecay-scidata`, with the immutable
-software release tagged `v0.2.3`. Use a DOI-minting generalist or institutional
+software release tagged `v0.2.4`. Use a DOI-minting generalist or institutional
 repository for the formal dataset record and archive the tagged GitHub release
 to obtain a persistent code citation. The public dataset record
 should include the seven core tables, manifests, schemas, data dictionary,

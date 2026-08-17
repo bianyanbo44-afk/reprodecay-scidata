@@ -1,6 +1,6 @@
 # Publication-anchored paired snapshots of Python research software
 
-Version `v0.2.3` is the data, code, figure and manuscript package for a
+Version `v0.2.4` is the data, code, figure and manuscript package for a
 Scientific Data Data Descriptor. It links the immutable software archive
 associated with a Journal of Open Source Software (JOSS) article to a later
 immutable GitHub endpoint for 345 Python projects published in 2018-2020.
@@ -42,12 +42,13 @@ reacquire and verify those inputs under the original providers' terms.
 
 ## Verify this release
 
-After downloading and extracting the release ZIP, run from the directory that
-contains `release_candidate_v0.2`:
+After downloading and extracting the release ZIP, enter the extracted package
+directory and run:
 
 ```text
-python release_candidate_v0.2/scripts/verify_release_candidate.py --root release_candidate_v0.2
-python -B -m pytest -q release_candidate_v0.2/tests
+cd release_candidate_v0.2
+python scripts/verify_release_candidate.py --root .
+python -B -m pytest -q tests
 ```
 
 From a Git clone, run:
@@ -85,4 +86,4 @@ added before the second review round; no DOI is inferred in this package.
 
 Use `CITATION.cff` for versioned citation metadata. The repository is
 https://github.com/bianyanbo44-afk/reprodecay-scidata and the release page is
-https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.3.
+https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.4.
