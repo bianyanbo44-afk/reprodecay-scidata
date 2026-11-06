@@ -64,13 +64,13 @@ cohorts with different lengths of exposure.
 
 ## Citation, access and licenses
 
-The versioned data and code are preserved through the GitHub–Zenodo integration.
-The archival record supplies the version DOI and anonymous download. The release
-page links to that record and provides the complete derived-data archive:
+The versioned dataset and construction code are publicly archived in Zenodo:
+**https://doi.org/10.5281/zenodo.24002819**. This version DOI identifies the v0.3.0 record with open download.
+The GitHub release also provides the complete derived-data archive:
 https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.3.0.
-`CITATION.cff` supplies the author, title and version metadata. The public package
-contains data, construction code, validation evidence and figures. Manuscript
-and referee-response submission documents are maintained separately.
+`CITATION.cff` supplies the author, title, version and DOI metadata. The public
+archive contains data, construction code, validation evidence and figures.
+Manuscript and referee-response submission documents are maintained separately.
 
 - Derived data — CC BY 4.0 (`LICENSE-DATA`).
 - Custom code — MIT (`LICENSE-CODE`).

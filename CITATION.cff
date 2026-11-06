@@ -17,10 +17,11 @@ version: 0.3.0
 date-released: '2026-11-06'
 license: CC-BY-4.0
 repository-code: https://github.com/bianyanbo44-afk/reprodecay-scidata
-url: https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.3.0
+url: https://doi.org/10.5281/zenodo.24002819
 keywords:
 - research software
 - Python
 - software evolution
 - dependency metadata
 - syntactic interface
+doi: 10.5281/zenodo.24002819

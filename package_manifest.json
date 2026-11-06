@@ -23,8 +23,8 @@
     },
     {
       "path": "CITATION.cff",
-      "bytes": 893,
-      "sha256": "d6b0d0697ce7749611cee12f9f288d1c322db8a0c41ff592ba2026be0f038710"
+      "bytes": 889,
+      "sha256": "8a9a2011f1d1ddaf394596bced72581db13baaa1924e4202068d9410bc9b1e29"
     },
     {
       "path": "data/candidate_frame_v0.3/crossref_joss_2018_2022.json",
@@ -793,13 +793,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 4250,
-      "sha256": "1c734f938e4092fc537004ed76e9255f182dfd2782e3c84d651637b91f6395a7"
+      "bytes": 4273,
+      "sha256": "0ad4dcf2f7c107b09050195831b3cfeb7209d000c718229c714accd938a05105"
     },
     {
       "path": "REPRODUCE.md",
-      "bytes": 4102,
-      "sha256": "8af6b7ba28789adad03036ea1026c19308300e0c3902f12cf7ec5809587e7d10"
+      "bytes": 4101,
+      "sha256": "862171aac062dc0d9450050cc9d05e8e6655fea1122fb100f9dffbddf8fc0b31"
     },
     {
       "path": "requirements-dev.txt",
@@ -1101,5 +1101,6 @@
       "bytes": 16158,
       "sha256": "e812386f74c99a0e37f6b694b1f82a650bc0ac7c3af097e74f54949b792b51f2"
     }
-  ]
+  ],
+  "dataset_doi": "10.5281/zenodo.24002819"
 }

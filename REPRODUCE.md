@@ -22,8 +22,7 @@ python -B -m pytest -q tests
 
 This tested procedure checks the package hashes, eight table schemas, row counts,
 table hashes, canonical validation, independent audit and signed reference audit.
-It requires neither network access nor source archives. The package manifest
-may embed the archival DOI; the repository record is authoritative for the DOI.
+It requires neither network access nor source archives. The archival record at https://doi.org/10.5281/zenodo.24002819 is authoritative for the version DOI.
 
 ## 2. Regenerate from retained source archives
 
