@@ -1,0 +1,54 @@
+{
+ "snapshot_id": "doi_10_21105_joss_03219__publication__4015f97c0bd88b05",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "extracted_partial",
+   "entries": [
+    [
+     "runtime",
+     "thrustrtc",
+     "==0.3.17"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "setuptools-scm",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  }
+ ],
+ "python_constraints": [],
+ "build_backends": [],
+ "dependency_observation_status": "incomplete",
+ "api_module": {},
+ "notes": "Seven of the eight install_requires elements are a string concatenated with a conditional expression on os.environ ('numba' + ('==0.54.0' if 'CI' in os.environ else '>=0.51.2')), which is not statically evaluable; only the literal 'ThrustRTC==0.3.17' is extracted and the field is partial."
+}

@@ -1,94 +1,76 @@
-# Reproduction Protocol
+# Reproduction protocol for v0.3.0
 
-This repository contains the v0.2 version-paired census pipeline and the public
-v0.2.4 code and derived-data release. The released
-derived tables do not redistribute the 10+ GiB of third-party Zenodo, Figshare
-and GitHub source archives. The archive ledgers retain the public URLs,
-immutable commits, provider checksums and local SHA-256 values needed to
-reacquire them under the original providers' terms.
+The release supports verification of the distributed files, regeneration from
+retained archives, and reacquisition of equivalent source content. Each procedure
+has a different input requirement.
 
 ## Reference environment
 
-- Python 3.12.10 (Windows reference run)
-- Exact reference tool versions: `environment_reference.json`
-- Direct runtime dependencies: `requirements.txt`
-- Development/test dependency: `requirements-dev.txt`
-- Optional Word conversion dependency: `requirements-docx.txt`
-- Fully resolved, SHA-256-pinned Windows/CPython 3.12 environment:
-  `requirements-lock-win-py312.txt`
+Use Python 3.12 and the direct dependencies in `requirements.txt` plus
+`requirements-dev.txt` for tests. `environment_reference.json` and the hash-pinned
+`requirements-lock-win-py312.txt` document the reference environment. No indexed
+third-party software needs to be installed or executed.
 
-Create an isolated environment and install the requirements before running the
-pipeline. Do not install or execute any indexed third-party software archive.
+## 1. Verify the distributed release
 
-## Verify the derived release
-
-From the extracted release directory (or the repository root for a Git clone):
+From the extracted release directory:
 
 ```text
-python scripts/verify_release_candidate.py --root release_candidate_v0.2
-```
-
-This check is self-contained and verifies the release manifest, all included
-file hashes, the strict census validation report, the static-only assertion and
-the absence of raw source archives.
-
-## Rebuild from reacquired archives
-
-1. Reacquire the selected publication archives using
-   `scripts/prefetch_selected_archives.py` and
-   `data/census_frame_v0.2/archive_file_inventory.csv`.
-2. Reacquire endpoint archives from the frozen ledger. This command never
-   re-resolves current GitHub refs; it writes the exact filename expected by
-   the validator and checks both byte size and SHA-256:
-
-```text
-python scripts/prefetch_endpoint_archives.py
-```
-3. Run the full archive-aware validator and deterministic rerun:
-
-```text
-python scripts/validate_census_dataset.py --strict --rerun
-python scripts/independent_reconstruction_audit.py .
-python scripts/independent_semantic_audit.py
-python scripts/summarize_census_dataset.py --summary-dir data/census_v0.2/summary_tables
-python scripts/make_scidata_figures.py
+python scripts/verify_release_v03.py --root .
 python -B -m pytest -q tests
 ```
 
-The expected final counts are 345 projects, 690 snapshots, 9,074 dependency
-records, 121,085 syntactic-interface records, 95,787 pair-delta records and
-2,876 validation records. The expected endpoint accounting is 372 attempts,
-327 stable releases, 18 default-branch endpoints and 27 unresolved endpoints.
-The paired publication snapshots comprise 341 Zenodo records and 4 Figshare
-records; all 345 endpoint snapshots use GitHub archives addressed by commit SHA.
+This tested procedure checks the package hashes, eight table schemas, row counts,
+table hashes, canonical validation, independent audit and signed reference audit.
+It requires neither network access nor source archives. The package manifest
+may embed the archival DOI; the repository record is authoritative for the DOI.
 
-## Reproducibility boundary
+## 2. Regenerate from retained source archives
 
-The pipeline is deterministic conditional on the frozen ledgers and immutable
-archives. Reacquisition can fail because an upstream provider changes access;
-that is why the release contains the original archive DOI/commit, provider
-checksum, local SHA-256 and explicit unresolved states. A byte-identical rerun
-is claimed only when the cached immutable inputs are available.
-
-## Release metadata
-
-`release_metadata_template.yml` must be completed with the formal data
-repository and persistent identifiers before the second review round. The
-verified GitHub repository and public v0.2.4 release URL provide anonymous
-first-round access and contain the semantic-audit and four-figure additions used
-by the manuscript. No DOI is inferred by the pipeline.
-
-## Optional Word regeneration
-
-With the bundled Pandoc binary (or an equivalent Pandoc 3.x installation), run
-the following from `paper_rewriting_output/final_paper/` after compiling
-`main.tex`:
+The frozen source identities are in `snapshot_records.csv` and the acquisition
+ledgers. Put retained publication and endpoint archives in separate cache
+directories and pass their locations explicitly. For example, using relative
+directories `data/raw/zenodo_archives_v0.3` and `data/raw/endpoint_archives_v0.3`:
 
 ```text
-pandoc main.tex -o paper.docx --from latex --to docx --resource-path=. --extract-media=./media --number-sections --citeproc --bibliography=references.bib --csl=ieee.csl
-python ../../scripts/prepare_word_output.py paper.docx paper.docx --width-inches 4.4
+python scripts/validate_census_dataset.py --publication-cache data/raw/zenodo_archives_v0.3 --endpoint-cache data/raw/endpoint_archives_v0.3 --rerun --output regeneration_validation.json
+python scripts/independent_semantic_audit.py . --sample-size 40
+python scripts/summarize_census_dataset.py --tables data/census_v0.3/tables --output data/census_v0.3/census_summary.json --summary-dir data/census_v0.3/summary_tables
+python scripts/make_scidata_figures_v03.py --dataset data/census_v0.3 --frame data/census_frame_v0.3 --output-dir figures/census_v0.3 --require-audits
 ```
 
-The preparation step preserves figures, adds the package-wide PNG content type
-required by strict OOXML validators and keeps captions readable in the Word
-layout. Run the Word guard and OOXML validator after conversion.
+The validator's v0.3 defaults select the frozen ledgers and tables. The full
+archive-aware validator and deterministic regeneration were tested on the
+retained inputs. Independent semantic auditing also needs the archive cache;
+use `--archive-root` when the cache is outside the package. Consult each command's
+`--help` for figure and summary destinations. The distributed tables and figures
+already contain the canonical results.
+
+The recorded endpoint accounting is 697 eligible publication archives and
+692 resolved endpoints. Five endpoint archives exceed the 200 MiB size rule.
+The core release comprises 692 pairs and 1,384 snapshots.
+
+## 3. Reacquire equivalent source content
+
+Publication archives can be downloaded from the frozen inventory:
+
+```text
+python scripts/prefetch_selected_archives.py --inventory data/census_frame_v0.3/archive_file_inventory.csv --cache data/raw/zenodo_archives_v0.3 --checkpoint publication_prefetch.json
+python scripts/prefetch_endpoint_archives.py --ledger data/census_v0.3/endpoint_resolution.csv --cache data/raw/endpoint_archives_v0.3 --checkpoint endpoint_prefetch.json
+```
+
+The endpoint downloader uses recorded immutable commits; it does not resolve
+today's tags or releases. Reacquisition depends on continued upstream access.
+Provider-generated archive bytes can change while their source files remain
+identical. Compare the original SHA-256 first. If it differs, verify source
+content using `snapshot_member_manifest.csv.gz` and `content_tree_sha256`, as
+defined in `docs/extraction_specification_v0.3.md`. A differing archive must not
+be silently substituted into the byte-identical regeneration test.
+
+## Figure and numeric provenance
+
+The figure source-data CSV files are in `figures/census_v0.3/`. The summary tables
+and validation outputs contain the numeric inputs used in the Data Descriptor.
+`scripts/fill_manuscript_numbers.py` can populate the manuscript template supplied
+with the separate submission source package. The data/code archive is independent
+of the submission documents.

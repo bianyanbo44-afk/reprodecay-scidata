@@ -1,0 +1,195 @@
+{
+ "snapshot_id": "doi_10_21105_joss_02178__endpoint__55d8ff1f798e4a24",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "flit-core",
+     "<4,>=3.2"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "coolprop",
+     ">=6.8"
+    ],
+    [
+     "runtime",
+     "fluprodia",
+     ">=4.1.2"
+    ],
+    [
+     "runtime",
+     "jinja2",
+     ""
+    ],
+    [
+     "runtime",
+     "matplotlib",
+     ">=3.2.1"
+    ],
+    [
+     "runtime",
+     "numpy",
+     ">=1.13.3"
+    ],
+    [
+     "runtime",
+     "pandas",
+     ">=1.3.0"
+    ],
+    [
+     "runtime",
+     "pint",
+     ""
+    ],
+    [
+     "runtime",
+     "scipy",
+     ""
+    ],
+    [
+     "runtime",
+     "tabulate",
+     ">=0.8.2"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.dev",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:dev",
+     "build",
+     ""
+    ],
+    [
+     "optional:dev",
+     "exerpy",
+     ""
+    ],
+    [
+     "optional:dev",
+     "flit",
+     ""
+    ],
+    [
+     "optional:dev",
+     "fluprodia",
+     ">=4"
+    ],
+    [
+     "optional:dev",
+     "furo",
+     ""
+    ],
+    [
+     "optional:dev",
+     "iapws",
+     ""
+    ],
+    [
+     "optional:dev",
+     "isort",
+     ""
+    ],
+    [
+     "optional:dev",
+     "myst-nb",
+     ""
+    ],
+    [
+     "optional:dev",
+     "pymoo",
+     ""
+    ],
+    [
+     "optional:dev",
+     "pyromat",
+     ""
+    ],
+    [
+     "optional:dev",
+     "pytest",
+     ""
+    ],
+    [
+     "optional:dev",
+     "sphinx",
+     ">=7.2.2"
+    ],
+    [
+     "optional:dev",
+     "sphinx-copybutton",
+     ""
+    ],
+    [
+     "optional:dev",
+     "sphinx-design",
+     ""
+    ],
+    [
+     "optional:dev",
+     "sphinx-notfound-page",
+     ">=1.1.0"
+    ],
+    [
+     "optional:dev",
+     "sphinxcontrib-bibtex",
+     ""
+    ],
+    [
+     "optional:dev",
+     "tox",
+     ""
+    ],
+    [
+     "optional:dev",
+     "twine",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.opt",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:opt",
+     "pymoo",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.requires-python",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "pyproject.toml:>=3.11"
+ ],
+ "build_backends": [
+  "flit_core.buildapi"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "PEP 621 metadata built with flit_core."
+}

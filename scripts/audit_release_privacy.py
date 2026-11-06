@@ -18,6 +18,8 @@ TEXT_BASENAMES = {"LICENSE-CODE", "LICENSE-DATA"}
 SOURCE_LITERAL_TABLES = {
     "data/census_v0.2/tables/api_symbol_records.csv",
     "data/census_v0.2/tables/pair_delta_records.csv",
+    "data/census_v0.3/tables/api_symbol_records.csv",
+    "data/census_v0.3/tables/pair_delta_records.csv",
 }
 PATH_RULES = {"windows_user_path", "posix_user_path"}
 RULES = {

@@ -1,0 +1,172 @@
+{
+ "snapshot_id": "doi_10_21105_joss_03066__endpoint__6948e88d389bfc42",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "setuptools",
+     ">=78.1.1"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "cvxpy",
+     ">=1.1.19"
+    ],
+    [
+     "runtime",
+     "numpy",
+     "<3.0.0,>=1.26.0"
+    ],
+    [
+     "runtime",
+     "pandas",
+     "<4.0.0,>=1.0.0"
+    ],
+    [
+     "runtime",
+     "scikit-base",
+     "<0.14.0"
+    ],
+    [
+     "runtime",
+     "scikit-learn",
+     ">=0.24.1"
+    ],
+    [
+     "runtime",
+     "scipy",
+     ">=1.3.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.all_extras",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:all_extras",
+     "matplotlib",
+     ">=3.2.0"
+    ],
+    [
+     "optional:all_extras",
+     "ecos",
+     "<2.1,>=2.0.14"
+    ],
+    [
+     "optional:all_extras",
+     "plotly",
+     "<7,>=5.0.0"
+    ],
+    [
+     "optional:all_extras",
+     "cvxopt",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.dev",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:dev",
+     "pytest",
+     ">=9.0.0"
+    ],
+    [
+     "optional:dev",
+     "pytest-cov",
+     ">=7.0.0"
+    ],
+    [
+     "optional:dev",
+     "yfinance",
+     ">=0.2.66"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.notebook_test",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:notebook_test",
+     "nbmake",
+     ""
+    ],
+    [
+     "optional:notebook_test",
+     "pytest-rerunfailures",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.requires-python",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "cvxpy",
+     ">=1.1.19"
+    ],
+    [
+     "runtime",
+     "numpy",
+     ">=1.0.0"
+    ],
+    [
+     "runtime",
+     "pandas",
+     ">=0.19"
+    ],
+    [
+     "runtime",
+     "scikit-base",
+     "<0.14.0"
+    ],
+    [
+     "runtime",
+     "scikit-learn",
+     ">=0.24.1"
+    ],
+    [
+     "runtime",
+     "scipy",
+     ">=1.3.0"
+    ]
+   ]
+  }
+ ],
+ "python_constraints": [],
+ "build_backends": [
+  "setuptools.build_meta"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "PEP 621 metadata without requires-python."
+}

@@ -1,0 +1,108 @@
+{
+ "snapshot_id": "doi_10_21105_joss_00531__endpoint__583d8cfff1016efb",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "environment.yml",
+   "field": "dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">1.7"
+    ],
+    [
+     "runtime",
+     "scipy",
+     ">=0.19.1"
+    ],
+    [
+     "runtime",
+     "sym",
+     ">=0.3.1"
+    ],
+    [
+     "runtime",
+     "sympy",
+     ">=1.1.1"
+    ],
+    [
+     "runtime",
+     "matplotlib",
+     ">=1.5.3"
+    ],
+    [
+     "runtime",
+     "notebook",
+     ""
+    ],
+    [
+     "runtime",
+     "nbconvert",
+     ""
+    ],
+    [
+     "runtime",
+     "pykinsol",
+     ""
+    ],
+    [
+     "runtime",
+     "levmar",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "environment.yml",
+   "field": "dependencies.python",
+   "status": "extracted",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.install_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup(**...)",
+   "status": "unsupported_syntax",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "environment.yml:python"
+ ],
+ "build_backends": [],
+ "dependency_observation_status": "incomplete",
+ "api_module": {},
+ "notes": "setup() receives only **setup_kwargs. setup_kwargs = dict(...) includes version=__version__ and description=short_description, which are bound inside if/try/with blocks, so the dict(...) call is not statically evaluable (Specification Section 2.1, rule 3) and every setup field may be hidden in it; none is confirmed absent. setup.cfg has no [options] section. The bare 'python' entry in environment.yml is a Python constraint without a version."
+}

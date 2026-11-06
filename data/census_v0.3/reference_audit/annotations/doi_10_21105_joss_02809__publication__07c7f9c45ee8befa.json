@@ -1,0 +1,60 @@
+{
+ "snapshot_id": "doi_10_21105_joss_02809__publication__07c7f9c45ee8befa",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "openmdao",
+     ">=3.3.0"
+    ],
+    [
+     "runtime",
+     "numpy",
+     ">=1.14.1"
+    ],
+    [
+     "runtime",
+     "scipy",
+     ">=1.0.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require",
+   "status": "unsupported_syntax",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "setup.py:>=3.6"
+ ],
+ "build_backends": [],
+ "dependency_observation_status": "incomplete",
+ "api_module": {},
+ "notes": "extras_require=optional_dependencies. The dict literal is updated at top level by optional_dependencies['all'] = sorted([...comprehension...]), which is not statically evaluable, so the name as a whole is not evaluable (Specification Section 2.1, clarification C4). setup is imported from distutils.core; the call is still the setup call."
+}

@@ -1,0 +1,89 @@
+{
+ "snapshot_id": "doi_10_21105_joss_01757__endpoint__be8cb7ea97ced9e8",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "sphinx",
+     ""
+    ],
+    [
+     "runtime",
+     "sphinx-rtd-theme",
+     ""
+    ],
+    [
+     "runtime",
+     "breathe",
+     ">=4.13"
+    ],
+    [
+     "runtime",
+     "sphinxcontrib-bibtex",
+     ""
+    ],
+    [
+     "runtime",
+     "numpydoc",
+     ""
+    ],
+    [
+     "runtime",
+     "more-itertools",
+     ""
+    ],
+    [
+     "runtime",
+     "numpy",
+     ""
+    ],
+    [
+     "runtime",
+     "ipython",
+     ">=3"
+    ],
+    [
+     "runtime",
+     "nbconvert",
+     ""
+    ],
+    [
+     "runtime",
+     "pandoc",
+     ""
+    ],
+    [
+     "runtime",
+     "jupyter",
+     ""
+    ],
+    [
+     "runtime",
+     "sphinx-prompt",
+     ""
+    ],
+    [
+     "runtime",
+     "sphinx-math-dollar",
+     ""
+    ],
+    [
+     "runtime",
+     "sphinx-copybutton",
+     ""
+    ]
+   ]
+  }
+ ],
+ "python_constraints": [],
+ "build_backends": [],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "requirements.txt is the only root-level declaration file; the file name contains no group keyword, so all entries are runtime."
+}

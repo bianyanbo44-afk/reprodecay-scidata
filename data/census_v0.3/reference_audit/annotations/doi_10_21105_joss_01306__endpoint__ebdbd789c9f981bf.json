@@ -1,0 +1,135 @@
+{
+ "snapshot_id": "doi_10_21105_joss_01306__endpoint__ebdbd789c9f981bf",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "meson-python",
+     ">=0.12.0"
+    ],
+    [
+     "build",
+     "numpy",
+     ">=1.19.0"
+    ],
+    [
+     "build",
+     "wheel",
+     ""
+    ],
+    [
+     "build",
+     "ninja",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">=1.19.0"
+    ],
+    [
+     "runtime",
+     "pymatgen",
+     ">=2022.0.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.dev",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:dev",
+     "pytest",
+     ">=6.0"
+    ],
+    [
+     "optional:dev",
+     "pytest-cov",
+     ""
+    ],
+    [
+     "optional:dev",
+     "coverage",
+     ""
+    ],
+    [
+     "optional:dev",
+     "ddt",
+     ""
+    ],
+    [
+     "optional:dev",
+     "meson",
+     ""
+    ],
+    [
+     "optional:dev",
+     "ninja",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.docs",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:docs",
+     "sphinx",
+     ">=4.0.0"
+    ],
+    [
+     "optional:docs",
+     "myst-parser",
+     ">=0.18.0"
+    ],
+    [
+     "optional:docs",
+     "myst-nb",
+     ">=0.17.0"
+    ],
+    [
+     "optional:docs",
+     "alabaster",
+     ""
+    ],
+    [
+     "optional:docs",
+     "sphinxcontrib-websupport",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.requires-python",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "pyproject.toml:>=3.10"
+ ],
+ "build_backends": [
+  "mesonpy"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "PEP 621 metadata built with meson-python. [tool.meson-python.args] is build configuration, not a declaration source."
+}

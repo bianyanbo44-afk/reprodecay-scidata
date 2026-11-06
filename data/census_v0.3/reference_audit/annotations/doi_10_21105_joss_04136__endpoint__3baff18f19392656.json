@@ -1,0 +1,168 @@
+{
+ "snapshot_id": "doi_10_21105_joss_04136__endpoint__3baff18f19392656",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "lxml",
+     ""
+    ],
+    [
+     "runtime",
+     "requests",
+     ""
+    ],
+    [
+     "runtime",
+     "tqdm",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "extracted",
+   "entries": [
+    [
+     "test",
+     "pytest",
+     ""
+    ],
+    [
+     "test",
+     "pytest-cov",
+     ""
+    ],
+    [
+     "test",
+     "tox",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  }
+ ],
+ "python_constraints": [],
+ "build_backends": [],
+ "dependency_observation_status": "complete",
+ "api_module": {
+  "source_file": "pybiopax/biopax/physical_entity.py",
+  "symbols": [
+   [
+    "class",
+    "PhysicalEntity",
+    []
+   ],
+   [
+    "constructor",
+    "PhysicalEntity.__init__",
+    [
+     "self",
+     "feature",
+     "not_feature",
+     "member_physical_entity",
+     "cellular_location",
+     "**kwargs"
+    ]
+   ],
+   [
+    "method",
+    "PhysicalEntity.component_of",
+    [
+     "self"
+    ]
+   ],
+   [
+    "method",
+    "PhysicalEntity.member_physical_entity_of",
+    [
+     "self"
+    ]
+   ],
+   [
+    "class",
+    "SimplePhysicalEntity",
+    []
+   ],
+   [
+    "constructor",
+    "SimplePhysicalEntity.__init__",
+    [
+     "self",
+     "entity_reference",
+     "**kwargs"
+    ]
+   ],
+   [
+    "class",
+    "Protein",
+    []
+   ],
+   [
+    "class",
+    "SmallMolecule",
+    []
+   ],
+   [
+    "class",
+    "Rna",
+    []
+   ],
+   [
+    "class",
+    "Complex",
+    []
+   ],
+   [
+    "constructor",
+    "Complex.__init__",
+    [
+     "self",
+     "component",
+     "component_stoichiometry",
+     "**kwargs"
+    ]
+   ],
+   [
+    "class",
+    "Dna",
+    []
+   ],
+   [
+    "class",
+    "DnaRegion",
+    []
+   ],
+   [
+    "class",
+    "RnaRegion",
+    []
+   ]
+  ]
+ },
+ "notes": "pyproject.toml holds only [tool.black] and [tool.isort] and declares nothing. setup.py has literal arguments; version comes from a loop but is not a declaration field. Publication and endpoint setup.py are identical."
+}

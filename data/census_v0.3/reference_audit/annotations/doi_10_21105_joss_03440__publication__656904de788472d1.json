@@ -1,0 +1,84 @@
+{
+ "snapshot_id": "doi_10_21105_joss_03440__publication__656904de788472d1",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "unidecode",
+     "==1.2"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.install_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "unsupported_syntax",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  }
+ ],
+ "python_constraints": [],
+ "build_backends": [],
+ "dependency_observation_status": "incomplete",
+ "api_module": {},
+ "notes": "requirements.txt only includes requirements/common.txt with -r; the included file is read with the runtime group. setup.cfg has python_requires under [metadata], not [options], so it is not a declaration field. install_requires is read from a file with Path.read_text and is not statically evaluable."
+}

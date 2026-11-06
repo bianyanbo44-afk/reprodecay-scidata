@@ -179,6 +179,15 @@ def main() -> int:
     items = json.loads(input_path.read_text(encoding="utf-8"))
     ranked = sorted(items, key=lambda item: rank_key(str(item.get("DOI", ""))))
     existing = read_existing(ledger_path)
+    # Ranks are positions in the hash order of the current frame. Re-derive them
+    # so an extended frame keeps earlier screening results without rank clashes.
+    rank_by_doi = {
+        normalized_doi(str(item.get("DOI", ""))): rank for rank, item in enumerate(ranked, start=1)
+    }
+    for record in existing:
+        if record.doi not in rank_by_doi:
+            raise ValueError(f"ledger_doi_not_in_frame:{record.doi}")
+        record.rank = rank_by_doi[record.doi]
     by_doi = {record.doi: record for record in existing}
     started_count = len(by_doi)
 

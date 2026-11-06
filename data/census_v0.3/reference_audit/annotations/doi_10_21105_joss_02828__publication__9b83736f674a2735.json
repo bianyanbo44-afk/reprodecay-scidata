@@ -1,0 +1,240 @@
+{
+ "snapshot_id": "doi_10_21105_joss_02828__publication__9b83736f674a2735",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "setuptools",
+     ">=42"
+    ],
+    [
+     "build",
+     "wheel",
+     ""
+    ],
+    [
+     "build",
+     "setuptools-scm",
+     ">=3.4"
+    ],
+    [
+     "build",
+     "setuptools-scm-git-archive",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "requirements-dev.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "development",
+     "pytest",
+     ""
+    ],
+    [
+     "development",
+     "pytest-cov",
+     ""
+    ],
+    [
+     "development",
+     "pytest-lazy-fixture",
+     ""
+    ],
+    [
+     "development",
+     "flake8-builtins-unleashed",
+     ""
+    ],
+    [
+     "development",
+     "codecov",
+     ""
+    ],
+    [
+     "development",
+     "setuptools-scm",
+     ""
+    ],
+    [
+     "development",
+     "setuptools-scm-git-archive",
+     ""
+    ],
+    [
+     "development",
+     "sphinx",
+     ">=2"
+    ],
+    [
+     "development",
+     "sphinxcontrib-apidoc",
+     ""
+    ],
+    [
+     "development",
+     "sphinx-rtd-theme",
+     ""
+    ],
+    [
+     "development",
+     "pre-commit",
+     ""
+    ],
+    [
+     "development",
+     "sphinx-nbexamples",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "requirements-examples.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "jupyter",
+     ""
+    ],
+    [
+     "runtime",
+     "matplotlib",
+     ""
+    ],
+    [
+     "runtime",
+     "netcdf4",
+     ""
+    ],
+    [
+     "runtime",
+     "notebook",
+     ""
+    ],
+    [
+     "runtime",
+     "pandas",
+     ""
+    ],
+    [
+     "runtime",
+     "seaborn",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "scikit-learn",
+     ">=0.23"
+    ],
+    [
+     "runtime",
+     "numpy",
+     ""
+    ],
+    [
+     "runtime",
+     "scipy",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.install_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "unsupported_syntax",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "setuptools-scm",
+     ""
+    ],
+    [
+     "build",
+     "setuptools-scm-git-archive",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "setup.py:>=3.6"
+ ],
+ "build_backends": [
+  "setuptools.build_meta:__legacy__"
+ ],
+ "dependency_observation_status": "incomplete",
+ "api_module": {},
+ "notes": "In requirements-dev.txt, '-e .' and the two '-r' includes of root-level requirements files are directives; the included root files are read on their own. install_requires is read from a file inside a with block and is not statically evaluable."
+}

@@ -1,0 +1,306 @@
+{
+ "snapshot_id": "doi_10_21105_joss_02392__publication__c29e5c24212fc7b2",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">=1.16"
+    ],
+    [
+     "runtime",
+     "numba",
+     ">=0.48"
+    ]
+   ]
+  },
+  {
+   "source_file": "requirements_tests.in",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "test",
+     "numpy",
+     ">=1.16"
+    ],
+    [
+     "test",
+     "numba",
+     ">=0.48"
+    ],
+    [
+     "test",
+     "pytest",
+     ""
+    ],
+    [
+     "test",
+     "pytest-cov",
+     ""
+    ],
+    [
+     "test",
+     "docutils",
+     ""
+    ],
+    [
+     "test",
+     "flake8",
+     ""
+    ],
+    [
+     "test",
+     "flake8-commas",
+     ""
+    ],
+    [
+     "test",
+     "isort",
+     ""
+    ],
+    [
+     "test",
+     "multilint",
+     ""
+    ],
+    [
+     "test",
+     "pygments",
+     ""
+    ],
+    [
+     "test",
+     "rstcheck",
+     ">=3.3.1"
+    ]
+   ]
+  },
+  {
+   "source_file": "requirements_tests.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "test",
+     "attrs",
+     "==19.3.0"
+    ],
+    [
+     "test",
+     "coverage",
+     "==5.0.3"
+    ],
+    [
+     "test",
+     "docutils",
+     "==0.16"
+    ],
+    [
+     "test",
+     "entrypoints",
+     "==0.3"
+    ],
+    [
+     "test",
+     "flake8-commas",
+     "==2.0.0"
+    ],
+    [
+     "test",
+     "flake8",
+     "==3.7.9"
+    ],
+    [
+     "test",
+     "importlib-metadata",
+     "==1.5.0"
+    ],
+    [
+     "test",
+     "isort",
+     "==4.3.21"
+    ],
+    [
+     "test",
+     "llvmlite",
+     "==0.31.0"
+    ],
+    [
+     "test",
+     "mccabe",
+     "==0.6.1"
+    ],
+    [
+     "test",
+     "more-itertools",
+     "==8.2.0"
+    ],
+    [
+     "test",
+     "multilint",
+     "==4.1.0"
+    ],
+    [
+     "test",
+     "numba",
+     "==0.48.0"
+    ],
+    [
+     "test",
+     "numpy",
+     "==1.18.1"
+    ],
+    [
+     "test",
+     "packaging",
+     "==20.3"
+    ],
+    [
+     "test",
+     "pluggy",
+     "==0.13.1"
+    ],
+    [
+     "test",
+     "py",
+     "==1.8.1"
+    ],
+    [
+     "test",
+     "pycodestyle",
+     "==2.5.0"
+    ],
+    [
+     "test",
+     "pyflakes",
+     "==2.1.1"
+    ],
+    [
+     "test",
+     "pygments",
+     "==2.6.1"
+    ],
+    [
+     "test",
+     "pyparsing",
+     "==2.4.6"
+    ],
+    [
+     "test",
+     "pytest-cov",
+     "==2.8.1"
+    ],
+    [
+     "test",
+     "pytest",
+     "==5.4.1"
+    ],
+    [
+     "test",
+     "rstcheck",
+     "==3.3.1"
+    ],
+    [
+     "test",
+     "six",
+     "==1.14.0"
+    ],
+    [
+     "test",
+     "wcwidth",
+     "==0.1.8"
+    ],
+    [
+     "test",
+     "zipp",
+     "==3.1.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.install_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">=1.16"
+    ],
+    [
+     "runtime",
+     "numba",
+     ">=0.48"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "setup.py:>=3.6"
+ ],
+ "build_backends": [],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "Both requirements files whose names contain 'test' map to the test group. Inline comments after ' #' are removed. extras_require is commented out in setup.py, so the field is absent."
+}

@@ -1,0 +1,121 @@
+{
+ "snapshot_id": "doi_10_21105_joss_02050__publication__49dd96baf005321f",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">=1.17.0"
+    ],
+    [
+     "runtime",
+     "coverage",
+     "<5.0"
+    ],
+    [
+     "runtime",
+     "pytest",
+     ">=2.9.0"
+    ],
+    [
+     "runtime",
+     "coveralls",
+     ">=1.1"
+    ],
+    [
+     "runtime",
+     "setuptools",
+     ">=38.0.0"
+    ],
+    [
+     "runtime",
+     "pandas",
+     ">=0.24.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">=1.17.0",
+     "",
+     "python_version >= \"3.5\""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require.testing",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:testing",
+     "pytest",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "numpy",
+     ">=1.17.0",
+     "",
+     "python_version >= \"3.5\""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "extracted",
+   "entries": [
+    [
+     "test",
+     "numpy",
+     ">=1.17.0",
+     "",
+     "python_version >= \"3.5\""
+    ],
+    [
+     "test",
+     "pytest",
+     ">=2.9.0"
+    ],
+    [
+     "test",
+     "pandas",
+     ">=0.24.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "setup.py:>=3.6, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
+ ],
+ "build_backends": [],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "DEPENDENCIES and TEST_DEPENDENCIES are top-level list literals that are never mutated. The inline comment after coverage<5.0 is removed. The distutils keyword requires= is not a declaration field."
+}

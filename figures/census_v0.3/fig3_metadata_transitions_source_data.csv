@@ -1,0 +1,11 @@
+﻿comparable_projects,endpoint_present,gained_projects,governing_status,indicator,kept_projects,lost_projects,never_projects,publication_present
+692,319,183,archive_listing_status,pyproject.toml,136,0,373,136
+692,481,4,archive_listing_status,setup.py,477,155,56,632
+692,324,10,archive_listing_status,Requirements file,314,94,274,408
+643,415,86,python_constraint_observation_status,Python constraint declared,329,5,223,334
+692,274,179,build_backend_observation_status,Build backend declared,95,0,418,95
+692,456,175,archive_listing_status,GitHub Actions,281,3,233,284
+692,161,5,archive_listing_status,Travis CI,156,139,392,295
+692,129,103,archive_listing_status,CITATION.cff,26,2,561,28
+692,386,21,archive_listing_status,CONTRIBUTING,365,7,299,372
+692,196,26,archive_listing_status,Code of conduct,170,5,491,175

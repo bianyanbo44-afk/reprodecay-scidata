@@ -1,0 +1,25 @@
+﻿family,delta_type,scope,projects_with_at_least_one,project_denominator,project_proportion,projects_missing_or_incomplete,denominator_definition
+api,added,all_extracted_projects_observed,428,692,0.618497,27,all projects in project_records.csv
+api,removed,all_extracted_projects_observed,326,692,0.471098,27,all projects in project_records.csv
+api,changed,all_extracted_projects_observed,371,692,0.536127,27,all projects in project_records.csv
+api,unchanged,all_extracted_projects_observed,641,692,0.926301,27,all projects in project_records.csv
+api,added,complete_family_comparisons,411,665,0.618045,27,projects whose family observation status is complete in both snapshots
+api,removed,complete_family_comparisons,316,665,0.475188,27,projects whose family observation status is complete in both snapshots
+api,changed,complete_family_comparisons,359,665,0.53985,27,projects whose family observation status is complete in both snapshots
+api,unchanged,complete_family_comparisons,618,665,0.929323,27,projects whose family observation status is complete in both snapshots
+dependency,added,all_extracted_projects_observed,357,692,0.515896,235,all projects in project_records.csv
+dependency,removed,all_extracted_projects_observed,244,692,0.352601,235,all projects in project_records.csv
+dependency,changed,all_extracted_projects_observed,290,692,0.419075,235,all projects in project_records.csv
+dependency,unchanged,all_extracted_projects_observed,551,692,0.796243,235,all projects in project_records.csv
+dependency,added,complete_family_comparisons,222,457,0.485777,235,projects whose family observation status is complete in both snapshots
+dependency,removed,complete_family_comparisons,152,457,0.332604,235,projects whose family observation status is complete in both snapshots
+dependency,changed,complete_family_comparisons,187,457,0.40919,235,projects whose family observation status is complete in both snapshots
+dependency,unchanged,complete_family_comparisons,378,457,0.827133,235,projects whose family observation status is complete in both snapshots
+structure,added,all_extracted_projects_observed,349,692,0.504335,50,all projects in project_records.csv
+structure,removed,all_extracted_projects_observed,321,692,0.463873,50,all projects in project_records.csv
+structure,changed,all_extracted_projects_observed,482,692,0.696532,50,all projects in project_records.csv
+structure,unchanged,all_extracted_projects_observed,692,692,1.0,50,all projects in project_records.csv
+structure,added,complete_family_comparisons,315,642,0.490654,50,projects whose family observation status is complete in both snapshots
+structure,removed,complete_family_comparisons,289,642,0.450156,50,projects whose family observation status is complete in both snapshots
+structure,changed,complete_family_comparisons,443,642,0.690031,50,projects whose family observation status is complete in both snapshots
+structure,unchanged,complete_family_comparisons,642,642,1.0,50,projects whose family observation status is complete in both snapshots

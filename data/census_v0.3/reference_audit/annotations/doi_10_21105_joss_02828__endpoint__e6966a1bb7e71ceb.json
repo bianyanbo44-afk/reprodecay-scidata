@@ -1,0 +1,170 @@
+{
+ "snapshot_id": "doi_10_21105_joss_02828__endpoint__e6966a1bb7e71ceb",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "setuptools",
+     ">=64"
+    ],
+    [
+     "build",
+     "wheel",
+     ""
+    ],
+    [
+     "build",
+     "setuptools-scm",
+     ">=8"
+    ],
+    [
+     "build",
+     "setuptools-scm-git-archive",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "scikit-learn",
+     ""
+    ],
+    [
+     "runtime",
+     "numpy",
+     ">=2.0"
+    ],
+    [
+     "runtime",
+     "matplotlib",
+     ">=3.10"
+    ],
+    [
+     "runtime",
+     "pandas",
+     ""
+    ],
+    [
+     "runtime",
+     "scipy",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.dev",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:dev",
+     "pytest",
+     "<8.0.0,>=6.2.4"
+    ],
+    [
+     "optional:dev",
+     "pytest-cov",
+     ""
+    ],
+    [
+     "optional:dev",
+     "pytest-lazy-fixture",
+     ""
+    ],
+    [
+     "optional:dev",
+     "flake8-builtins-unleashed",
+     ""
+    ],
+    [
+     "optional:dev",
+     "codecov",
+     ""
+    ],
+    [
+     "optional:dev",
+     "sphinx",
+     ">=2"
+    ],
+    [
+     "optional:dev",
+     "sphinxcontrib-apidoc",
+     ""
+    ],
+    [
+     "optional:dev",
+     "sphinx-rtd-theme",
+     ""
+    ],
+    [
+     "optional:dev",
+     "pre-commit",
+     ""
+    ],
+    [
+     "optional:dev",
+     "nbsphinx",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.examples",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:examples",
+     "jupyter",
+     ""
+    ],
+    [
+     "optional:examples",
+     "matplotlib",
+     ""
+    ],
+    [
+     "optional:examples",
+     "netcdf4",
+     ""
+    ],
+    [
+     "optional:examples",
+     "notebook",
+     ""
+    ],
+    [
+     "optional:examples",
+     "seaborn",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.requires-python",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "pyproject.toml:>=3.10"
+ ],
+ "build_backends": [
+  "setuptools.build_meta"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "Only the version is dynamic."
+}

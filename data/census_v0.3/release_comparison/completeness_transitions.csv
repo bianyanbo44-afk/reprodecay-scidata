@@ -1,0 +1,25 @@
+﻿measure,snapshot_role,v0_2_4_status,v0_3_status,snapshots
+dependency,endpoint,complete,complete,246
+dependency,endpoint,complete,incomplete,19
+dependency,endpoint,incomplete,complete,7
+dependency,endpoint,incomplete,incomplete,73
+dependency,publication,complete,complete,221
+dependency,publication,complete,incomplete,29
+dependency,publication,incomplete,complete,7
+dependency,publication,incomplete,incomplete,88
+api,endpoint,complete,complete,320
+api,endpoint,incomplete,complete,14
+api,endpoint,incomplete,incomplete,11
+api,publication,complete,complete,322
+api,publication,incomplete,complete,10
+api,publication,incomplete,incomplete,13
+structure_python_constraints,endpoint,complete (row exists),complete,330
+structure_python_constraints,endpoint,complete (row exists),incomplete,15
+structure_python_constraints,publication,complete (row exists),complete,312
+structure_python_constraints,publication,complete (row exists),incomplete,33
+structure_build_backends,endpoint,complete (row exists),complete,345
+structure_build_backends,publication,complete (row exists),complete,345
+structure_source_line_count,endpoint,complete (row exists),complete,344
+structure_source_line_count,endpoint,complete (row exists),incomplete,1
+structure_source_line_count,publication,complete (row exists),complete,344
+structure_source_line_count,publication,complete (row exists),incomplete,1

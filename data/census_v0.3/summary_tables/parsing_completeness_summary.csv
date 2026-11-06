@@ -1,0 +1,10 @@
+﻿family,scope,complete_projects,incomplete_projects,missing_status_projects,total_project_denominator,complete_proportion,denominator_definition
+api,publication_snapshot,669,23,0,692,0.966763,all projects in project_records.csv
+api,endpoint_snapshot,674,18,0,692,0.973988,all projects in project_records.csv
+api,paired_snapshots,665,27,0,692,0.960983,all projects in project_records.csv
+dependency,publication_snapshot,479,213,0,692,0.692197,all projects in project_records.csv
+dependency,endpoint_snapshot,518,174,0,692,0.748555,all projects in project_records.csv
+dependency,paired_snapshots,457,235,0,692,0.660405,all projects in project_records.csv
+structure,publication_snapshot,645,47,0,692,0.932081,all projects in project_records.csv
+structure,endpoint_snapshot,664,28,0,692,0.959538,all projects in project_records.csv
+structure,paired_snapshots,642,50,0,692,0.927746,all projects in project_records.csv

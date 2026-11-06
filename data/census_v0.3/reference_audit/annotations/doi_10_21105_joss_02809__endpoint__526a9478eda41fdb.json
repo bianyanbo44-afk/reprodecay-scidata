@@ -1,0 +1,278 @@
+{
+ "snapshot_id": "doi_10_21105_joss_02809__endpoint__526a9478eda41fdb",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "hatchling",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">=2.0"
+    ],
+    [
+     "runtime",
+     "openmdao",
+     ">=3.39.0"
+    ],
+    [
+     "runtime",
+     "scipy",
+     ">=1.13"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.all",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:all",
+     "dymos",
+     "",
+     "docs"
+    ],
+    [
+     "optional:all",
+     "dymos",
+     "",
+     "notebooks"
+    ],
+    [
+     "optional:all",
+     "dymos",
+     "",
+     "test"
+    ],
+    [
+     "optional:all",
+     "dymos",
+     "",
+     "numba"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.docs",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:docs",
+     "bokeh",
+     ""
+    ],
+    [
+     "optional:docs",
+     "ipython",
+     ""
+    ],
+    [
+     "optional:docs",
+     "jax",
+     ""
+    ],
+    [
+     "optional:docs",
+     "jaxlib",
+     ""
+    ],
+    [
+     "optional:docs",
+     "jupyter",
+     ""
+    ],
+    [
+     "optional:docs",
+     "jupyter-book",
+     "<2"
+    ],
+    [
+     "optional:docs",
+     "matplotlib",
+     ""
+    ],
+    [
+     "optional:docs",
+     "nbconvert",
+     ""
+    ],
+    [
+     "optional:docs",
+     "notebook",
+     ""
+    ],
+    [
+     "optional:docs",
+     "numpydoc",
+     ">=1.1"
+    ],
+    [
+     "optional:docs",
+     "redbaron",
+     ""
+    ],
+    [
+     "optional:docs",
+     "tabulate",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.notebooks",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:notebooks",
+     "ipython",
+     ""
+    ],
+    [
+     "optional:notebooks",
+     "notebook",
+     ""
+    ],
+    [
+     "optional:notebooks",
+     "tabulate",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.test",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:test",
+     "pre-commit",
+     ""
+    ],
+    [
+     "optional:test",
+     "aiounittest",
+     ""
+    ],
+    [
+     "optional:test",
+     "matplotlib",
+     ""
+    ],
+    [
+     "optional:test",
+     "numpydoc",
+     ">=1.1"
+    ],
+    [
+     "optional:test",
+     "packaging",
+     ""
+    ],
+    [
+     "optional:test",
+     "playwright",
+     ">=1.20"
+    ],
+    [
+     "optional:test",
+     "pycodestyle",
+     ""
+    ],
+    [
+     "optional:test",
+     "testflo",
+     ">=1.3.6"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.numba",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:numba",
+     "numba",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.requires-python",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "pyproject.toml:>=3.9"
+ ],
+ "build_backends": [
+  "hatchling.build"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {
+  "source_file": "dymos/transcriptions/picard_shooting/multiple_shooting_update_comp.py",
+  "symbols": [
+   [
+    "class",
+    "MultipleShootingUpdateComp",
+    []
+   ],
+   [
+    "constructor",
+    "MultipleShootingUpdateComp.__init__",
+    [
+     "self",
+     "**kwargs"
+    ]
+   ],
+   [
+    "method",
+    "MultipleShootingUpdateComp.initialize",
+    [
+     "self"
+    ]
+   ],
+   [
+    "method",
+    "MultipleShootingUpdateComp.configure_io",
+    [
+     "self",
+     "phase"
+    ]
+   ],
+   [
+    "method",
+    "MultipleShootingUpdateComp.compute",
+    [
+     "self",
+     "inputs",
+     "outputs",
+     "discrete_inputs",
+     "discrete_outputs"
+    ]
+   ]
+  ]
+ },
+ "notes": "project.dynamic lists only the version. The extra 'all' refers to the package itself with four extras."
+}

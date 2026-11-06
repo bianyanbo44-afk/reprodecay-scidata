@@ -1,0 +1,269 @@
+{
+ "snapshot_id": "doi_10_21105_joss_02050__endpoint__8687d2935110d8dc",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "scikit-build-core",
+     ""
+    ],
+    [
+     "build",
+     "cython",
+     ">=3.1"
+    ],
+    [
+     "build",
+     "numpy",
+     "<3,>=2.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">=1.23.5"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.requires-python",
+   "status": "extracted",
+   "entries": []
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "dependency-groups.core",
+   "status": "extracted",
+   "entries": [
+    [
+     "group:core",
+     "numpy",
+     ">=1.23.5"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "dependency-groups.test",
+   "status": "extracted",
+   "entries": [
+    [
+     "test",
+     "pytest",
+     ">=7.0.0"
+    ],
+    [
+     "test",
+     "pandas",
+     ">=2.2.2"
+    ],
+    [
+     "test",
+     "pytest-benchmark",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "dependency-groups.publish",
+   "status": "extracted",
+   "entries": [
+    [
+     "group:publish",
+     "twine",
+     ">=6.1.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "dependency-groups.ci",
+   "status": "extracted",
+   "entries": [
+    [
+     "group:ci",
+     "coverage",
+     ">=7.0.0"
+    ],
+    [
+     "group:ci",
+     "certifi",
+     ""
+    ],
+    [
+     "group:ci",
+     "black",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "dependency-groups.build",
+   "status": "extracted",
+   "entries": [
+    [
+     "group:build",
+     "build",
+     ""
+    ],
+    [
+     "group:build",
+     "scikit-build-core",
+     ""
+    ],
+    [
+     "group:build",
+     "cython",
+     ">=3.0.12"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "dependency-groups.dev",
+   "status": "extracted",
+   "entries": []
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "dependency-groups.devwheel",
+   "status": "extracted",
+   "entries": [
+    [
+     "group:devwheel",
+     "cibuildwheel",
+     ">=4.1.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "dependency-groups.devwheelpyodide",
+   "status": "extracted",
+   "entries": [
+    [
+     "group:devwheelpyodide",
+     "pytest-randomly",
+     ""
+    ],
+    [
+     "group:devwheelpyodide",
+     "pyodide-http",
+     ""
+    ],
+    [
+     "group:devwheelpyodide",
+     "requests",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "dependency-groups.doc",
+   "status": "extracted",
+   "entries": [
+    [
+     "development",
+     "myst-parser",
+     "==2.0.0"
+    ],
+    [
+     "development",
+     "docutils",
+     ""
+    ],
+    [
+     "development",
+     "graphviz",
+     ""
+    ],
+    [
+     "development",
+     "sphinx",
+     "<=7.0.0"
+    ],
+    [
+     "development",
+     "sphinx-copybutton",
+     ""
+    ],
+    [
+     "development",
+     "sphinx-autodoc-typehints",
+     ""
+    ],
+    [
+     "development",
+     "sphinx-rtd-theme",
+     ""
+    ],
+    [
+     "development",
+     "recommonmark",
+     ""
+    ]
+   ]
+  }
+ ],
+ "python_constraints": [
+  "pyproject.toml:>=3.10"
+ ],
+ "build_backends": [
+  "scikit_build_core.build"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {
+  "source_file": "src/spiceypy/found_catcher.py",
+  "symbols": [
+   [
+    "function",
+    "spice_found_exception_thrower",
+    [
+     "f"
+    ]
+   ],
+   [
+    "function",
+    "found_check",
+    []
+   ],
+   [
+    "function",
+    "no_found_check",
+    []
+   ],
+   [
+    "function",
+    "found_check_off",
+    []
+   ],
+   [
+    "function",
+    "found_check_on",
+    []
+   ],
+   [
+    "function",
+    "get_found_catch_state",
+    []
+   ]
+  ]
+ },
+ "notes": "PEP 735 groups map as Poetry groups (Section 3.4): test to test, dev and doc to development; core, publish, ci, build, devwheel and devwheelpyodide keep group:<name>. {include-group = ...} entries are directives, so dev, which holds only include-group entries, has no entries. project.dynamic lists only the version; [[tool.dynamic-metadata]] concerns the version only."
+}

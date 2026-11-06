@@ -1,0 +1,93 @@
+{
+ "snapshot_id": "doi_10_21105_joss_00904__endpoint__2932505208e5c472",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "flit-core",
+     "<4,>=2"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "tool.flit.metadata.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">=1.21.0"
+    ],
+    [
+     "runtime",
+     "scipy",
+     ">=0.19.0"
+    ],
+    [
+     "runtime",
+     "networkx",
+     ">=3.0.0"
+    ],
+    [
+     "runtime",
+     "deprecated",
+     ">=1.2.14"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "tool.flit.metadata.requires-extra.doc",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:doc",
+     "sphinx",
+     "==6.2.1"
+    ],
+    [
+     "optional:doc",
+     "sphinx-rtd-theme",
+     ""
+    ],
+    [
+     "optional:doc",
+     "sphinx-togglebutton",
+     ""
+    ],
+    [
+     "optional:doc",
+     "matplotlib",
+     ""
+    ],
+    [
+     "optional:doc",
+     "sphinxcontrib-mermaid",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "tool.flit.metadata.requires-python",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "pyproject.toml:>=3.10"
+ ],
+ "build_backends": [
+  "flit_core.buildapi"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "Legacy flit metadata; no [project] table."
+}

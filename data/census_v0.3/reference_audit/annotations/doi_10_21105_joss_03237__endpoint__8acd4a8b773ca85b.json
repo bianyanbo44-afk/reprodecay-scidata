@@ -1,0 +1,92 @@
+{
+ "snapshot_id": "doi_10_21105_joss_03237__endpoint__8acd4a8b773ca85b",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "setuptools",
+     ">=45"
+    ],
+    [
+     "build",
+     "setuptools-scm",
+     ">=8"
+    ],
+    [
+     "build",
+     "scikit-build-core",
+     ">=0.9.0"
+    ],
+    [
+     "build",
+     "pybind11-stubgen",
+     ""
+    ],
+    [
+     "build",
+     "cmake",
+     ">=3.26.1"
+    ],
+    [
+     "build",
+     "numpy",
+     ""
+    ],
+    [
+     "build",
+     "ngsolve",
+     ">=6.2.2606"
+    ],
+    [
+     "build",
+     "toml",
+     ""
+    ],
+    [
+     "build",
+     "tomli",
+     ">=1.1.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.dependencies",
+   "status": "dynamic_metadata",
+   "entries": []
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.test",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:test",
+     "pytest",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.requires-python",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "pyproject.toml:>=3.10"
+ ],
+ "build_backends": [
+  "scikit_build_core.build"
+ ],
+ "dependency_observation_status": "incomplete",
+ "api_module": {},
+ "notes": "project.dynamic lists dependencies; the build backend adds ngsolve at build time through a provider, which is outside static observation."
+}

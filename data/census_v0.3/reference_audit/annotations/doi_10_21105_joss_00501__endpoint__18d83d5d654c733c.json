@@ -1,0 +1,108 @@
+{
+ "snapshot_id": "doi_10_21105_joss_00501__endpoint__18d83d5d654c733c",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "poetry-core",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "tool.poetry.dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">=1.14.0"
+    ],
+    [
+     "runtime",
+     "scikit-learn",
+     ">=1.6.0"
+    ],
+    [
+     "runtime",
+     "scipy",
+     ">=1.0.0"
+    ],
+    [
+     "runtime",
+     "statsmodels",
+     ">=0.9.0"
+    ],
+    [
+     "runtime",
+     "pandas",
+     ">=1.0.5"
+    ],
+    [
+     "runtime",
+     "patsy",
+     ">=0.5.1"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "tool.poetry.dependencies.python",
+   "status": "extracted",
+   "entries": []
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "tool.poetry.dev-dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "development",
+     "numpydoc",
+     "^1.8.0"
+    ],
+    [
+     "development",
+     "ruff",
+     "^0.14.3"
+    ],
+    [
+     "development",
+     "sphinx",
+     "^8.2.3"
+    ],
+    [
+     "development",
+     "sphinx-rtd-theme",
+     "^3.0.2"
+    ],
+    [
+     "development",
+     "pytest",
+     "^8.3.3"
+    ],
+    [
+     "development",
+     "pytest-subtests",
+     "^0.15.0"
+    ]
+   ]
+  }
+ ],
+ "python_constraints": [
+  "pyproject.toml:>=3.11"
+ ],
+ "build_backends": [
+  "poetry.core.masonry.api"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "Uses the legacy [tool.poetry.dev-dependencies] table. v0.2.4 did not read this table."
+}

@@ -1,0 +1,145 @@
+{
+ "snapshot_id": "doi_10_21105_joss_04448__endpoint__7490c62596fa5ef6",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "uv-build",
+     "<0.10.0,>=0.9.17"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "niapy",
+     ">=2.7.0"
+    ],
+    [
+     "runtime",
+     "numpy",
+     ">=2.3.5"
+    ],
+    [
+     "runtime",
+     "pandas",
+     ">=2.3.3"
+    ],
+    [
+     "runtime",
+     "nltk",
+     ">=3.9.2"
+    ],
+    [
+     "runtime",
+     "plotly",
+     ">=6.5.0"
+    ],
+    [
+     "runtime",
+     "scikit-learn",
+     ">=1.8.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.requires-python",
+   "status": "extracted",
+   "entries": []
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "dependency-groups.dev",
+   "status": "extracted",
+   "entries": []
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "dependency-groups.test",
+   "status": "extracted",
+   "entries": [
+    [
+     "test",
+     "pytest",
+     ">=9.0.0"
+    ],
+    [
+     "test",
+     "pytest-cov",
+     ">=7.0.0"
+    ],
+    [
+     "test",
+     "pytest-randomly",
+     ">=4.0.1"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "dependency-groups.lint",
+   "status": "extracted",
+   "entries": [
+    [
+     "development",
+     "ruff",
+     ">=0.14.9"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "dependency-groups.pre-commit",
+   "status": "extracted",
+   "entries": [
+    [
+     "group:pre-commit",
+     "pre-commit",
+     ">=4.5.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "dependency-groups.docs",
+   "status": "extracted",
+   "entries": [
+    [
+     "development",
+     "sphinx-rtd-theme",
+     ">=3.0.2"
+    ],
+    [
+     "development",
+     "sphinxcontrib-bibtex",
+     ">=2.6.5"
+    ],
+    [
+     "development",
+     "sphinx",
+     ">=8.2.3"
+    ]
+   ]
+  }
+ ],
+ "python_constraints": [
+  "pyproject.toml:>=3.11"
+ ],
+ "build_backends": [
+  "uv_build"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "FINDING F1: this snapshot declares development, test, lint, docs and pre-commit dependencies in a PEP 735 [dependency-groups] table. The v0.3 draft specification did not cover this table, so the draft extractor reported the snapshot as completely observed without these declarations. The specification and extractor were extended (dependency-groups.<name> fields; include-group entries are directives). This annotation follows the extended specification. The group 'dev' contains only include-group entries, so it has no dependency entries."
+}

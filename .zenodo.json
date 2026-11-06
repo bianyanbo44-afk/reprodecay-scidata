@@ -1,0 +1,25 @@
+{
+  "title": "Publication-anchored paired snapshots of Python research software with field-level change records",
+  "upload_type": "dataset",
+  "version": "0.3.0",
+  "license": "CC-BY-4.0",
+  "description": "<p>A publication-linked dataset for 692 Python research-software projects described in JOSS articles published in 2018–2022. Each reviewed source archive is paired with the repository endpoint selected as of 14 August 2026. Eight linked tables contain dependencies, syntactic interfaces, structure, field-level comparisons, source evidence and observation status. The release includes the extraction specification, deterministic-validation evidence, independent reconstruction, signed source-based audit, field dictionary and comparison with v0.2.4.</p><p>Derived data: CC BY 4.0. Custom code: MIT. Third-party source archives are not redistributed.</p>",
+  "creators": [
+    {
+      "name": "Bian, Yanbo",
+      "affiliation": "Weihai International College, Beijing Jiaotong University"
+    },
+    {
+      "name": "Wang, Zhihai",
+      "affiliation": "School of Computer Science and Technology, Beijing Jiaotong University"
+    }
+  ],
+  "keywords": [
+    "research software",
+    "Python",
+    "software evolution",
+    "publication-linked software",
+    "dependency metadata"
+  ],
+  "access_right": "open"
+}

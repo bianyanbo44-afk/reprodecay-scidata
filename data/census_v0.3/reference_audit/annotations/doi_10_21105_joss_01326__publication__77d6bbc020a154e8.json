@@ -1,0 +1,30 @@
+{
+ "snapshot_id": "doi_10_21105_joss_01326__publication__77d6bbc020a154e8",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "python-yaml",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "(file)",
+   "status": "parse_failure",
+   "entries": []
+  }
+ ],
+ "python_constraints": [],
+ "build_backends": [],
+ "dependency_observation_status": "incomplete",
+ "api_module": {},
+ "notes": "setup.py is an installer script that copies files into Blender and contains no setup() call (specification Section 4: parse_failure)."
+}

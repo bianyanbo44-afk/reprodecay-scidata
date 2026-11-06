@@ -1,0 +1,97 @@
+{
+ "snapshot_id": "doi_10_21105_joss_00547__endpoint__2e333e788065753c",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ""
+    ],
+    [
+     "runtime",
+     "matplotlib",
+     ""
+    ],
+    [
+     "runtime",
+     "scipy",
+     ""
+    ],
+    [
+     "runtime",
+     "seaborn",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require.tests",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:tests",
+     "pytest",
+     ""
+    ],
+    [
+     "optional:tests",
+     "pytest-mpl",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  }
+ ],
+ "python_constraints": [],
+ "build_backends": [],
+ "dependency_observation_status": "complete",
+ "api_module": {
+  "source_file": "missingno/utils.py",
+  "symbols": [
+   [
+    "function",
+    "nullity_sort",
+    [
+     "df",
+     "sort",
+     "axis"
+    ]
+   ],
+   [
+    "function",
+    "nullity_filter",
+    [
+     "df",
+     "filter",
+     "p",
+     "n"
+    ]
+   ]
+  ]
+ },
+ "notes": "setup() has only literal arguments."
+}

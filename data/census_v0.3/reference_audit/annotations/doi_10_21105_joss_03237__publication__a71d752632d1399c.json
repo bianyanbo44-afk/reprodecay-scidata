@@ -1,0 +1,44 @@
+{
+ "snapshot_id": "doi_10_21105_joss_03237__publication__a71d752632d1399c",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "setup.py:>=3.5"
+ ],
+ "build_backends": [],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "A CMake-based build; setup() declares no dependencies."
+}

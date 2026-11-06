@@ -1,0 +1,8 @@
+﻿scope,endpoint_ref_type,project_count,project_denominator,project_proportion,missing_or_unresolved_projects
+archive_eligible_projects,default_branch,35,697,0.050215,5
+archive_eligible_projects,release,657,697,0.942611,5
+archive_eligible_projects,unresolved,5,697,0.007174,5
+resolved_endpoint_projects,default_branch,35,692,0.050578,0
+resolved_endpoint_projects,release,657,692,0.949422,0
+extracted_project_pairs,default_branch,35,692,0.050578,0
+extracted_project_pairs,release,657,692,0.949422,0

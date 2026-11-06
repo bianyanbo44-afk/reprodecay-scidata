@@ -27,8 +27,11 @@ def write_csv(path: Path, rows: list[dict[str, str]]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--census", type=Path, default=Path("data/census_frame_v0.2"))
+    parser.add_argument("--previous", type=Path, default=None,
+                        help="earlier ledger; rows whose decision is unchanged keep their audit time")
     args = parser.parse_args()
     census = args.census
+    previous = {row["scholarly_doi"]: row for row in read_csv(args.previous)} if args.previous else {}
     candidates = read_csv(census / "provisional_eligible.csv")
     links = {row["scholarly_doi"]: row for row in read_csv(census / "archive_linkage_ledger.csv")}
     inspections = {
@@ -89,6 +92,14 @@ def main() -> int:
             "audited_at_utc": now,
             "third_party_code_executed": "false",
         })
+    decision_fields = (
+        "linkage_status", "date_status", "checksum_status", "path_safety_status", "packaging_status",
+        "packaging_evidence", "licence_status", "licence_evidence", "final_eligibility", "reason_code",
+    )
+    for row in rows:
+        earlier = previous.get(row["scholarly_doi"])
+        if earlier and all(earlier.get(field) == row[field] for field in decision_fields):
+            row["audited_at_utc"] = earlier["audited_at_utc"]
     output = census / "archive_eligibility_ledger.csv"
     write_csv(output, rows)
     counts: dict[str, int] = {}

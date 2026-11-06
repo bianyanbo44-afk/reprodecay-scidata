@@ -1,0 +1,171 @@
+{
+ "snapshot_id": "doi_10_21105_joss_04278__publication__14cd6500299c3d53",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "setup.cfg",
+   "field": "options.install_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">=1.21.2"
+    ],
+    [
+     "runtime",
+     "h5py",
+     "==3.3.0"
+    ],
+    [
+     "runtime",
+     "omegaconf",
+     ">=2.1.1"
+    ],
+    [
+     "runtime",
+     "torch",
+     ">=1.10.2"
+    ],
+    [
+     "runtime",
+     "torchvision",
+     ""
+    ],
+    [
+     "runtime",
+     "scikit-image",
+     ">=0.19.0"
+    ],
+    [
+     "runtime",
+     "scikit-learn",
+     ">=1.0.1"
+    ],
+    [
+     "runtime",
+     "tensorboard",
+     ">=2.7.0"
+    ],
+    [
+     "runtime",
+     "tqdm",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require.dev",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:dev",
+     "pytest",
+     ""
+    ],
+    [
+     "optional:dev",
+     "sphinx-copybutton",
+     ""
+    ],
+    [
+     "optional:dev",
+     "numpydoc",
+     ""
+    ],
+    [
+     "optional:dev",
+     "myst-parser",
+     ""
+    ],
+    [
+     "optional:dev",
+     "sphinx-book-theme",
+     ""
+    ],
+    [
+     "optional:dev",
+     "pylint",
+     ""
+    ],
+    [
+     "optional:dev",
+     "packaging",
+     ""
+    ],
+    [
+     "optional:dev",
+     "boto3",
+     ""
+    ],
+    [
+     "optional:dev",
+     "ismrmrd",
+     ">=1.9.5"
+    ],
+    [
+     "optional:dev",
+     "pyxb",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "setup.py:>=3.8"
+ ],
+ "build_backends": [],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "pyproject.toml holds only tool configuration (black, isort, pylint, tox) and declares nothing. setup.cfg has no [options] section."
+}

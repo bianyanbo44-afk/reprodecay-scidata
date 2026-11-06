@@ -6,7 +6,7 @@ import json
 import sys
 import tempfile
 import unittest
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 
@@ -99,7 +99,8 @@ class CensusDatasetValidatorTests(unittest.TestCase):
             "project_id", "scholarly_doi", "selection_rank", "selected_role", "resolved_repository_url",
             "resolved_full_name", "endpoint_policy", "endpoint_ref_type", "endpoint_ref_name", "endpoint_commit_sha",
             "endpoint_archive_url", "endpoint_archive_bytes", "endpoint_archive_sha256",
-            "resolution_status", "resolution_error", "resolution_method", "third_party_code_executed",
+            "resolution_status", "resolution_error", "resolution_method", "endpoint_release_published_at",
+            "resolution_mode", "endpoint_as_of_utc", "resolved_at_utc", "third_party_code_executed",
         ]
         write_csv(endpoint, endpoint_fields, [{
             "project_id": self.pid, "scholarly_doi": self.doi, "selection_rank": "1", "selected_role": "census_provisional",
@@ -109,7 +110,9 @@ class CensusDatasetValidatorTests(unittest.TestCase):
             "endpoint_archive_url": "https://codeload.github.com/o/r/tar.gz/" + "c" * 40,
             "endpoint_archive_bytes": str(len(endpoint_bytes)), "endpoint_archive_sha256": end_sha,
             "resolution_status": "resolved", "resolution_error": "",
-            "resolution_method": "github_rest_api", "third_party_code_executed": "false",
+            "resolution_method": "github_rest_api", "endpoint_release_published_at": "2026-08-01T00:00:00Z",
+            "resolution_mode": "live", "endpoint_as_of_utc": "", "resolved_at_utc": "2026-08-13T18:00:00+00:00",
+            "third_party_code_executed": "false",
         }])
         endpoint_manifest = census / "endpoint_resolution_manifest.json"
         created_at = datetime.now(timezone.utc)
@@ -118,6 +121,7 @@ class CensusDatasetValidatorTests(unittest.TestCase):
             "created_at_utc": created_at.isoformat(), "endpoint_snapshot_date": created_at.date().isoformat(),
             "projects_attempted": 1, "projects_resolved": 1, "stable_release_endpoints": 1,
             "default_branch_endpoints": 0, "resolution_methods": {"github_rest_api": 1},
+            "resolution_modes": {"live": 1},
             "third_party_code_executed": False, "selection_role": "census_provisional",
             "endpoint_resolution_sha256": sha256_file(endpoint),
             "input_sha256": {
@@ -128,27 +132,43 @@ class CensusDatasetValidatorTests(unittest.TestCase):
 
         project_fields = [
             "project_id", "pair_id", "scholarly_doi", "selection_rank", "selected_role", "publication_snapshot_id",
-            "endpoint_snapshot_id", "endpoint_ref_type", "endpoint_commit_sha",
+            "endpoint_snapshot_id", "endpoint_ref_type", "endpoint_commit_sha", "publication_date", "publication_year",
+            "publication_archive_date", "endpoint_as_of_date", "endpoint_resolution_mode", "endpoint_release_published_at",
+            "endpoint_commit_time_utc", "endpoint_ref_date", "archive_to_article_days", "article_to_endpoint_ref_days",
+            "article_to_endpoint_as_of_days",
         ]
         write_csv(tables / "project_records.csv", project_fields, [{
             "project_id": self.pid, "pair_id": self.pair, "scholarly_doi": self.doi, "selection_rank": "1",
             "selected_role": "census_provisional", "publication_snapshot_id": self.pub_sid,
             "endpoint_snapshot_id": self.end_sid, "endpoint_ref_type": "release", "endpoint_commit_sha": "c" * 40,
+            "publication_date": "2020-01-01", "publication_year": "2020", "publication_archive_date": "2019-12-01",
+            "endpoint_as_of_date": "2026-08-14", "endpoint_resolution_mode": "live",
+            "endpoint_release_published_at": "2026-08-01T00:00:00Z", "endpoint_commit_time_utc": "",
+            "endpoint_ref_date": "2026-08-01T00:00:00Z", "archive_to_article_days": "31",
+            "article_to_endpoint_ref_days": str((date(2026, 8, 1) - date(2020, 1, 1)).days),
+            "article_to_endpoint_as_of_days": str((date(2026, 8, 14) - date(2020, 1, 1)).days),
         }])
         snapshot_fields = [
             "snapshot_id", "project_id", "pair_id", "snapshot_role", "source_provider", "source_identifier",
             "source_ref", "commit_sha", "source_url", "archive_bytes", "archive_sha256", "upstream_checksum",
-            "parser_version", "third_party_code_executed",
+            "content_tree_sha256", "parser_version", "third_party_code_executed",
         ]
         write_csv(tables / "snapshot_records.csv", snapshot_fields, [
-            {"snapshot_id": self.pub_sid, "project_id": self.pid, "pair_id": self.pair, "snapshot_role": "publication", "source_provider": "figshare", "source_identifier": "10.6084/m9.figshare.1", "source_ref": file_key, "commit_sha": "", "source_url": "https://doi.org/10.6084/m9.figshare.1", "archive_bytes": str(len(publication_bytes)), "archive_sha256": pub_sha, "upstream_checksum": "md5:" + "1" * 32, "parser_version": PARSER_VERSION, "third_party_code_executed": "false"},
-            {"snapshot_id": self.end_sid, "project_id": self.pid, "pair_id": self.pair, "snapshot_role": "endpoint", "source_provider": "github", "source_identifier": "o/r", "source_ref": "v1", "commit_sha": "c" * 40, "source_url": "https://codeload.github.com/o/r/tar.gz/" + "c" * 40, "archive_bytes": str(len(endpoint_bytes)), "archive_sha256": end_sha, "upstream_checksum": "", "parser_version": PARSER_VERSION, "third_party_code_executed": "false"},
+            {"snapshot_id": self.pub_sid, "project_id": self.pid, "pair_id": self.pair, "snapshot_role": "publication", "source_provider": "figshare", "source_identifier": "10.6084/m9.figshare.1", "source_ref": file_key, "commit_sha": "", "source_url": "https://doi.org/10.6084/m9.figshare.1", "archive_bytes": str(len(publication_bytes)), "archive_sha256": pub_sha, "upstream_checksum": "md5:" + "1" * 32, "content_tree_sha256": "a" * 64, "parser_version": PARSER_VERSION, "third_party_code_executed": "false"},
+            {"snapshot_id": self.end_sid, "project_id": self.pid, "pair_id": self.pair, "snapshot_role": "endpoint", "source_provider": "github", "source_identifier": "o/r", "source_ref": "v1", "commit_sha": "c" * 40, "source_url": "https://codeload.github.com/o/r/tar.gz/" + "c" * 40, "archive_bytes": str(len(endpoint_bytes)), "archive_sha256": end_sha, "upstream_checksum": "", "content_tree_sha256": "b" * 64, "parser_version": PARSER_VERSION, "third_party_code_executed": "false"},
         ])
-        structure_fields = ["snapshot_id", "project_id", "snapshot_role", "archive_sha256", "parser_version", "third_party_code_executed"]
+        statuses = {
+            "packaging_files": "[]", "declared_dependency_record_count": "0",
+            "archive_listing_status": "complete", "dependency_observation_status": "no_declaration_file",
+            "python_constraint_observation_status": "complete", "build_backend_observation_status": "complete",
+            "source_line_observation_status": "complete", "api_observation_status": "complete",
+        }
+        structure_fields = ["snapshot_id", "project_id", "snapshot_role", "archive_sha256", *statuses, "parser_version", "third_party_code_executed"]
         write_csv(tables / "structure_records.csv", structure_fields, [
-            {"snapshot_id": self.pub_sid, "project_id": self.pid, "snapshot_role": "publication", "archive_sha256": pub_sha, "parser_version": PARSER_VERSION, "third_party_code_executed": "false"},
-            {"snapshot_id": self.end_sid, "project_id": self.pid, "snapshot_role": "endpoint", "archive_sha256": end_sha, "parser_version": PARSER_VERSION, "third_party_code_executed": "false"},
+            {"snapshot_id": self.pub_sid, "project_id": self.pid, "snapshot_role": "publication", "archive_sha256": pub_sha, **statuses, "parser_version": PARSER_VERSION, "third_party_code_executed": "false"},
+            {"snapshot_id": self.end_sid, "project_id": self.pid, "snapshot_role": "endpoint", "archive_sha256": end_sha, **statuses, "parser_version": PARSER_VERSION, "third_party_code_executed": "false"},
         ])
+        write_csv(tables / "declaration_source_records.csv", ["snapshot_id", "project_id", "snapshot_role", "source_file", "field", "field_kind", "observation_status", "entry_count"], [])
         write_csv(tables / "dependency_records.csv", ["snapshot_id", "project_id", "snapshot_role", "source_file", "parse_status"], [])
         write_csv(tables / "api_symbol_records.csv", ["snapshot_id", "project_id", "snapshot_role", "symbol_key", "source_file", "symbol_kind", "export_evidence"], [])
         write_csv(tables / "pair_delta_records.csv", ["pair_id", "project_id", "family", "feature_group", "feature_key", "delta_type", "comparison_status"], [])
@@ -162,7 +182,8 @@ class CensusDatasetValidatorTests(unittest.TestCase):
         (tables / "extraction_manifest.json").write_text(json.dumps({
             "schema_version": SCHEMA_VERSION, "parser_version": PARSER_VERSION, "projects": 1, "snapshots": 2,
             "structure_records": 2,
-            "dependency_records": 0, "api_symbol_records": 0, "pair_delta_records": 0, "validation_records": 4,
+            "dependency_records": 0, "declaration_source_records": 0, "api_symbol_records": 0, "pair_delta_records": 0,
+            "validation_records": 4,
             "third_party_code_executed": False, "tables": list(TABLE_NAMES), "table_sha256": table_hashes,
             "input_sha256": {
                 "candidates": sha256_file(candidates), "endpoint_resolution": sha256_file(endpoint),

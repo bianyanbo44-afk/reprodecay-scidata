@@ -1,7 +1,0 @@
-﻿metric,total_project_denominator,complete_pair_projects,missing_pair_projects,publication_value_projects,endpoint_value_projects,publication_paired_median,endpoint_paired_median,absolute_change_mean,absolute_change_median,absolute_change_q1,absolute_change_q3,absolute_change_min,absolute_change_max,bootstrap_median_95_lower,bootstrap_median_95_upper,proportional_change_defined_projects,proportional_change_zero_denominator_projects,proportional_change_missing_projects,proportional_change_median,proportional_change_bootstrap_median_95_lower,proportional_change_bootstrap_median_95_upper,bootstrap_unit,bootstrap_seed,bootstrap_replicates
-source_python_line_count,345,345,0,345,345,2613.0,3402.0,3424.965217,193.0,0.0,2169.0,-7887.0,123544.0,87.0,370.0,339,6,0,0.104948,0.049862,0.168694,project,20260814,2000
-source_python_file_count,345,345,0,345,345,10.0,12.0,7.255072,0.0,0.0,4.0,-34.0,146.0,0.0,0.0,340,5,0,0.0,0.0,0.0,project,20260814,2000
-syntactic_api_symbol_count,345,345,0,345,345,65.0,84.0,69.678261,3.0,0.0,45.0,-187.0,2279.0,1.0,7.0,336,9,0,0.061691,0.022149,0.118644,project,20260814,2000
-declared_dependency_record_count,345,345,0,345,345,8.0,11.0,4.568116,0.0,0.0,6.0,-28.0,113.0,0.0,0.0,311,34,0,0.0,0.0,0.0,project,20260814,2000
-test_python_file_count,345,345,0,345,345,5.0,7.0,6.142029,0.0,0.0,4.0,-28.0,319.0,0.0,0.0,304,41,0,0.0,0.0,0.0,project,20260814,2000
-ci_workflow_file_count,345,345,0,345,345,0.0,0.0,1.365217,0.0,0.0,2.0,-1.0,17.0,0.0,0.0,30,315,0,0.0,0.0,1.0,project,20260814,2000

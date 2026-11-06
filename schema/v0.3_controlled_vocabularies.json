@@ -1,0 +1,141 @@
+{
+  "api-symbol-records.symbol_kind": [
+    "class",
+    "constructor",
+    "method",
+    "function",
+    "async_function"
+  ],
+  "api-symbol-records.export_evidence": [
+    "literal_all",
+    "lexical_nonprivate",
+    "class_member"
+  ],
+  "declaration-source-records.source_kind": [
+    "pyproject",
+    "pep517",
+    "pep621",
+    "pep735",
+    "poetry",
+    "poetry_dev",
+    "poetry_group",
+    "flit",
+    "setuptools_dynamic",
+    "setup_cfg",
+    "setup_py",
+    "requirements",
+    "conda_environment",
+    "pipfile"
+  ],
+  "declaration-source-records.field_kind": [
+    "dependency",
+    "python_constraint",
+    "file",
+    "setup_kwargs"
+  ],
+  "declaration-source-records.observation_status": [
+    "extracted",
+    "extracted_partial",
+    "confirmed_absent",
+    "dynamic_metadata",
+    "unsupported_syntax",
+    "parse_failure"
+  ],
+  "dependency-records.source_kind": [
+    "pep517",
+    "pep621",
+    "pep735",
+    "poetry",
+    "poetry_dev",
+    "poetry_group",
+    "flit",
+    "setup_cfg",
+    "setup_py",
+    "requirements",
+    "requirements_include",
+    "conda_environment",
+    "conda_pip",
+    "pipfile"
+  ],
+  "dependency-records.parse_status": [
+    "parsed",
+    "parsed_poetry",
+    "parsed_pipfile",
+    "parsed_non_pep508",
+    "parsed_url",
+    "directive",
+    "unparsed"
+  ],
+  "pair-delta-records.family": [
+    "dependency",
+    "api",
+    "structure"
+  ],
+  "pair-delta-records.delta_type": [
+    "added",
+    "removed",
+    "changed",
+    "unchanged"
+  ],
+  "pair-delta-records.comparison_status": [
+    "comparable",
+    "incomplete_observation"
+  ],
+  "project-records.selected_role": [
+    "census_provisional"
+  ],
+  "project-records.endpoint_policy": [
+    "latest_stable_release_else_default_branch_head"
+  ],
+  "project-records.endpoint_resolution_mode": [
+    "live",
+    "retrospective_as_of"
+  ],
+  "project-records.endpoint_ref_type": [
+    "release",
+    "default_branch"
+  ],
+  "snapshot-records.snapshot_role": [
+    "publication",
+    "endpoint"
+  ],
+  "snapshot-records.source_provider": [
+    "zenodo",
+    "figshare",
+    "caltechdata",
+    "github"
+  ],
+  "structure-records.archive_type": [
+    "zip",
+    "tar"
+  ],
+  "structure-records.archive_listing_status": [
+    "complete"
+  ],
+  "structure-records.dependency_observation_status": [
+    "complete",
+    "incomplete",
+    "no_declaration_file"
+  ],
+  "structure-records.python_constraint_observation_status": [
+    "complete",
+    "incomplete"
+  ],
+  "structure-records.build_backend_observation_status": [
+    "complete",
+    "incomplete"
+  ],
+  "structure-records.source_line_observation_status": [
+    "complete",
+    "incomplete"
+  ],
+  "structure-records.api_observation_status": [
+    "complete",
+    "incomplete"
+  ],
+  "validation-records.status": [
+    "pass",
+    "warning",
+    "error"
+  ]
+}

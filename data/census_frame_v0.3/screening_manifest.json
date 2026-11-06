@@ -1,0 +1,32 @@
+{
+  "schema_version": "0.2",
+  "created_at_utc": "2026-11-01T06:25:57.258526+00:00",
+  "input_crossref_snapshot": "data\\candidate_frame_v0.3\\crossref_joss_2018_2022.json",
+  "input_sha256": "9f98fa3d37028ab80dbfc3d51930f38a5930e840ea4026625cff9825ff423034",
+  "frame_records": 1671,
+  "records_screened": 1671,
+  "records_remaining": 0,
+  "rank_method": "sha256(salt + '|' + normalized DOI)",
+  "rank_salt": "reprodecay-pilot-v0.1-2026-08-13",
+  "screening_surface": "JOSS article HTML + public GitHub repository HTML",
+  "eligibility_status": "provisional_metadata_only",
+  "status_counts": {
+    "excluded": 923,
+    "eligible_metadata": 739,
+    "unresolved": 9
+  },
+  "reason_counts": {
+    "license_not_machine_confirmed": 99,
+    "none": 739,
+    "no_root_python_packaging_evidence": 694,
+    "no_repository_link": 37,
+    "non_github_host": 69,
+    "repository_or_article_not_found": 9,
+    "repository_is_fork": 24
+  },
+  "restart_safe": true,
+  "workers": 3,
+  "retry_unresolved": false,
+  "recovered_temporary_rows": 0,
+  "third_party_code_executed": false
+}

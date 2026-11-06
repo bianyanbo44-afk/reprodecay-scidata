@@ -14,12 +14,13 @@ class DataPackageSchemaTests(unittest.TestCase):
     def test_all_core_tables_have_exact_machine_readable_schemas(self) -> None:
         descriptor = json.loads(DESCRIPTOR.read_text(encoding="utf-8"))
         resources = descriptor["resources"]
-        self.assertEqual(len(resources), 7)
+        self.assertEqual(descriptor["version"], "0.3.0")
+        self.assertEqual(len(resources), 8)
         names = {resource["name"] for resource in resources}
         self.assertEqual(names, {
             "project-records", "snapshot-records", "structure-records",
             "dependency-records", "api-symbol-records", "pair-delta-records",
-            "validation-records",
+            "validation-records", "declaration-source-records",
         })
         for resource in resources:
             path = (DESCRIPTOR.parent / resource["path"]).resolve()

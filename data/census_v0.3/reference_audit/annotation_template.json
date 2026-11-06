@@ -1,0 +1,38 @@
+{
+  "snapshot_id": "",
+  "annotated_by": "",
+  "verified_by": "",
+  "fields": [
+    {
+      "source_file": "setup.py",
+      "field": "setup.install_requires",
+      "status": "extracted",
+      "entries": [
+        [
+          "runtime",
+          "numpy",
+          ">=1.16"
+        ]
+      ]
+    }
+  ],
+  "python_constraints": [
+    "setup.py:>=3.6"
+  ],
+  "build_backends": [],
+  "dependency_observation_status": "complete",
+  "api_module": {
+    "source_file": "",
+    "symbols": [
+      [
+        "function",
+        "fit",
+        [
+          "x",
+          "y"
+        ]
+      ]
+    ]
+  },
+  "notes": ""
+}

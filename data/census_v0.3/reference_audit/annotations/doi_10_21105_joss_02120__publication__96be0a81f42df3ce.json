@@ -1,0 +1,177 @@
+{
+ "snapshot_id": "doi_10_21105_joss_02120__publication__96be0a81f42df3ce",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ""
+    ],
+    [
+     "runtime",
+     "scipy",
+     ""
+    ],
+    [
+     "runtime",
+     "matplotlib",
+     ""
+    ],
+    [
+     "runtime",
+     "toml",
+     ""
+    ],
+    [
+     "runtime",
+     "pandas",
+     ">=0.23"
+    ],
+    [
+     "runtime",
+     "bokeh",
+     ""
+    ],
+    [
+     "runtime",
+     "xlrd",
+     ""
+    ],
+    [
+     "runtime",
+     "pint",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.install_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "unsupported_syntax",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require.dev",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:dev",
+     "pytest",
+     ""
+    ],
+    [
+     "optional:dev",
+     "pytest-cov",
+     ""
+    ],
+    [
+     "optional:dev",
+     "coverage",
+     ""
+    ],
+    [
+     "optional:dev",
+     "codecov",
+     ""
+    ],
+    [
+     "optional:dev",
+     "sphinx",
+     ""
+    ],
+    [
+     "optional:dev",
+     "sphinx-bootstrap-theme",
+     ""
+    ],
+    [
+     "optional:dev",
+     "nbsphinx",
+     ""
+    ],
+    [
+     "optional:dev",
+     "numpydoc",
+     ""
+    ],
+    [
+     "optional:dev",
+     "sphinxcontrib-bibtex",
+     ""
+    ],
+    [
+     "optional:dev",
+     "black",
+     ""
+    ],
+    [
+     "optional:dev",
+     "isort",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "setup.py:>=3.6.0"
+ ],
+ "build_backends": [],
+ "dependency_observation_status": "incomplete",
+ "api_module": {},
+ "notes": "install_requires=REQUIRED, where REQUIRED is read from requirements.txt inside a with block and is not statically evaluable. EXTRAS and REQUIRES_PYTHON are top-level literals. setup.cfg has no [options] section."
+}

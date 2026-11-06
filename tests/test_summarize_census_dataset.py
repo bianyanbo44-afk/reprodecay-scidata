@@ -79,8 +79,12 @@ class CensusSummaryTests(unittest.TestCase):
                         "declared_dependency_record_count": str(values[3]),
                         "test_python_file_count": str(values[4]),
                         "ci_workflow_file_count": str(values[5]),
-                        "dependency_parse_complete": "false" if project_id == "p2" and role == "endpoint" else "true",
-                        "api_parse_complete": "true",
+                        "archive_listing_status": "complete",
+                        "build_backend_observation_status": "complete",
+                        "python_constraint_observation_status": "complete",
+                        "source_line_observation_status": "complete",
+                        "api_observation_status": "complete",
+                        "dependency_observation_status": "incomplete" if project_id == "p2" and role == "endpoint" else "complete",
                         "third_party_code_executed": executed,
                     }
                 )
@@ -113,7 +117,7 @@ class CensusSummaryTests(unittest.TestCase):
             {
                 "pair_id": "pair2", "project_id": "p2", "family": "dependency",
                 "feature_group": "declared_dependency", "feature_key": "x", "delta_type": "removed",
-                "comparison_status": "partial_parse",
+                "comparison_status": "incomplete_observation",
             },
         ]
         write_csv(tables / "project_records.csv", projects)
@@ -128,6 +132,17 @@ class CensusSummaryTests(unittest.TestCase):
             ["snapshot_id", "project_id", "snapshot_role"],
         )
         write_csv(tables / "pair_delta_records.csv", deltas)
+        write_csv(
+            tables / "declaration_source_records.csv",
+            [
+                {
+                    "snapshot_id": "p2_endpoint", "project_id": "p2", "snapshot_role": "endpoint",
+                    "source_file": "setup.py", "source_kind": "setup_py", "field": "setup.install_requires",
+                    "field_kind": "dependency", "observation_status": "unsupported_syntax",
+                    "entry_count": "0", "unparsed_entry_count": "0", "detail": "name:reqs",
+                }
+            ],
+        )
         write_csv(
             tables / "validation_records.csv",
             [
@@ -236,6 +251,30 @@ class CensusSummaryTests(unittest.TestCase):
             self.assertEqual(result["analysis_design"]["bootstrap_replicates"], BOOTSTRAP_REPLICATES)
             self.assertFalse(result["analysis_design"]["significance_tests_performed"])
             self.assertIn("source_python_lines", result["median_change"])
+
+    def test_record_volume_and_adequately_observed_summaries_are_separate(self):
+        # Reviewer 1: numerical availability must not be reported as parsing completeness.
+        with tempfile.TemporaryDirectory() as directory:
+            paths = self.fixture(directory)
+            self.run_fixture(paths)
+            rows = read_csv(paths["summary_dir"] / "paired_change_summary.csv")
+            dependency = {
+                row["summary_basis"]: row for row in rows if row["metric"] == "declared_dependency_record_count"
+            }
+            self.assertEqual(dependency["all_available_values"]["included_pair_projects"], "3")
+            self.assertEqual(dependency["adequately_observed_pairs"]["included_pair_projects"], "2")
+            self.assertEqual(
+                json.loads(dependency["adequately_observed_pairs"]["exclusion_reason_counts"]),
+                {"incomplete_endpoint": 1},
+            )
+            lines = {row["summary_basis"]: row for row in rows if row["metric"] == "source_python_line_count"}
+            self.assertEqual(lines["adequately_observed_pairs"]["included_pair_projects"], "3")
+            fields = read_csv(paths["summary_dir"] / "field_observation_summary.csv")
+            paired = next(row for row in fields
+                          if row["status_field"] == "dependency_observation_status" and row["scope"] == "paired_snapshots")
+            self.assertEqual((paired["complete_projects"], paired["incomplete_projects"]), ("2", "1"))
+            declarations = read_csv(paths["summary_dir"] / "declaration_status_summary.csv")
+            self.assertEqual(declarations[0]["observation_status"], "unsupported_syntax")
 
     def test_large_project_scenarios_use_explicit_ceil_exclusion(self):
         rows = [

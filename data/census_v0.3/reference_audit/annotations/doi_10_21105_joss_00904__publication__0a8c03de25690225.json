@@ -1,0 +1,150 @@
+{
+ "snapshot_id": "doi_10_21105_joss_00904__publication__0a8c03de25690225",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "environment.yml",
+   "field": "dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "libgfortran",
+     "=3.0.0=1"
+    ],
+    [
+     "runtime",
+     "mkl",
+     "=2017.0.1=0"
+    ],
+    [
+     "runtime",
+     "numpy",
+     "=1.13.0=py35_0"
+    ],
+    [
+     "runtime",
+     "openssl",
+     "=1.0.2l=0"
+    ],
+    [
+     "runtime",
+     "pip",
+     "=9.0.1=py35_1"
+    ],
+    [
+     "runtime",
+     "readline",
+     "=6.2=2"
+    ],
+    [
+     "runtime",
+     "scipy",
+     "=0.19.0=np113py35_0"
+    ],
+    [
+     "runtime",
+     "setuptools",
+     "=27.2.0=py35_0"
+    ],
+    [
+     "runtime",
+     "sqlite",
+     "=3.13.0=0"
+    ],
+    [
+     "runtime",
+     "tk",
+     "=8.5.18=0"
+    ],
+    [
+     "runtime",
+     "wheel",
+     "=0.29.0=py35_0"
+    ],
+    [
+     "runtime",
+     "xz",
+     "=5.2.2=1"
+    ],
+    [
+     "runtime",
+     "zlib",
+     "=1.2.8=3"
+    ]
+   ]
+  },
+  {
+   "source_file": "environment.yml",
+   "field": "dependencies.python",
+   "status": "extracted",
+   "entries": []
+  },
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">=1.12.1"
+    ],
+    [
+     "runtime",
+     "scpiy",
+     ">=0.19.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">=1.12.1"
+    ],
+    [
+     "runtime",
+     "scipy",
+     ">=0.19.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "environment.yml:python=3.5.3=1"
+ ],
+ "build_backends": [],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "install_requires refers to a module-level literal list that is never mutated. requirements.txt contains the misspelling 'scpiy', recorded as written."
+}

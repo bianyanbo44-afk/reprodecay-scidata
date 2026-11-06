@@ -1,0 +1,393 @@
+{
+ "snapshot_id": "doi_10_21105_joss_00738__endpoint__9ee2dd6e9d6f5731",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "hatchling",
+     ""
+    ],
+    [
+     "build",
+     "hatch-vcs",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "boltons",
+     ""
+    ],
+    [
+     "runtime",
+     "debtcollector",
+     ""
+    ],
+    [
+     "runtime",
+     "lattices",
+     ">=0.5"
+    ],
+    [
+     "runtime",
+     "loguru",
+     ""
+    ],
+    [
+     "runtime",
+     "networkx",
+     ">=2.6"
+    ],
+    [
+     "runtime",
+     "numpy",
+     ">=1.22"
+    ],
+    [
+     "runtime",
+     "pltable",
+     ""
+    ],
+    [
+     "runtime",
+     "scipy",
+     ">=1.7"
+    ],
+    [
+     "runtime",
+     "xarray",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.test",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:test",
+     "hypothesis",
+     ">=6.0"
+    ],
+    [
+     "optional:test",
+     "hypothesis",
+     "",
+     "numpy"
+    ],
+    [
+     "optional:test",
+     "pytest",
+     ">=9.0.3"
+    ],
+    [
+     "optional:test",
+     "pytest-cov",
+     ""
+    ],
+    [
+     "optional:test",
+     "pytest-rerunfailures",
+     ""
+    ],
+    [
+     "optional:test",
+     "pytest-sugar",
+     ""
+    ],
+    [
+     "optional:test",
+     "pytest-xdist",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.jax",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:jax",
+     "jax",
+     ""
+    ],
+    [
+     "optional:jax",
+     "jaxlib",
+     ""
+    ],
+    [
+     "optional:jax",
+     "optimistix",
+     ""
+    ],
+    [
+     "optional:jax",
+     "slsqp-jax",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.torch",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:torch",
+     "torch",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.pytensor",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:pytensor",
+     "pytensor",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.symbolic",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:symbolic",
+     "sympy",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.music",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:music",
+     "music21",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.optional",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:optional",
+     "colorama",
+     ""
+    ],
+    [
+     "optional:optional",
+     "matplotlib",
+     ""
+    ],
+    [
+     "optional:optional",
+     "numdifftools",
+     ""
+    ],
+    [
+     "optional:optional",
+     "pint",
+     ""
+    ],
+    [
+     "optional:optional",
+     "pycddlib-standalone",
+     ""
+    ],
+    [
+     "optional:optional",
+     "pypoman",
+     ""
+    ],
+    [
+     "optional:optional",
+     "scikit-learn",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.broja",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:broja",
+     "ecos",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.docs",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:docs",
+     "colorama",
+     ""
+    ],
+    [
+     "optional:docs",
+     "matplotlib",
+     ""
+    ],
+    [
+     "optional:docs",
+     "numdifftools",
+     ""
+    ],
+    [
+     "optional:docs",
+     "pint",
+     ""
+    ],
+    [
+     "optional:docs",
+     "pycddlib-standalone",
+     ""
+    ],
+    [
+     "optional:docs",
+     "scikit-learn",
+     ""
+    ],
+    [
+     "optional:docs",
+     "hypothesis",
+     ""
+    ],
+    [
+     "optional:docs",
+     "ipython",
+     ""
+    ],
+    [
+     "optional:docs",
+     "nbconvert",
+     ""
+    ],
+    [
+     "optional:docs",
+     "sphinx",
+     ""
+    ],
+    [
+     "optional:docs",
+     "sphinx-rtd-theme",
+     ""
+    ],
+    [
+     "optional:docs",
+     "sphinxcontrib-bibtex",
+     ""
+    ],
+    [
+     "optional:docs",
+     "python-ternary",
+     ""
+    ],
+    [
+     "optional:docs",
+     "sympy",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.dev",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:dev",
+     "dit",
+     "",
+     "test"
+    ],
+    [
+     "optional:dev",
+     "dit",
+     "",
+     "optional"
+    ],
+    [
+     "optional:dev",
+     "dit",
+     "",
+     "docs"
+    ],
+    [
+     "optional:dev",
+     "dit",
+     "",
+     "jax"
+    ],
+    [
+     "optional:dev",
+     "dit",
+     "",
+     "torch"
+    ],
+    [
+     "optional:dev",
+     "dit",
+     "",
+     "pytensor"
+    ],
+    [
+     "optional:dev",
+     "ruff",
+     ""
+    ],
+    [
+     "optional:dev",
+     "ty",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.requires-python",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "pyproject.toml:>=3.11"
+ ],
+ "build_backends": [
+  "hatchling.build"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "The extra 'dev' refers to the package itself with six different extras. [tool.uv] override-dependencies is tool configuration, not a declaration source."
+}

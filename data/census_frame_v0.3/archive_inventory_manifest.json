@@ -1,0 +1,37 @@
+{
+  "schema_version": "0.2",
+  "created_at_utc": "2026-11-01T06:34:56.948367+00:00",
+  "run_state": "complete",
+  "candidate_records": 739,
+  "projects_inventoried": 739,
+  "projects_remaining": 0,
+  "file_records": 779,
+  "selected_source_archives": 726,
+  "selected_source_bytes": 13323761932,
+  "status_counts": {
+    "resolved_source_archive": 726,
+    "no_external_archive": 6,
+    "unresolved": 1,
+    "resolved_no_source_archive": 6
+  },
+  "reason_counts": {
+    "none": 726,
+    "no_supported_publication_archive_doi": 6,
+    "provider_parse_LookupError:no_zenodo_version_on_or_before_joss_date": 1,
+    "no_supported_source_archive_file": 6
+  },
+  "providers": [
+    "caltechdata",
+    "figshare",
+    "zenodo"
+  ],
+  "candidate_sha256": "2d4f4c5f06b9d65b5c898328c6d1fd57856fd274977137ab843f733ce9b28ec2",
+  "crossref_sha256": "9f98fa3d37028ab80dbfc3d51930f38a5930e840ea4026625cff9825ff423034",
+  "resolution_policy_version": "archive-resolution-v0.3.4",
+  "linkage_ledger_sha256": "92ec0f58ab89f3e5d5db49ae08704d896a9ce695349ff6dac2e723d8a9880b48",
+  "file_inventory_sha256": "221803c304efa82a95765effb8e4845c479504b4fe079f2d5b25c58618d91533",
+  "restart_safe": true,
+  "workers": 3,
+  "retry_unresolved": false,
+  "third_party_code_executed": false
+}

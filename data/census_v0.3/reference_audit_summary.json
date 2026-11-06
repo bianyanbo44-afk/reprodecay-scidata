@@ -1,0 +1,32 @@
+{
+  "annotated_snapshots": 62,
+  "sampled_snapshots": 62,
+  "verified_snapshots": 62,
+  "units": {
+    "field_status": {
+      "true": 492
+    },
+    "dependency_entry": {
+      "true": 1468
+    },
+    "field_coverage": {
+      "true": 62
+    },
+    "python_constraints": {
+      "true": 62
+    },
+    "build_backends": {
+      "true": 62
+    },
+    "observation_status": {
+      "true": 62
+    },
+    "api_symbols": {
+      "true": 5
+    },
+    "delta_classification": {
+      "true": 1108
+    }
+  },
+  "discrepancies": []
+}

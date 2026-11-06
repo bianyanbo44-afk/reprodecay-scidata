@@ -1,0 +1,17 @@
+{
+  "as_of": "2026-08-14T05:21:07Z",
+  "live_resolved_projects": 345,
+  "same_commit": 342,
+  "different_commit": 3,
+  "retrospective_errors": {},
+  "by_live_ref_type": {
+    "default_branch": {
+      "projects": 18,
+      "same_commit": 18
+    },
+    "release": {
+      "projects": 327,
+      "same_commit": 324
+    }
+  }
+}

@@ -1,0 +1,6 @@
+﻿stage_order,stage,retained_projects,stage_denominator_projects,retention_proportion,assessed_projects,excluded_projects,unresolved_projects,not_assessed_projects,denominator_stage,source_available
+1,joss_records_screened,1671,1671,1.0,1671,0,0,0,self,true
+2,metadata_eligible,739,1671,0.44225,1671,923,9,0,joss_records_screened,true
+3,publication_archive_eligible,697,739,0.943166,739,33,9,0,metadata_eligible,true
+4,endpoint_resolved,692,697,0.992826,697,0,5,0,publication_archive_eligible,true
+5,paired_dataset_extracted,692,692,1.0,692,0,0,0,endpoint_resolved,true

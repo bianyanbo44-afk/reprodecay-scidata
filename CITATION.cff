@@ -1,24 +1,26 @@
 cff-version: 1.2.0
-message: "If you use this release, cite the versioned dataset and the associated Data Descriptor."
-title: "Publication-anchored paired snapshots of Python research software with field-level change records"
+message: If you use this release, cite the versioned dataset and the associated Data
+  Descriptor.
+title: Publication-anchored paired snapshots of Python research software with field-level
+  change records
 type: dataset
 authors:
-  - given-names: "Yanbo"
-    family-names: "Bian"
-    affiliation: "Weihai International College, Beijing Jiaotong University"
-    email: "24722081@bjtu.edu.cn"
-  - given-names: "Zhihai"
-    family-names: "Wang"
-    affiliation: "School of Computer Science and Technology, Beijing Jiaotong University"
-    email: "zhhwang@bjtu.edu.cn"
-version: 0.2.4
-date-released: 2026-08-17
+- given-names: Yanbo
+  family-names: Bian
+  affiliation: Weihai International College, Beijing Jiaotong University
+  email: 24722081@bjtu.edu.cn
+- given-names: Zhihai
+  family-names: Wang
+  affiliation: School of Computer Science and Technology, Beijing Jiaotong University
+  email: zhhwang@bjtu.edu.cn
+version: 0.3.0
+date-released: '2026-11-06'
 license: CC-BY-4.0
-repository-code: "https://github.com/bianyanbo44-afk/reprodecay-scidata"
-url: "https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.4"
+repository-code: https://github.com/bianyanbo44-afk/reprodecay-scidata
+url: https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.3.0
 keywords:
-  - research software
-  - Python
-  - software evolution
-  - dependency metadata
-  - syntactic interface
+- research software
+- Python
+- software evolution
+- dependency metadata
+- syntactic interface

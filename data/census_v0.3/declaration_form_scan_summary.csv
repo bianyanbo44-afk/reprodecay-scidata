@@ -1,0 +1,23 @@
+﻿form,v0_2_x_handling,v0_3_handling,snapshots_with_form,projects_with_form,entries_with_form,snapshot_denominator
+setup_call_kwargs_unpacking,arguments passed through **mapping were dropped without an issue,"expanded when statically evaluable, otherwise unsupported_syntax",66,45,,1384
+setup_python_requires_nonliteral,dropped without an issue,unsupported_syntax,30,22,,1384
+setup_requires_or_tests_require,not read,read as build / test groups,228,138,,1384
+pyproject_project_dynamic_dependencies,not flagged; snapshot could be marked complete,dynamic_metadata,16,16,,1384
+pyproject_setuptools_dynamic,not flagged,dynamic_metadata,8,8,,1384
+poetry_inline_table_entries,reduced to name and version,"all keys kept in attributes, marker and extras",28,18,163,1384
+poetry_inline_with_markers_extras_python_or_source,information lost,kept,13,9,24,1384
+poetry_optional_entries,recorded as runtime,assigned to optional:<extra> via tool.poetry.extras,15,10,138,1384
+poetry_multiple_constraint_entries,recorded as the package name only,all constraints kept,5,4,8,1384
+poetry_exact_version_strings,name and version concatenated into a wrong package name,"name from the key, version as specifier",8,6,28,1384
+poetry_dev_dependencies_table,not read,read as development,37,25,,1384
+poetry_group_tables,read,read,14,14,,1384
+flit_metadata_table,not read,read,1,1,,1384
+pipfile,not read,read,13,9,,1384
+pep735_dependency_groups,not read,"read (added after the reference-based audit, finding F1)",32,32,,1384
+setup_cfg_file_or_attr_reference,recorded as an unparsed requirement,dynamic_metadata,0,0,,1384
+requirements_editable_local_path,unparsed; snapshot marked incomplete,directive,17,11,,1384
+requirements_editable_or_url_with_egg,unparsed,parsed_url,11,6,,1384
+requirements_include_of_subdirectory_file,directive only; included declarations not read,included file read,8,5,,1384
+requirements_hash_or_per_requirement_option,could be mis-parsed,option removed before parsing,2,2,,1384
+requirements_line_continuation,lines parsed separately,lines joined,2,2,,1384
+declaration_file_is_link,not read (tar) or read as the link target path (zip),"read as the linked archive member (added after the reference-based audit, finding F2)",1,1,,1384

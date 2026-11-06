@@ -1,0 +1,332 @@
+{
+ "snapshot_id": "doi_10_21105_joss_04678__endpoint__68ae1aade8ead7a6",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "environment.yml",
+   "field": "dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ""
+    ],
+    [
+     "runtime",
+     "pandas",
+     ""
+    ],
+    [
+     "runtime",
+     "dask",
+     ""
+    ],
+    [
+     "runtime",
+     "distributed",
+     ""
+    ],
+    [
+     "runtime",
+     "tqdm",
+     ""
+    ],
+    [
+     "runtime",
+     "pooch",
+     ">=1.6.0"
+    ],
+    [
+     "runtime",
+     "pathlib",
+     ""
+    ],
+    [
+     "runtime",
+     "requests",
+     ""
+    ],
+    [
+     "runtime",
+     "thefuzz",
+     ""
+    ],
+    [
+     "runtime",
+     "pyjanitor",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "environment.yml",
+   "field": "dependencies.python",
+   "status": "extracted",
+   "entries": []
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "poetry-core",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "tool.poetry.dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "pooch",
+     ">=1.6.0"
+    ],
+    [
+     "runtime",
+     "pandas",
+     "^1.4"
+    ],
+    [
+     "runtime",
+     "numpy",
+     "^1.22.0"
+    ],
+    [
+     "runtime",
+     "scipy",
+     "^1.7.0"
+    ],
+    [
+     "runtime",
+     "pathlib",
+     ""
+    ],
+    [
+     "runtime",
+     "pyjanitor",
+     "^0.23.1"
+    ],
+    [
+     "runtime",
+     "dask",
+     ""
+    ],
+    [
+     "runtime",
+     "distributed",
+     "^2022"
+    ],
+    [
+     "runtime",
+     "requests",
+     ""
+    ],
+    [
+     "runtime",
+     "tqdm",
+     ""
+    ],
+    [
+     "runtime",
+     "thefuzz",
+     ""
+    ],
+    [
+     "optional:dev",
+     "pytest",
+     "^7.1.0"
+    ],
+    [
+     "optional:dev",
+     "hypothesis",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "tool.poetry.dependencies.python",
+   "status": "extracted",
+   "entries": []
+  },
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "appdirs",
+     "==1.4.4"
+    ],
+    [
+     "runtime",
+     "certifi",
+     "==2022.6.15"
+    ],
+    [
+     "runtime",
+     "charset-normalizer",
+     "==2.1.0"
+    ],
+    [
+     "runtime",
+     "cloudpickle",
+     "==2.1.0"
+    ],
+    [
+     "runtime",
+     "colorama",
+     "==0.4.5"
+    ],
+    [
+     "runtime",
+     "dask",
+     "==2022.6.1"
+    ],
+    [
+     "runtime",
+     "fsspec",
+     "==2022.5.0"
+    ],
+    [
+     "runtime",
+     "idna",
+     "==3.3"
+    ],
+    [
+     "runtime",
+     "lazy-loader",
+     "==0.1rc2"
+    ],
+    [
+     "runtime",
+     "locket",
+     "==1.0.0"
+    ],
+    [
+     "runtime",
+     "multipledispatch",
+     "==0.6.0"
+    ],
+    [
+     "runtime",
+     "natsort",
+     "==8.1.0"
+    ],
+    [
+     "runtime",
+     "numpy",
+     "==1.23.0"
+    ],
+    [
+     "runtime",
+     "packaging",
+     "==21.3"
+    ],
+    [
+     "runtime",
+     "pandas",
+     "==1.4.3"
+    ],
+    [
+     "runtime",
+     "pandas-flavor",
+     "==0.3.0"
+    ],
+    [
+     "runtime",
+     "partd",
+     "==1.2.0"
+    ],
+    [
+     "runtime",
+     "pathlib",
+     "==1.0.1"
+    ],
+    [
+     "runtime",
+     "pooch",
+     "==1.6.0"
+    ],
+    [
+     "runtime",
+     "pyjanitor",
+     "==0.23.1"
+    ],
+    [
+     "runtime",
+     "pyparsing",
+     "==3.0.9"
+    ],
+    [
+     "runtime",
+     "python-dateutil",
+     "==2.8.2"
+    ],
+    [
+     "runtime",
+     "pytz",
+     "==2022.1"
+    ],
+    [
+     "runtime",
+     "pyyaml",
+     "==6.0"
+    ],
+    [
+     "runtime",
+     "requests",
+     "==2.28.1"
+    ],
+    [
+     "runtime",
+     "scipy",
+     "==1.8.1"
+    ],
+    [
+     "runtime",
+     "six",
+     "==1.16.0"
+    ],
+    [
+     "runtime",
+     "toolz",
+     "==0.11.2"
+    ],
+    [
+     "runtime",
+     "tqdm",
+     "==4.64.0"
+    ],
+    [
+     "runtime",
+     "urllib3",
+     "==1.26.9"
+    ],
+    [
+     "runtime",
+     "xarray",
+     "==2022.3.0"
+    ]
+   ]
+  }
+ ],
+ "python_constraints": [
+  "environment.yml:python >= 3.8",
+  "pyproject.toml:^3.8"
+ ],
+ "build_backends": [
+  "poetry.core.masonry.api"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "pandas and numpy are arrays with one inline table each; the specifier is that table's version. pytest and hypothesis are optional and belong to the extra 'dev'. meta.yaml (a conda recipe) is not a declaration source. Publication and endpoint declaration files are identical."
+}

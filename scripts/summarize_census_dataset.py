@@ -33,6 +33,37 @@ PAIRED_METRICS = (
     "test_python_file_count",
     "ci_workflow_file_count",
 )
+# Spec v0.3 Section 6: the observation status that governs each paired metric and family.
+COMPLETE_VALUES = {"complete", "no_declaration_file"}
+METRIC_STATUS_FIELD = {
+    "source_python_line_count": "source_line_observation_status",
+    "source_python_file_count": "archive_listing_status",
+    "syntactic_api_symbol_count": "api_observation_status",
+    "declared_dependency_record_count": "dependency_observation_status",
+    "test_python_file_count": "archive_listing_status",
+    "ci_workflow_file_count": "archive_listing_status",
+}
+FAMILY_STATUS_FIELDS = {
+    "api": ("api_observation_status",),
+    "dependency": ("dependency_observation_status",),
+    "structure": (
+        "archive_listing_status", "build_backend_observation_status",
+        "python_constraint_observation_status", "source_line_observation_status",
+    ),
+}
+OBSERVATION_STATUS_FIELDS = (
+    "archive_listing_status", "build_backend_observation_status", "python_constraint_observation_status",
+    "source_line_observation_status", "api_observation_status", "dependency_observation_status",
+)
+SUMMARY_BASES = {
+    "all_available_values": (
+        "change in extracted record volume: every project with numeric publication and endpoint values, "
+        "whatever the observation status"
+    ),
+    "adequately_observed_pairs": (
+        "projects whose governing observation status is complete in both snapshots"
+    ),
+}
 CORE_SENSITIVITY_METRICS = (
     "source_python_line_count",
     "syntactic_api_symbol_count",
@@ -212,6 +243,25 @@ def percentage_change(publication: float | None, endpoint: float | None) -> tupl
     return rounded((endpoint - publication) / publication), "defined"
 
 
+def observation_complete(row: dict[str, str] | None, fields: Sequence[str]) -> bool | None:
+    if row is None:
+        return None
+    values = [row.get(field, "") for field in fields]
+    if any(not value for value in values):
+        return None
+    return all(value in COMPLETE_VALUES for value in values)
+
+
+def pair_observation_status(publication: bool | None, endpoint: bool | None) -> str:
+    if publication is None or endpoint is None:
+        return "missing_status"
+    if publication and endpoint:
+        return "adequately_observed"
+    if not publication and not endpoint:
+        return "incomplete_both"
+    return "incomplete_publication" if not publication else "incomplete_endpoint"
+
+
 def parse_pair_status(
     family: str,
     publication: dict[str, str] | None,
@@ -219,21 +269,16 @@ def parse_pair_status(
     delta_statuses: set[str],
     delta_count: int,
 ) -> tuple[bool | None, bool | None, bool | None, str]:
-    if family == "structure":
-        pub_complete = publication is not None
-        end_complete = endpoint is not None
-    else:
-        field = f"{family}_parse_complete"
-        pub_complete = optional_boolean(publication.get(field)) if publication else None
-        end_complete = optional_boolean(endpoint.get(field)) if endpoint else None
+    pub_complete = observation_complete(publication, FAMILY_STATUS_FIELDS[family])
+    end_complete = observation_complete(endpoint, FAMILY_STATUS_FIELDS[family])
     if pub_complete is None or end_complete is None:
         paired_complete: bool | None = None
     else:
         paired_complete = pub_complete and end_complete
     if "unavailable" in delta_statuses:
         comparison_status = "unavailable"
-    elif "partial_parse" in delta_statuses or paired_complete is False:
-        comparison_status = "partial_parse"
+    elif "incomplete_observation" in delta_statuses or paired_complete is False:
+        comparison_status = "incomplete_observation"
     elif paired_complete is None:
         comparison_status = "unavailable"
     elif delta_count == 0:
@@ -315,16 +360,22 @@ def build_project_products(
             end_value = optional_number(endpoint.get(metric) if endpoint else None)
             change = end_value - pub_value if pub_value is not None and end_value is not None else None
             percent_change, percent_status = percentage_change(pub_value, end_value)
-            pair_status = "complete" if change is not None else (
+            value_availability = "both_available" if change is not None else (
                 "missing_both" if pub_value is None and end_value is None
                 else "missing_publication" if pub_value is None
                 else "missing_endpoint"
+            )
+            status_field = METRIC_STATUS_FIELD[metric]
+            observation = pair_observation_status(
+                observation_complete(publication, (status_field,)),
+                observation_complete(endpoint, (status_field,)),
             )
             project_row[f"publication_{metric}"] = pub_value
             project_row[f"endpoint_{metric}"] = end_value
             project_row[f"{metric}_absolute_change"] = change
             project_row[f"{metric}_proportional_change"] = percent_change
-            project_row[f"{metric}_pair_status"] = pair_status
+            project_row[f"{metric}_value_availability"] = value_availability
+            project_row[f"{metric}_observation_status"] = observation
             paired_rows.append(
                 {
                     "project_id": project_id,
@@ -336,7 +387,9 @@ def build_project_products(
                     "proportional_change_from_publication": percent_change,
                     "proportional_change_denominator": pub_value,
                     "proportional_change_status": percent_status,
-                    "pair_status": pair_status,
+                    "value_availability": value_availability,
+                    "governing_status_field": status_field,
+                    "observation_status": observation,
                 }
             )
 
@@ -354,8 +407,8 @@ def build_project_products(
                 any_change_status = "observed_change"
             elif paired_complete is True:
                 any_change_status = "none_observed_complete_comparison"
-            elif comparison_status == "partial_parse":
-                any_change_status = "none_observed_partial_comparison"
+            elif comparison_status == "incomplete_observation":
+                any_change_status = "none_observed_incomplete_observation"
             else:
                 any_change_status = "unavailable"
             family_row: dict[str, object] = {
@@ -363,9 +416,9 @@ def build_project_products(
                 "scholarly_doi": normalized_doi(project.get("scholarly_doi", "")),
                 "family": family,
                 "comparison_status": comparison_status,
-                "publication_parse_complete": pub_complete,
-                "endpoint_parse_complete": end_complete,
-                "paired_parse_complete": paired_complete,
+                "publication_observation_complete": pub_complete,
+                "endpoint_observation_complete": end_complete,
+                "paired_observation_complete": paired_complete,
                 "observed_delta_record_count": len(rows),
                 "interpretable_delta_denominator": interpretable_denominator,
                 "unavailable_or_unknown_delta_count": unknown_delta_count,
@@ -383,20 +436,20 @@ def build_project_products(
                     "project_id": project_id,
                     "scholarly_doi": normalized_doi(project.get("scholarly_doi", "")),
                     "family": family,
-                    "publication_parse_complete": pub_complete,
-                    "endpoint_parse_complete": end_complete,
-                    "paired_parse_complete": paired_complete,
+                    "publication_observation_complete": pub_complete,
+                    "endpoint_observation_complete": end_complete,
+                    "paired_observation_complete": paired_complete,
                     "comparison_status": comparison_status,
                     "observed_delta_record_count": len(rows),
                     "missingness_reason": (
                         ""
                         if paired_complete is not None
-                        else "missing_structure_record_or_parse_flag"
+                        else "missing_structure_record_or_observation_status"
                     ),
                 }
             )
             project_row[f"{family}_comparison_status"] = comparison_status
-            project_row[f"{family}_paired_parse_complete"] = paired_complete
+            project_row[f"{family}_paired_observation_complete"] = paired_complete
             project_row[f"{family}_interpretable_delta_denominator"] = interpretable_denominator
             for kind in DELTA_TYPES:
                 project_row[f"{family}_{kind}_count"] = counts[kind]
@@ -413,55 +466,61 @@ def summarize_paired_changes(
         by_metric[str(row["metric"])].append(row)
     output: list[dict[str, object]] = []
     for metric in PAIRED_METRICS:
-        rows = by_metric[metric]
-        complete_rows = [row for row in rows if row["absolute_change"] is not None]
-        changes = [float(row["absolute_change"]) for row in complete_rows]
-        proportional_changes = [
-            float(row["proportional_change_from_publication"])
-            for row in rows
-            if row["proportional_change_from_publication"] is not None
-        ]
-        zero_denominators = sum(
-            row["proportional_change_status"] == "undefined_zero_publication_denominator"
-            for row in rows
-        )
-        pub_values = [float(row["publication_value"]) for row in rows if row["publication_value"] is not None]
-        end_values = [float(row["endpoint_value"]) for row in rows if row["endpoint_value"] is not None]
-        paired_pub_values = [float(row["publication_value"]) for row in complete_rows]
-        paired_end_values = [float(row["endpoint_value"]) for row in complete_rows]
-        lower, upper = bootstrap_interval(changes, median)
-        proportional_lower, proportional_upper = bootstrap_interval(proportional_changes, median)
-        output.append(
-            {
-                "metric": metric,
-                "total_project_denominator": len(projects),
-                "complete_pair_projects": len(changes),
-                "missing_pair_projects": len(projects) - len(changes),
-                "publication_value_projects": len(pub_values),
-                "endpoint_value_projects": len(end_values),
-                "publication_paired_median": rounded(percentile(paired_pub_values, 0.5)),
-                "endpoint_paired_median": rounded(percentile(paired_end_values, 0.5)),
-                "absolute_change_mean": rounded(mean(changes)) if changes else None,
-                "absolute_change_median": rounded(percentile(changes, 0.5)),
-                "absolute_change_q1": rounded(percentile(changes, 0.25)),
-                "absolute_change_q3": rounded(percentile(changes, 0.75)),
-                "absolute_change_min": rounded(min(changes)) if changes else None,
-                "absolute_change_max": rounded(max(changes)) if changes else None,
-                "bootstrap_median_95_lower": lower,
-                "bootstrap_median_95_upper": upper,
-                "proportional_change_defined_projects": len(proportional_changes),
-                "proportional_change_zero_denominator_projects": zero_denominators,
-                "proportional_change_missing_projects": (
-                    len(projects) - len(proportional_changes) - zero_denominators
-                ),
-                "proportional_change_median": rounded(percentile(proportional_changes, 0.5)),
-                "proportional_change_bootstrap_median_95_lower": proportional_lower,
-                "proportional_change_bootstrap_median_95_upper": proportional_upper,
-                "bootstrap_unit": "project",
-                "bootstrap_seed": BOOTSTRAP_SEED,
-                "bootstrap_replicates": BOOTSTRAP_REPLICATES,
-            }
-        )
+        all_rows = by_metric[metric]
+        for basis, definition in SUMMARY_BASES.items():
+            complete_rows: list[dict[str, object]] = []
+            excluded: Counter[str] = Counter()
+            for row in all_rows:
+                if row["absolute_change"] is None:
+                    excluded[str(row["value_availability"])] += 1
+                elif basis == "adequately_observed_pairs" and row["observation_status"] != "adequately_observed":
+                    excluded[str(row["observation_status"])] += 1
+                else:
+                    complete_rows.append(row)
+            changes = [float(row["absolute_change"]) for row in complete_rows]
+            proportional_changes = [
+                float(row["proportional_change_from_publication"])
+                for row in complete_rows
+                if row["proportional_change_from_publication"] is not None
+            ]
+            zero_denominators = sum(
+                row["proportional_change_status"] == "undefined_zero_publication_denominator"
+                for row in complete_rows
+            )
+            paired_pub_values = [float(row["publication_value"]) for row in complete_rows]
+            paired_end_values = [float(row["endpoint_value"]) for row in complete_rows]
+            lower, upper = bootstrap_interval(changes, median)
+            proportional_lower, proportional_upper = bootstrap_interval(proportional_changes, median)
+            output.append(
+                {
+                    "metric": metric,
+                    "summary_basis": basis,
+                    "basis_definition": definition,
+                    "governing_status_field": METRIC_STATUS_FIELD[metric],
+                    "total_project_denominator": len(projects),
+                    "included_pair_projects": len(changes),
+                    "excluded_pair_projects": len(projects) - len(changes),
+                    "exclusion_reason_counts": json.dumps(dict(sorted(excluded.items())), sort_keys=True),
+                    "publication_paired_median": rounded(percentile(paired_pub_values, 0.5)),
+                    "endpoint_paired_median": rounded(percentile(paired_end_values, 0.5)),
+                    "absolute_change_mean": rounded(mean(changes)) if changes else None,
+                    "absolute_change_median": rounded(percentile(changes, 0.5)),
+                    "absolute_change_q1": rounded(percentile(changes, 0.25)),
+                    "absolute_change_q3": rounded(percentile(changes, 0.75)),
+                    "absolute_change_min": rounded(min(changes)) if changes else None,
+                    "absolute_change_max": rounded(max(changes)) if changes else None,
+                    "bootstrap_median_95_lower": lower,
+                    "bootstrap_median_95_upper": upper,
+                    "proportional_change_defined_projects": len(proportional_changes),
+                    "proportional_change_zero_denominator_projects": zero_denominators,
+                    "proportional_change_median": rounded(percentile(proportional_changes, 0.5)),
+                    "proportional_change_bootstrap_median_95_lower": proportional_lower,
+                    "proportional_change_bootstrap_median_95_upper": proportional_upper,
+                    "bootstrap_unit": "project",
+                    "bootstrap_seed": BOOTSTRAP_SEED,
+                    "bootstrap_replicates": BOOTSTRAP_REPLICATES,
+                }
+            )
     return output
 
 
@@ -472,7 +531,7 @@ def summarize_families(
     output: list[dict[str, object]] = []
     for family in FAMILIES:
         all_rows = [grouped[(project["project_id"], family)] for project in projects]
-        complete_rows = [row for row in all_rows if row["paired_parse_complete"] is True]
+        complete_rows = [row for row in all_rows if row["paired_observation_complete"] is True]
         incomplete_count = len(projects) - len(complete_rows)
         for scope, scoped_rows in (
             ("all_extracted_projects_observed", all_rows),
@@ -493,7 +552,7 @@ def summarize_families(
                         "denominator_definition": (
                             "all projects in project_records.csv"
                             if scope == "all_extracted_projects_observed"
-                            else "projects with complete publication and endpoint parsing for the family"
+                            else "projects whose family observation status is complete in both snapshots"
                         ),
                     }
                 )
@@ -507,9 +566,9 @@ def summarize_parsing(
     for family in FAMILIES:
         rows = [row for row in parsing_rows if row["family"] == family]
         for scope, field in (
-            ("publication_snapshot", "publication_parse_complete"),
-            ("endpoint_snapshot", "endpoint_parse_complete"),
-            ("paired_snapshots", "paired_parse_complete"),
+            ("publication_snapshot", "publication_observation_complete"),
+            ("endpoint_snapshot", "endpoint_observation_complete"),
+            ("paired_snapshots", "paired_observation_complete"),
         ):
             complete = sum(row[field] is True for row in rows)
             incomplete = sum(row[field] is False for row in rows)
@@ -526,6 +585,133 @@ def summarize_parsing(
                     "denominator_definition": "all projects in project_records.csv",
                 }
             )
+    return output
+
+
+def summarize_field_observation(
+    projects: list[dict[str, str]], structures: list[dict[str, str]]
+) -> list[dict[str, object]]:
+    """Counts per observation status field (spec Section 5), per snapshot and for the pair."""
+    index = {(row["project_id"], row["snapshot_role"]): row for row in structures}
+    output: list[dict[str, object]] = []
+    for field in OBSERVATION_STATUS_FIELDS:
+        for scope in ("publication_snapshot", "endpoint_snapshot", "paired_snapshots"):
+            counts: Counter[str] = Counter()
+            for project in projects:
+                values = [
+                    (index.get((project["project_id"], role)) or {}).get(field, "")
+                    for role in (("publication",) if scope == "publication_snapshot"
+                                 else ("endpoint",) if scope == "endpoint_snapshot"
+                                 else SNAPSHOT_ROLES)
+                ]
+                if any(not value for value in values):
+                    counts["missing"] += 1
+                elif all(value == "complete" for value in values):
+                    counts["complete"] += 1
+                elif all(value in COMPLETE_VALUES for value in values):
+                    counts["no_declaration_file"] += 1
+                else:
+                    counts["incomplete"] += 1
+            output.append(
+                {
+                    "status_field": field,
+                    "scope": scope,
+                    "complete_projects": counts["complete"],
+                    "no_declaration_file_projects": counts["no_declaration_file"],
+                    "incomplete_projects": counts["incomplete"],
+                    "missing_status_projects": counts["missing"],
+                    "total_project_denominator": len(projects),
+                    "complete_or_no_declaration_proportion": safe_proportion(
+                        counts["complete"] + counts["no_declaration_file"], len(projects)
+                    ),
+                    "denominator_definition": "all projects in project_records.csv",
+                }
+            )
+    return output
+
+
+def summarize_declaration_statuses(
+    snapshots: list[dict[str, str]], declarations: list[dict[str, str]]
+) -> list[dict[str, object]]:
+    """How often each declaration-field status occurs (spec Section 4)."""
+    output: list[dict[str, object]] = []
+    for role in SNAPSHOT_ROLES:
+        denominator = sum(row["snapshot_role"] == role for row in snapshots)
+        rows = [row for row in declarations if row["snapshot_role"] == role]
+        keys = sorted({(row["field_kind"], row["observation_status"]) for row in rows})
+        for field_kind, status in keys:
+            selected = [row for row in rows if row["field_kind"] == field_kind and row["observation_status"] == status]
+            with_status = len({row["snapshot_id"] for row in selected})
+            output.append(
+                {
+                    "snapshot_role": role,
+                    "field_kind": field_kind,
+                    "observation_status": status,
+                    "field_rows": len(selected),
+                    "snapshots_with_status": with_status,
+                    "snapshot_denominator": denominator,
+                    "snapshot_proportion": safe_proportion(with_status, denominator),
+                }
+            )
+    return output
+
+
+def summarize_by_publication_year(
+    projects: list[dict[str, str]],
+    paired_rows: list[dict[str, object]],
+    family_rows: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    """Publication-year strata and elapsed-time-normalized change (reviewer request on temporal bias)."""
+    years = sorted({row.get("publication_year", "") for row in projects if row.get("publication_year")})
+    paired_index = {(str(row["project_id"]), str(row["metric"])): row for row in paired_rows}
+    family_index = {(str(row["project_id"]), str(row["family"])): row for row in family_rows}
+    output: list[dict[str, object]] = []
+    for year in [*years, "all"]:
+        stratum = [row for row in projects if year == "all" or row.get("publication_year") == year]
+        elapsed = {
+            row["project_id"]: float(row["article_to_endpoint_ref_days"])
+            for row in stratum if row.get("article_to_endpoint_ref_days", "").lstrip("-").isdigit()
+        }
+        base = {
+            "publication_year": year,
+            "projects": len(stratum),
+            "release_endpoints": sum(row.get("endpoint_ref_type") == "release" for row in stratum),
+            "default_branch_endpoints": sum(row.get("endpoint_ref_type") == "default_branch" for row in stratum),
+            "article_to_endpoint_ref_days_median": rounded(percentile(list(elapsed.values()), 0.5)),
+            "article_to_endpoint_ref_days_q1": rounded(percentile(list(elapsed.values()), 0.25)),
+            "article_to_endpoint_ref_days_q3": rounded(percentile(list(elapsed.values()), 0.75)),
+        }
+        for metric in CORE_SENSITIVITY_METRICS:
+            observed = [
+                paired_index[(row["project_id"], metric)] for row in stratum
+                if (row["project_id"], metric) in paired_index
+                and paired_index[(row["project_id"], metric)]["observation_status"] == "adequately_observed"
+                and paired_index[(row["project_id"], metric)]["absolute_change"] is not None
+            ]
+            changes = [float(row["absolute_change"]) for row in observed]
+            annualized = [
+                float(row["absolute_change"]) / (elapsed[str(row["project_id"])] / 365.25)
+                for row in observed
+                if elapsed.get(str(row["project_id"]), 0) > 0
+            ]
+            output.append({**base, "measure": metric, "summary_basis": "adequately_observed_pairs",
+                           "included_projects": len(changes), "estimate": rounded(percentile(changes, 0.5)),
+                           "statistic": "median absolute change",
+                           "denominator_definition": "projects in the stratum with adequately observed pairs"})
+            output.append({**base, "measure": metric, "summary_basis": "adequately_observed_pairs",
+                           "included_projects": len(annualized), "estimate": rounded(percentile(annualized, 0.5)),
+                           "statistic": "median absolute change per year from article to endpoint reference date",
+                           "denominator_definition": "adequately observed pairs with a positive article-to-endpoint interval"})
+        for family in ("dependency", "api"):
+            comparable = [
+                family_index[(row["project_id"], family)] for row in stratum
+                if family_index.get((row["project_id"], family), {}).get("paired_observation_complete") is True
+            ]
+            changed = sum(bool(row["observed_any_change"]) for row in comparable)
+            output.append({**base, "measure": f"{family}_any_change", "summary_basis": "adequately_observed_pairs",
+                           "included_projects": len(comparable), "estimate": safe_proportion(changed, len(comparable)),
+                           "statistic": "proportion of projects with at least one added, removed or changed key",
+                           "denominator_definition": "projects whose family observation status is complete in both snapshots"})
     return output
 
 
@@ -847,7 +1033,7 @@ def build_sensitivity_summary(
                 complete_rows = [
                     families_by_project[(project_id, family)]
                     for project_id in sorted(retained)
-                    if families_by_project[(project_id, family)]["paired_parse_complete"] is True
+                    if families_by_project[(project_id, family)]["paired_observation_complete"] is True
                 ]
                 indicators = [float(bool(row["observed_any_change"])) for row in complete_rows]
                 lower, upper = bootstrap_interval(indicators, mean)
@@ -881,42 +1067,43 @@ PROJECT_FIELDS = PROJECT_BASE_FIELDS + [
     for metric in PAIRED_METRICS
     for field in (
         f"publication_{metric}", f"endpoint_{metric}", f"{metric}_absolute_change",
-        f"{metric}_proportional_change", f"{metric}_pair_status",
+        f"{metric}_proportional_change", f"{metric}_value_availability", f"{metric}_observation_status",
     )
 ] + [
     field
     for family in FAMILIES
     for field in (
-        f"{family}_comparison_status", f"{family}_paired_parse_complete",
+        f"{family}_comparison_status", f"{family}_paired_observation_complete",
         f"{family}_interpretable_delta_denominator",
         *(name for kind in DELTA_TYPES for name in (f"{family}_{kind}_count", f"{family}_{kind}_proportion")),
     )
 ]
 FAMILY_FIELDS = [
     "project_id", "scholarly_doi", "family", "comparison_status",
-    "publication_parse_complete", "endpoint_parse_complete", "paired_parse_complete",
+    "publication_observation_complete", "endpoint_observation_complete", "paired_observation_complete",
     "observed_delta_record_count", "interpretable_delta_denominator",
     "unavailable_or_unknown_delta_count", "observed_any_change", "any_change_status",
     *(name for kind in DELTA_TYPES for name in (f"{kind}_count", f"{kind}_proportion")),
 ]
 PARSING_FIELDS = [
-    "project_id", "scholarly_doi", "family", "publication_parse_complete",
-    "endpoint_parse_complete", "paired_parse_complete", "comparison_status",
+    "project_id", "scholarly_doi", "family", "publication_observation_complete",
+    "endpoint_observation_complete", "paired_observation_complete", "comparison_status",
     "observed_delta_record_count", "missingness_reason",
 ]
 PAIRED_FIELDS = [
     "project_id", "scholarly_doi", "metric", "publication_value", "endpoint_value",
     "absolute_change", "proportional_change_from_publication",
-    "proportional_change_denominator", "proportional_change_status", "pair_status",
+    "proportional_change_denominator", "proportional_change_status", "value_availability",
+    "governing_status_field", "observation_status",
 ]
 PAIRED_SUMMARY_FIELDS = [
-    "metric", "total_project_denominator", "complete_pair_projects", "missing_pair_projects",
-    "publication_value_projects", "endpoint_value_projects", "publication_paired_median",
-    "endpoint_paired_median",
+    "metric", "summary_basis", "basis_definition", "governing_status_field",
+    "total_project_denominator", "included_pair_projects", "excluded_pair_projects",
+    "exclusion_reason_counts", "publication_paired_median", "endpoint_paired_median",
     "absolute_change_mean", "absolute_change_median", "absolute_change_q1", "absolute_change_q3",
     "absolute_change_min", "absolute_change_max", "bootstrap_median_95_lower",
     "bootstrap_median_95_upper", "proportional_change_defined_projects",
-    "proportional_change_zero_denominator_projects", "proportional_change_missing_projects",
+    "proportional_change_zero_denominator_projects",
     "proportional_change_median", "proportional_change_bootstrap_median_95_lower",
     "proportional_change_bootstrap_median_95_upper", "bootstrap_unit", "bootstrap_seed",
     "bootstrap_replicates",
@@ -928,6 +1115,20 @@ FAMILY_SUMMARY_FIELDS = [
 PARSING_SUMMARY_FIELDS = [
     "family", "scope", "complete_projects", "incomplete_projects", "missing_status_projects",
     "total_project_denominator", "complete_proportion", "denominator_definition",
+]
+FIELD_OBSERVATION_FIELDS = [
+    "status_field", "scope", "complete_projects", "no_declaration_file_projects", "incomplete_projects",
+    "missing_status_projects", "total_project_denominator", "complete_or_no_declaration_proportion",
+    "denominator_definition",
+]
+DECLARATION_STATUS_FIELDS = [
+    "snapshot_role", "field_kind", "observation_status", "field_rows", "snapshots_with_status",
+    "snapshot_denominator", "snapshot_proportion",
+]
+YEAR_FIELDS = [
+    "publication_year", "projects", "release_endpoints", "default_branch_endpoints",
+    "article_to_endpoint_ref_days_median", "article_to_endpoint_ref_days_q1", "article_to_endpoint_ref_days_q3",
+    "measure", "summary_basis", "included_projects", "estimate", "statistic", "denominator_definition",
 ]
 ATTRITION_FIELDS = [
     "stage_order", "stage", "retained_projects", "stage_denominator_projects",
@@ -966,6 +1167,7 @@ def build_summary(
     dependencies = read_csv(tables / "dependency_records.csv")
     symbols = read_csv(tables / "api_symbol_records.csv")
     deltas = read_csv(tables / "pair_delta_records.csv")
+    declarations = read_csv(tables / "declaration_source_records.csv")
     validations = read_csv(tables / "validation_records.csv")
     screening, screening_available = read_optional_csv(screening_path)
     archive_eligibility, archive_available = read_optional_csv(archive_eligibility_path)
@@ -987,6 +1189,9 @@ def build_summary(
     paired_summary = summarize_paired_changes(projects, paired_changes)
     family_summary = summarize_families(projects, family_metrics)
     parsing_summary = summarize_parsing(projects, parsing_metrics)
+    field_observation = summarize_field_observation(projects, structures)
+    declaration_statuses = summarize_declaration_statuses(snapshots, declarations)
+    year_summary = summarize_by_publication_year(projects, paired_changes, family_metrics)
     attrition, selection_status = build_selection_products(
         projects,
         screening,
@@ -1007,6 +1212,9 @@ def build_summary(
         "paired_change_summary": ("paired_change_summary.csv", paired_summary, PAIRED_SUMMARY_FIELDS),
         "family_project_summary": ("family_project_summary.csv", family_summary, FAMILY_SUMMARY_FIELDS),
         "parsing_completeness_summary": ("parsing_completeness_summary.csv", parsing_summary, PARSING_SUMMARY_FIELDS),
+        "field_observation_summary": ("field_observation_summary.csv", field_observation, FIELD_OBSERVATION_FIELDS),
+        "declaration_status_summary": ("declaration_status_summary.csv", declaration_statuses, DECLARATION_STATUS_FIELDS),
+        "publication_year_summary": ("publication_year_summary.csv", year_summary, YEAR_FIELDS),
         "selection_attrition": ("selection_attrition.csv", attrition, ATTRITION_FIELDS),
         "selection_status_counts": ("selection_status_counts.csv", selection_status, STATUS_FIELDS),
         "endpoint_type_summary": ("endpoint_type_summary.csv", endpoint_summary, ENDPOINT_FIELDS),
@@ -1022,7 +1230,9 @@ def build_summary(
             "sha256": sha256_file(path),
         }
 
-    paired_by_metric = {str(row["metric"]): row for row in paired_summary}
+    paired_by_metric = {
+        str(row["metric"]): row for row in paired_summary if row["summary_basis"] == "adequately_observed_pairs"
+    }
     endpoint_types_extracted = {
         str(row["endpoint_ref_type"]): int(row["project_count"])
         for row in endpoint_summary if row["scope"] == "extracted_project_pairs"
@@ -1034,6 +1244,7 @@ def build_summary(
         "dependency_records": tables / "dependency_records.csv",
         "api_symbol_records": tables / "api_symbol_records.csv",
         "pair_delta_records": tables / "pair_delta_records.csv",
+        "declaration_source_records": tables / "declaration_source_records.csv",
         "validation_records": tables / "validation_records.csv",
         "screening_ledger": screening_path,
         "archive_eligibility_ledger": archive_eligibility_path,
@@ -1064,6 +1275,8 @@ def build_summary(
         },
         "selection_attrition": attrition,
         "parsing_completeness": parsing_summary,
+        "field_observation": field_observation,
+        "median_change_basis": "adequately_observed_pairs",
         "family_project_summary": family_summary,
         "paired_change_summary": paired_summary,
         "median_change": {

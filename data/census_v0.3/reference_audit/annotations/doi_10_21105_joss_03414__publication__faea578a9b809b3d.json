@@ -1,0 +1,311 @@
+{
+ "snapshot_id": "doi_10_21105_joss_03414__publication__faea578a9b809b3d",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "environment.yml",
+   "field": "dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "nodejs",
+     "=14.11"
+    ],
+    [
+     "runtime",
+     "ipyleaflet",
+     "=0.13.6"
+    ],
+    [
+     "runtime",
+     "jupyterlab",
+     "=3"
+    ],
+    [
+     "runtime",
+     "leafmap",
+     ""
+    ],
+    [
+     "runtime",
+     "xarray-leaflet",
+     ""
+    ],
+    [
+     "runtime",
+     "geopandas",
+     ""
+    ],
+    [
+     "runtime",
+     "osmnx",
+     ""
+    ],
+    [
+     "runtime",
+     "sqlalchemy",
+     ""
+    ],
+    [
+     "runtime",
+     "psycopg2",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "environment.yml",
+   "field": "dependencies.python",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "bqplot",
+     ""
+    ],
+    [
+     "runtime",
+     "colour",
+     ""
+    ],
+    [
+     "runtime",
+     "folium",
+     ">=0.12.0"
+    ],
+    [
+     "runtime",
+     "geojson",
+     ""
+    ],
+    [
+     "runtime",
+     "googledrivedownloader",
+     ""
+    ],
+    [
+     "runtime",
+     "ipyevents",
+     "<=0.9.0"
+    ],
+    [
+     "runtime",
+     "ipyleaflet",
+     ""
+    ],
+    [
+     "runtime",
+     "matplotlib",
+     ""
+    ],
+    [
+     "runtime",
+     "mss",
+     ""
+    ],
+    [
+     "runtime",
+     "numpy",
+     ""
+    ],
+    [
+     "runtime",
+     "pandas",
+     ""
+    ],
+    [
+     "runtime",
+     "pycrs",
+     ""
+    ],
+    [
+     "runtime",
+     "pyshp",
+     ">=2.1.3"
+    ],
+    [
+     "runtime",
+     "python-box",
+     ""
+    ],
+    [
+     "runtime",
+     "whitebox",
+     ""
+    ],
+    [
+     "runtime",
+     "whiteboxgui",
+     ""
+    ],
+    [
+     "runtime",
+     "here-map-widget-for-jupyter",
+     ">=1.1.1"
+    ]
+   ]
+  },
+  {
+   "source_file": "requirements_dev.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "development",
+     "black",
+     ""
+    ],
+    [
+     "development",
+     "pip",
+     ""
+    ],
+    [
+     "development",
+     "bump2version",
+     ""
+    ],
+    [
+     "development",
+     "wheel",
+     ""
+    ],
+    [
+     "development",
+     "watchdog",
+     ""
+    ],
+    [
+     "development",
+     "flake8",
+     ""
+    ],
+    [
+     "development",
+     "tox",
+     ""
+    ],
+    [
+     "development",
+     "coverage",
+     ""
+    ],
+    [
+     "development",
+     "sphinx",
+     ""
+    ],
+    [
+     "development",
+     "twine",
+     ""
+    ],
+    [
+     "development",
+     "grip",
+     ""
+    ],
+    [
+     "development",
+     "mkdocs-material",
+     ""
+    ],
+    [
+     "development",
+     "mkdocstrings",
+     ""
+    ],
+    [
+     "development",
+     "mkdocs-git-revision-date-plugin",
+     ""
+    ],
+    [
+     "development",
+     "mkdocs-jupyter",
+     ""
+    ],
+    [
+     "development",
+     "mkdocs-pdf-export-plugin",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.install_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "unsupported_syntax",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "extracted",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "extracted",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "setup.py:>=3.6"
+ ],
+ "build_backends": [],
+ "dependency_observation_status": "incomplete",
+ "api_module": {},
+ "notes": "install_requires is a list comprehension over the lines of requirements.txt and is not statically evaluable. setup_requires and tests_require are module-level empty lists, extracted with no entries."
+}

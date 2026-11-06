@@ -1,0 +1,235 @@
+{
+ "snapshot_id": "doi_10_21105_joss_03219__endpoint__c07ef0f77ddc1796",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "setuptools",
+     "==83.0.0"
+    ],
+    [
+     "build",
+     "setuptools-scm",
+     "==10.2.1"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "thrustrtc",
+     ">=0.3.20"
+    ],
+    [
+     "runtime",
+     "curandrtc",
+     ">=0.1.2"
+    ],
+    [
+     "runtime",
+     "numba",
+     ">=0.51.2"
+    ],
+    [
+     "runtime",
+     "jax",
+     ">=0.8.0"
+    ],
+    [
+     "runtime",
+     "scipy",
+     ">=1.15.0"
+    ],
+    [
+     "runtime",
+     "numpy",
+     ""
+    ],
+    [
+     "runtime",
+     "pint",
+     ""
+    ],
+    [
+     "runtime",
+     "chempy",
+     ""
+    ],
+    [
+     "runtime",
+     "pyevtk",
+     ""
+    ],
+    [
+     "runtime",
+     "pyparsing",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.unit-tests",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:unit-tests",
+     "pytest",
+     ""
+    ],
+    [
+     "optional:unit-tests",
+     "pytest-timeout",
+     ""
+    ],
+    [
+     "optional:unit-tests",
+     "matplotlib",
+     "!=3.9.1"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.nonunit-tests",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:nonunit-tests",
+     "pytest",
+     ""
+    ],
+    [
+     "optional:nonunit-tests",
+     "pysdm-examples",
+     ""
+    ],
+    [
+     "optional:nonunit-tests",
+     "pypartmc",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.CI_version_pins",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:CI_version_pins",
+     "pypartmc",
+     "==2.1.0"
+    ],
+    [
+     "optional:CI_version_pins",
+     "numba",
+     "==0.60.0"
+    ],
+    [
+     "optional:CI_version_pins",
+     "numpy",
+     "==2.0.2"
+    ],
+    [
+     "optional:CI_version_pins",
+     "scipy",
+     "==1.15.3"
+    ],
+    [
+     "optional:CI_version_pins",
+     "thrustrtc",
+     "==0.3.20"
+    ],
+    [
+     "optional:CI_version_pins",
+     "curandrtc",
+     "==0.1.7"
+    ],
+    [
+     "optional:CI_version_pins",
+     "jax",
+     "==0.8.0"
+    ],
+    [
+     "optional:CI_version_pins",
+     "pint",
+     "==0.24.4"
+    ],
+    [
+     "optional:CI_version_pins",
+     "chempy",
+     "==0.10.1"
+    ],
+    [
+     "optional:CI_version_pins",
+     "pyevtk",
+     "==1.7.0"
+    ],
+    [
+     "optional:CI_version_pins",
+     "pyparsing",
+     "==3.2.5"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.requires-python",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "pyproject.toml:>= 3.8"
+ ],
+ "build_backends": [
+  "setuptools.build_meta"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {
+  "source_file": "PySDM/physics/saturation_vapour_pressure/bolton_1980.py",
+  "symbols": [
+   [
+    "class",
+    "Bolton1980",
+    []
+   ],
+   [
+    "constructor",
+    "Bolton1980.__init__",
+    [
+     "self",
+     "_"
+    ]
+   ],
+   [
+    "method",
+    "Bolton1980.pvs_water",
+    [
+     "const",
+     "T"
+    ]
+   ],
+   [
+    "method",
+    "Bolton1980.pvs_ice",
+    [
+     "const",
+     "T"
+    ]
+   ]
+  ]
+ },
+ "notes": "project.dynamic lists only the version. Extra names are kept as written (CI_version_pins)."
+}

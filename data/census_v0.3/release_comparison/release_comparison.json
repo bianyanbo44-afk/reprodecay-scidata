@@ -1,0 +1,70 @@
+{
+  "affected_projects": 154,
+  "affected_projects_by_item": {
+    "api_completeness": 15,
+    "delta_api": 12,
+    "delta_dependency": 128,
+    "delta_structure:packaging_files": 6,
+    "delta_structure:python_constraints": 31,
+    "delta_structure:scalar": 1,
+    "dependency_completeness": 41,
+    "dependency_records": 108,
+    "structure_packaging_files": 6,
+    "structure_python_constraints": 11,
+    "structure_python_constraints_completeness": 33,
+    "structure_source_line_count_completeness": 1,
+    "structure_source_python_line_count": 2,
+    "structure_syntactic_api_symbol_count": 1
+  },
+  "cohort": "projects present in both v0.2.4 and the v0.3 build",
+  "cohort_projects": 345,
+  "dependency_incomplete_reason_field_counts": {
+    "dynamic_metadata": 5,
+    "extracted_partial": 45,
+    "parse_failure": 3,
+    "unsupported_syntax": 230
+  },
+  "dependency_records": {
+    "key_comparison": {
+      "key_only_in_v0_2_4": 70,
+      "key_only_in_v0_3": 803,
+      "key_value_changed": 34,
+      "unchanged": 7571
+    },
+    "parse_status_v0_2_4": {
+      "directive": 11,
+      "parsed": 8864,
+      "parsed_non_pep508": 130,
+      "parsed_poetry": 20,
+      "unparsed": 49
+    },
+    "parse_status_v0_3": {
+      "directive": 48,
+      "parsed": 9472,
+      "parsed_non_pep508": 128,
+      "parsed_pipfile": 71,
+      "parsed_poetry": 130,
+      "parsed_url": 5,
+      "unparsed": 32
+    },
+    "snapshots_with_changed_row_count": 175,
+    "v0_2_4_rows": 9074,
+    "v0_3_rows": 9886
+  },
+  "projects_only_in_v0_2_4": [],
+  "projects_only_in_v0_3": 0,
+  "structure_field_changes_snapshots": {
+    "build_backends": 0,
+    "ci_providers": 0,
+    "packaging_files": 9,
+    "python_constraints": 20,
+    "source_python_file_count": 0,
+    "source_python_line_count": 3,
+    "syntactic_api_symbol_count": 1
+  },
+  "summary_values": {
+    "changed": 55,
+    "unchanged": 74
+  },
+  "unaffected_projects": 191
+}

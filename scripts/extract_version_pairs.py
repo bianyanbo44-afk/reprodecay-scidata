@@ -9,40 +9,31 @@ from __future__ import annotations
 
 import argparse
 import ast
-import configparser
 import csv
+import gzip
 import hashlib
+import io
 import json
+import posixpath
 import re
 import tarfile
-import tomllib
 import warnings
 import zipfile
-from collections import defaultdict
-from dataclasses import dataclass
+from collections import Counter, defaultdict
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
 from typing import Any, Iterable
 
-try:
-    import yaml
-except ImportError:  # pragma: no cover - recorded as a parser limitation
-    yaml = None
-
-try:
-    from packaging.requirements import Requirement
-    from packaging.utils import canonicalize_name
-except ImportError:  # pragma: no cover - local fallback is deterministic
-    Requirement = None
-
-    def canonicalize_name(value: str) -> str:
-        return re.sub(r"[-_.]+", "-", value).lower()
+from declarations import PARSED_STATUSES, extract_declarations
 
 
-SCHEMA_VERSION = "0.2"
-PARSER_VERSION = "static-pair-extractor-0.2.3"
+SCHEMA_VERSION = "0.3"
+PARSER_VERSION = "static-pair-extractor-0.3.0"
 MAX_MEMBERS = 100_000
 MAX_TEXT_MEMBER_BYTES = 2 * 1024 * 1024
 MAX_TOTAL_TEXT_BYTES = 128 * 1024 * 1024
+MAX_LINK_HOPS = 8
 TEXT_SUFFIXES = {".py", ".toml", ".cfg", ".ini", ".txt", ".yml", ".yaml", ".in"}
 TEXT_BASENAMES = {
     "setup.py", "setup.cfg", "pyproject.toml", "tox.ini", "pytest.ini",
@@ -132,6 +123,51 @@ def is_archive_junk(name: str) -> bool:
     )
 
 
+def link_target(name: str, target: str, hard: bool = False) -> str:
+    """Archive path a link member points to, or "" when it leaves the archive (spec Section 1).
+
+    A symbolic link is relative to its own directory; a tar hard link names
+    another member by its full path.
+    """
+    target = target.replace("\\", "/")
+    if not target or target.startswith("/") or re.match(r"^[A-Za-z]:", target):
+        return ""
+    joined = posixpath.normpath(target if hard else posixpath.join(posixpath.dirname(name), target))
+    return "" if joined == ".." or joined.startswith("../") else joined
+
+
+def read_named_members(path: Path, archive_type: str, names: set[str]) -> dict[str, bytes]:
+    """Read the named regular members in a second pass (targets of followed links)."""
+    payloads: dict[str, bytes] = {}
+    if archive_type == "zip":
+        with zipfile.ZipFile(path) as archive:
+            for name in names:
+                with archive.open(name) as handle:
+                    payloads[name] = handle.read(MAX_TEXT_MEMBER_BYTES)
+    else:
+        with tarfile.open(path, "r:*") as archive:
+            for member in archive.getmembers():
+                if member.name in names and member.isfile():
+                    handle = archive.extractfile(member)
+                    if handle is not None:
+                        with handle:
+                            payloads[member.name] = handle.read(MAX_TEXT_MEMBER_BYTES)
+    return payloads
+
+
+def stream_member(handle: Any, keep_text: bool, prefix: bytes = b"") -> tuple[int, str, bytes]:
+    """Hash a member in chunks; keep its bytes only when it is a readable text member."""
+    digest = hashlib.sha256(prefix)
+    size = 0
+    kept: list[bytes] = []
+    for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+        digest.update(chunk)
+        size += len(chunk)
+        if keep_text:
+            kept.append(chunk)
+    return size, digest.hexdigest(), b"".join(kept)
+
+
 @dataclass
 class ArchiveView:
     path: Path
@@ -142,11 +178,25 @@ class ArchiveView:
     link_member_count: int
     duplicate_normalized_count: int
     skipped_large_text_count: int
+    # normalized path -> (bytes, sha256); spec Section 1
+    member_digests: dict[str, tuple[int, str]] = field(default_factory=dict)
+    member_mtimes: list[int] = field(default_factory=list)
+    # text members that are links: normalized path -> normalized target that was read,
+    # or "" when the target is missing, outside the archive or not a regular file
+    link_texts: dict[str, str] = field(default_factory=dict)
+
+    def unread_reasons(self) -> dict[str, str]:
+        """Why a text member listed in `names` has no text, when it is not the size limit."""
+        return {name: "link_target_unresolved" for name, target in self.link_texts.items() if not target}
 
     @classmethod
-    def read(cls, path: Path) -> "ArchiveView":
+    def read(cls, path: Path, digests: bool = True) -> "ArchiveView":
         raw_names: list[str] = []
         raw_texts: dict[str, bytes] = {}
+        raw_digests: dict[str, tuple[int, str]] = {}
+        raw_sizes: dict[str, int] = {}
+        raw_links: dict[str, str] = {}
+        mtimes: list[int] = []
         suspicious = 0
         links = 0
         skipped_large = 0
@@ -169,12 +219,28 @@ class ArchiveView:
                         suspicious += 1
                     unix_mode = (info.external_attr >> 16) & 0o170000
                     if unix_mode == 0o120000:
+                        # a zip symbolic link stores its target as the member content
                         links += 1
+                        with archive.open(info) as handle:
+                            size, digest, payload = stream_member(handle, True, b"link:")
+                        raw_digests[info.filename] = (size, digest)
+                        raw_links[info.filename] = link_target(info.filename, payload.decode("utf-8", errors="replace"))
+                        continue
+                    raw_sizes[info.filename] = info.file_size
+                    keep_text = is_interesting_text(info.filename) and not (
+                        info.file_size > MAX_TEXT_MEMBER_BYTES or total_text + info.file_size > MAX_TOTAL_TEXT_BYTES
+                    )
+                    if not digests and not keep_text:
+                        size, digest, payload = info.file_size, "", b""
+                    else:
+                        with archive.open(info) as handle:
+                            size, digest, payload = stream_member(handle, keep_text)
+                    raw_digests[info.filename] = (size, digest)
                     if is_interesting_text(info.filename):
-                        if info.file_size > MAX_TEXT_MEMBER_BYTES or total_text + info.file_size > MAX_TOTAL_TEXT_BYTES:
+                        if not keep_text:
                             skipped_large += 1
                             continue
-                        raw_texts[info.filename] = archive.read(info)
+                        raw_texts[info.filename] = payload
                         total_text += info.file_size
         elif tarfile.is_tarfile(path):
             archive_type = "tar"
@@ -188,20 +254,65 @@ class ArchiveView:
                     if is_archive_junk(member.name):
                         continue
                     raw_names.append(member.name)
+                    mtimes.append(int(member.mtime))
                     if not safe_member_path(member.name):
                         suspicious += 1
                     if member.issym() or member.islnk():
                         links += 1
-                    if member.isfile() and is_interesting_text(member.name):
-                        if member.size > MAX_TEXT_MEMBER_BYTES or total_text + member.size > MAX_TOTAL_TEXT_BYTES:
+                        target = member.linkname.encode("utf-8", errors="replace")
+                        raw_digests[member.name] = (len(target), hashlib.sha256(b"link:" + target).hexdigest())
+                        raw_links[member.name] = link_target(member.name, member.linkname, hard=member.islnk())
+                        continue
+                    if member.isfile():
+                        raw_sizes[member.name] = member.size
+                    interesting = member.isfile() and is_interesting_text(member.name)
+                    keep_text = interesting and not (
+                        member.size > MAX_TEXT_MEMBER_BYTES or total_text + member.size > MAX_TOTAL_TEXT_BYTES
+                    )
+                    handle = archive.extractfile(member) if member.isfile() and (digests or keep_text) else None
+                    if handle is None:
+                        size, digest, payload = 0, hashlib.sha256(b"").hexdigest(), b""
+                    else:
+                        with handle:
+                            size, digest, payload = stream_member(handle, keep_text)
+                    raw_digests[member.name] = (size, digest)
+                    if interesting:
+                        if not keep_text:
                             skipped_large += 1
                             continue
-                        handle = archive.extractfile(member)
-                        if handle is not None:
-                            raw_texts[member.name] = handle.read(MAX_TEXT_MEMBER_BYTES + 1)[:MAX_TEXT_MEMBER_BYTES]
-                            total_text += member.size
+                        raw_texts[member.name] = payload[:MAX_TEXT_MEMBER_BYTES]
+                        total_text += member.size
         else:
             raise ValueError("unsupported_archive_format")
+
+        # Spec Section 1: a text member that is a link is read as the regular
+        # member it points to inside the same archive.
+        regular = {posixpath.normpath(name): name for name in raw_sizes}
+        link_paths = {posixpath.normpath(name): target for name, target in raw_links.items()}
+        link_sources: dict[str, str] = {}
+        for name, target in raw_links.items():
+            if not is_interesting_text(name):
+                continue
+            hops = 0
+            while target in link_paths and hops < MAX_LINK_HOPS:
+                target, hops = link_paths[target], hops + 1
+            link_sources[name] = regular.get(target, "")
+        pending = {
+            source for source in link_sources.values()
+            if source and source not in raw_texts and raw_sizes[source] <= MAX_TEXT_MEMBER_BYTES
+        }
+        extra_texts = read_named_members(path, archive_type, pending) if pending else {}
+        size_limited: set[str] = set()
+        for name, source in link_sources.items():
+            if not source:
+                continue
+            payload = raw_texts.get(source, extra_texts.get(source))
+            if payload is None or total_text + len(payload) > MAX_TOTAL_TEXT_BYTES:
+                skipped_large += 1
+                size_limited.add(name)
+                continue
+            raw_texts[name] = payload
+            total_text += len(payload)
 
         normalized = strip_common_root(raw_names)
         names = sorted(normalized.values())
@@ -215,7 +326,33 @@ class ArchiveView:
                 duplicates += 1
                 continue
             texts[normal_name] = payload.decode("utf-8", errors="replace")
-        return cls(path, archive_type, names, texts, suspicious, links, duplicates, skipped_large)
+        digests: dict[str, tuple[int, str]] = {}
+        for raw_name in raw_names:
+            normal_name = normalized.get(raw_name)
+            if normal_name and normal_name not in digests and raw_name in raw_digests:
+                digests[normal_name] = raw_digests[raw_name]
+        link_texts: dict[str, str] = {}
+        for raw_name, source in link_sources.items():
+            normal_name = normalized.get(raw_name)
+            if normal_name and raw_name not in size_limited:
+                link_texts[normal_name] = normalized.get(source, "") if source else ""
+        return cls(path, archive_type, names, texts, suspicious, links, duplicates, skipped_large, digests, mtimes, link_texts)
+
+    def content_tree_sha256(self) -> str:
+        lines = "".join(f"{name}\t{size}\t{digest}\n" for name, (size, digest) in sorted(self.member_digests.items()))
+        return hashlib.sha256(lines.encode("utf-8")).hexdigest()
+
+    def member_mtime_mode(self) -> tuple[str, str]:
+        """Most common tar member mtime (UTC) and whether all members share it.
+
+        `git archive`, which GitHub uses for codeload tarballs, stamps every
+        member with the committer time of the archived commit.
+        """
+        if not self.member_mtimes:
+            return "", ""
+        value, count = Counter(self.member_mtimes).most_common(1)[0]
+        stamp = datetime.fromtimestamp(value, tz=timezone.utc).isoformat().replace("+00:00", "Z")
+        return stamp, str(count == len(self.member_mtimes)).lower()
 
 
 def project_id(doi: str) -> str:
@@ -240,241 +377,6 @@ def choose_publication_file(rows: list[dict[str, str]]) -> dict[str, str]:
 
 def root_basenames(names: Iterable[str]) -> set[str]:
     return {PurePosixPath(name).name.lower() for name in names if len(PurePosixPath(name).parts) == 1}
-
-
-def dependency_group_for_requirements(filename: str) -> str:
-    stem = PurePosixPath(filename).name.lower()
-    if "test" in stem:
-        return "test"
-    if any(token in stem for token in ("dev", "lint", "docs", "doc")):
-        return "development"
-    return "runtime"
-
-
-def add_dependency(
-    rows: list[dict[str, str]], snapshot: dict[str, str], source_file: str,
-    source_kind: str, group: str, raw: Any,
-) -> None:
-    raw_text = str(raw).strip()
-    if not raw_text or raw_text.startswith("#"):
-        return
-    normalized = ""
-    specifier = ""
-    marker = ""
-    extras = ""
-    status = "parsed"
-    error = ""
-    if raw_text.startswith(("-r ", "--requirement ", "-c ", "--constraint ", "--index", "--extra-index")):
-        status = "directive"
-    else:
-        candidate = raw_text
-        if " #" in candidate:
-            candidate = candidate.split(" #", 1)[0].strip()
-        try:
-            if source_kind.startswith("poetry"):
-                poetry_match = re.match(r"^([A-Za-z0-9_.-]+)(.*)$", candidate)
-                if poetry_match and poetry_match.group(2).startswith(("^", "~")):
-                    normalized = canonicalize_name(poetry_match.group(1))
-                    specifier = poetry_match.group(2)
-                    status = "parsed_poetry"
-                    raise StopIteration
-            if Requirement is None:
-                raise ValueError("packaging_library_unavailable")
-            requirement = Requirement(candidate)
-            normalized = canonicalize_name(requirement.name)
-            specifier = str(requirement.specifier)
-            marker = str(requirement.marker or "")
-            extras = ";".join(sorted(requirement.extras))
-        except StopIteration:
-            pass
-        except Exception as exc:
-            conda_match = re.match(r"^([A-Za-z0-9_.-]+)\s*([<>=!~].*)?$", candidate)
-            if conda_match:
-                normalized = canonicalize_name(conda_match.group(1))
-                specifier = conda_match.group(2) or ""
-                status = "parsed_non_pep508"
-            else:
-                status = "unparsed"
-                error = f"{type(exc).__name__}:{str(exc)[:200]}"
-    rows.append(
-        {
-            "snapshot_id": snapshot["snapshot_id"],
-            "project_id": snapshot["project_id"],
-            "snapshot_role": snapshot["snapshot_role"],
-            "source_file": source_file,
-            "source_kind": source_kind,
-            "dependency_group": group,
-            "normalized_name": normalized,
-            "raw_declaration": raw_text,
-            "specifier": specifier,
-            "marker": marker,
-            "extras": extras,
-            "parse_status": status,
-            "parse_error": error,
-        }
-    )
-
-
-def safe_literal(node: ast.AST, environment: dict[str, Any]) -> Any:
-    if isinstance(node, ast.Name) and node.id in environment:
-        return environment[node.id]
-    try:
-        return ast.literal_eval(node)
-    except (ValueError, TypeError, SyntaxError, MemoryError, RecursionError):
-        return None
-
-
-def extract_setup_py(
-    text: str, snapshot: dict[str, str], source_file: str, dependency_rows: list[dict[str, str]]
-) -> tuple[list[str], list[str]]:
-    issues: list[str] = []
-    python_constraints: list[str] = []
-    try:
-        tree = ast.parse(text, filename=source_file)
-    except SyntaxError as exc:
-        return [], [f"setup_py_syntax:{exc.lineno}:{exc.msg}"]
-    environment: dict[str, Any] = {}
-    for node in tree.body:
-        if isinstance(node, (ast.Assign, ast.AnnAssign)):
-            target = node.targets[0] if isinstance(node, ast.Assign) and node.targets else node.target
-            value_node = node.value
-            if isinstance(target, ast.Name) and value_node is not None:
-                value = safe_literal(value_node, environment)
-                if value is not None:
-                    environment[target.id] = value
-    setup_calls = [
-        node for node in ast.walk(tree)
-        if isinstance(node, ast.Call)
-        and ((isinstance(node.func, ast.Name) and node.func.id == "setup")
-             or (isinstance(node.func, ast.Attribute) and node.func.attr == "setup"))
-    ]
-    if not setup_calls:
-        return [], ["setup_call_not_found"]
-    call = setup_calls[-1]
-    keyword_values = {kw.arg: safe_literal(kw.value, environment) for kw in call.keywords if kw.arg}
-    install_requires = keyword_values.get("install_requires")
-    if isinstance(install_requires, str):
-        install_requires = [line.strip() for line in install_requires.splitlines() if line.strip()]
-    if isinstance(install_requires, (list, tuple)):
-        for value in install_requires:
-            add_dependency(dependency_rows, snapshot, source_file, "setup_py", "runtime", value)
-    elif "install_requires" in keyword_values:
-        issues.append("setup_py_install_requires_nonliteral")
-    extras = keyword_values.get("extras_require")
-    if isinstance(extras, dict):
-        for group, values in extras.items():
-            if isinstance(values, str):
-                values = [line.strip() for line in values.splitlines() if line.strip()]
-            if isinstance(values, (list, tuple)):
-                for value in values:
-                    add_dependency(dependency_rows, snapshot, source_file, "setup_py", f"optional:{group}", value)
-    elif "extras_require" in keyword_values:
-        issues.append("setup_py_extras_require_nonliteral")
-    py_constraint = keyword_values.get("python_requires")
-    if isinstance(py_constraint, str):
-        python_constraints.append(f"{source_file}:{py_constraint}")
-    return python_constraints, issues
-
-
-def extract_pyproject(
-    text: str, snapshot: dict[str, str], source_file: str, dependency_rows: list[dict[str, str]]
-) -> tuple[list[str], list[str], list[str]]:
-    backends: list[str] = []
-    python_constraints: list[str] = []
-    issues: list[str] = []
-    try:
-        data = tomllib.loads(text)
-    except Exception as exc:
-        return [], [], [f"pyproject_parse:{type(exc).__name__}:{str(exc)[:200]}"]
-    build = data.get("build-system") or {}
-    if isinstance(build, dict):
-        if build.get("build-backend"):
-            backends.append(str(build["build-backend"]))
-        for value in build.get("requires") or []:
-            add_dependency(dependency_rows, snapshot, source_file, "pep517", "build", value)
-    project = data.get("project") or {}
-    if isinstance(project, dict):
-        if project.get("requires-python"):
-            python_constraints.append(f"{source_file}:{project['requires-python']}")
-        for value in project.get("dependencies") or []:
-            add_dependency(dependency_rows, snapshot, source_file, "pep621", "runtime", value)
-        optional = project.get("optional-dependencies") or {}
-        if isinstance(optional, dict):
-            for group, values in optional.items():
-                for value in values or []:
-                    add_dependency(dependency_rows, snapshot, source_file, "pep621", f"optional:{group}", value)
-    poetry = ((data.get("tool") or {}).get("poetry") or {}) if isinstance(data.get("tool") or {}, dict) else {}
-    if isinstance(poetry, dict):
-        dependencies = poetry.get("dependencies") or {}
-        if isinstance(dependencies, dict):
-            for name, value in dependencies.items():
-                if str(name).lower() == "python":
-                    python_constraints.append(f"{source_file}:{value}")
-                    continue
-                if isinstance(value, str):
-                    raw = f"{name}{value if value != '*' else ''}"
-                elif isinstance(value, dict):
-                    version = value.get("version", "")
-                    raw = f"{name}{version if version != '*' else ''}"
-                else:
-                    raw = str(name)
-                add_dependency(dependency_rows, snapshot, source_file, "poetry", "runtime", raw)
-        groups = ((poetry.get("group") or {}) if isinstance(poetry.get("group") or {}, dict) else {})
-        for group_name, group_data in groups.items():
-            values = group_data.get("dependencies") or {} if isinstance(group_data, dict) else {}
-            for name, value in values.items():
-                version = value if isinstance(value, str) else value.get("version", "") if isinstance(value, dict) else ""
-                add_dependency(
-                    dependency_rows, snapshot, source_file, "poetry_group",
-                    "development" if group_name == "dev" else f"optional:{group_name}",
-                    f"{name}{version if version != '*' else ''}",
-                )
-    return sorted(set(backends)), sorted(set(python_constraints)), issues
-
-
-def extract_setup_cfg(
-    text: str, snapshot: dict[str, str], source_file: str, dependency_rows: list[dict[str, str]]
-) -> tuple[list[str], list[str]]:
-    parser = configparser.ConfigParser(interpolation=None)
-    try:
-        parser.read_string(text)
-    except Exception as exc:
-        return [], [f"setup_cfg_parse:{type(exc).__name__}:{str(exc)[:200]}"]
-    python_constraints: list[str] = []
-    if parser.has_option("options", "python_requires"):
-        python_constraints.append(f"{source_file}:{parser.get('options', 'python_requires').strip()}")
-    if parser.has_option("options", "install_requires"):
-        for line in parser.get("options", "install_requires").splitlines():
-            add_dependency(dependency_rows, snapshot, source_file, "setup_cfg", "runtime", line)
-    if parser.has_section("options.extras_require"):
-        for group, raw_values in parser.items("options.extras_require"):
-            for line in raw_values.splitlines():
-                add_dependency(dependency_rows, snapshot, source_file, "setup_cfg", f"optional:{group}", line)
-    return python_constraints, []
-
-
-def extract_environment_yml(
-    text: str, snapshot: dict[str, str], source_file: str, dependency_rows: list[dict[str, str]]
-) -> tuple[list[str], list[str]]:
-    if yaml is None:
-        return [], ["pyyaml_unavailable"]
-    try:
-        data = yaml.safe_load(text) or {}
-    except Exception as exc:
-        return [], [f"environment_yaml_parse:{type(exc).__name__}:{str(exc)[:200]}"]
-    python_constraints: list[str] = []
-    dependencies = data.get("dependencies") or [] if isinstance(data, dict) else []
-    for value in dependencies:
-        if isinstance(value, str):
-            if re.match(r"^python(?:\s|[<>=!~])", value, flags=re.IGNORECASE):
-                python_constraints.append(f"{source_file}:{value}")
-            else:
-                add_dependency(dependency_rows, snapshot, source_file, "conda_environment", "runtime", value)
-        elif isinstance(value, dict):
-            for group, items in value.items():
-                for item in items or []:
-                    add_dependency(dependency_rows, snapshot, source_file, f"conda_{group}", "runtime", item)
-    return python_constraints, []
 
 
 def package_source_files(names: list[str]) -> list[str]:
@@ -547,14 +449,16 @@ def literal_all(tree: ast.Module) -> set[str] | None:
 
 def extract_api_symbols(
     view: ArchiveView, snapshot: dict[str, str], validation_rows: list[dict[str, str]]
-) -> tuple[list[dict[str, str]], int, int]:
+) -> tuple[list[dict[str, str]], int, int, int]:
     raw_rows: list[dict[str, str]] = []
     parse_failures = 0
+    unread = 0
     source_files = package_source_files(view.names)
     for source_file in source_files:
         text = view.texts.get(source_file)
         if text is None:
             parse_failures += 1
+            unread += 1
             validation_rows.append(validation_row(snapshot, "api_source_read", "error", source_file, "source_text_unavailable"))
             continue
         try:
@@ -618,7 +522,7 @@ def extract_api_symbols(
         first["decorators"] = json_text(sorted({item for row in variants for item in json.loads(row["decorators"])}))
         first["variant_count"] = str(len(variants))
         result.append(first)
-    return result, len(source_files), parse_failures
+    return result, len(source_files), parse_failures, unread
 
 
 def api_row(
@@ -656,9 +560,17 @@ def validation_row(snapshot: dict[str, str], check: str, status: str, evidence: 
     }
 
 
-def extract_snapshot(
-    snapshot: dict[str, str], validation_rows: list[dict[str, str]]
-) -> tuple[dict[str, str], list[dict[str, str]], list[dict[str, str]]]:
+@dataclass
+class SnapshotExtraction:
+    structure: dict[str, str]
+    dependency_rows: list[dict[str, str]]
+    api_rows: list[dict[str, str]]
+    declaration_rows: list[dict[str, str]]
+    identity: dict[str, str]
+    member_digests: dict[str, tuple[int, str]]
+
+
+def extract_snapshot(snapshot: dict[str, str], validation_rows: list[dict[str, str]]) -> SnapshotExtraction:
     archive_path = Path(snapshot["local_archive_path"])
     actual_sha = sha256_file(archive_path)
     if actual_sha != snapshot["archive_sha256"]:
@@ -671,43 +583,20 @@ def extract_snapshot(
         validation_rows.append(validation_row(snapshot, "archive_paths", "pass", archive_evidence, "0 suspicious paths"))
     validation_rows.append(validation_row(snapshot, "archive_sha256", "pass", archive_evidence, actual_sha))
 
-    dependency_rows: list[dict[str, str]] = []
-    parser_issues: list[str] = []
-    python_constraints: list[str] = []
-    build_backends: list[str] = []
-    packaging_files: list[str] = []
-    for name, text in sorted(view.texts.items()):
-        base = PurePosixPath(name).name.lower()
-        if len(PurePosixPath(name).parts) != 1:
-            continue
-        if base == "pyproject.toml":
-            packaging_files.append(name)
-            backends, constraints, issues = extract_pyproject(text, snapshot, name, dependency_rows)
-            build_backends.extend(backends)
-            python_constraints.extend(constraints)
-            parser_issues.extend(issues)
-        elif base == "setup.cfg":
-            packaging_files.append(name)
-            constraints, issues = extract_setup_cfg(text, snapshot, name, dependency_rows)
-            python_constraints.extend(constraints)
-            parser_issues.extend(issues)
-        elif base == "setup.py":
-            packaging_files.append(name)
-            constraints, issues = extract_setup_py(text, snapshot, name, dependency_rows)
-            python_constraints.extend(constraints)
-            parser_issues.extend(issues)
-        elif base.startswith("requirements") and base.endswith((".txt", ".in")):
-            packaging_files.append(name)
-            group = dependency_group_for_requirements(name)
-            for line in text.splitlines():
-                add_dependency(dependency_rows, snapshot, name, "requirements", group, line)
-        elif base in {"environment.yml", "environment.yaml"}:
-            packaging_files.append(name)
-            constraints, issues = extract_environment_yml(text, snapshot, name, dependency_rows)
-            python_constraints.extend(constraints)
-            parser_issues.extend(issues)
+    declarations = extract_declarations(snapshot, view.names, view.texts, view.unread_reasons())
+    dependency_status, dependency_reasons = declarations.dependency_observation_status()
+    for row in declarations.field_rows:
+        if row["observation_status"] not in {"extracted", "confirmed_absent"}:
+            validation_rows.append(
+                validation_row(snapshot, "declaration_observation", "warning",
+                               f"{row['source_file']}:{row['field']}", f"{row['observation_status']}:{row['detail']}")
+            )
+    pyproject_failed = any(
+        row["source_kind"] == "pyproject" and row["observation_status"] == "parse_failure"
+        for row in declarations.field_rows
+    )
 
-    api_rows, source_file_count, ast_parse_failures = extract_api_symbols(view, snapshot, validation_rows)
+    api_rows, source_file_count, ast_parse_failures, unread_sources = extract_api_symbols(view, snapshot, validation_rows)
     source_lines = sum(len(view.texts[name].splitlines()) for name in package_source_files(view.names) if name in view.texts)
     lower_names = [name.lower() for name in view.names]
     root_names = root_basenames(view.names)
@@ -750,12 +639,13 @@ def extract_snapshot(
         "link_member_count": str(view.link_member_count),
         "duplicate_normalized_member_count": str(view.duplicate_normalized_count),
         "skipped_large_text_count": str(view.skipped_large_text_count),
-        "packaging_files": json_text(sorted(set(packaging_files))),
-        "build_backends": json_text(sorted(set(build_backends))),
-        "python_constraints": json_text(sorted(set(python_constraints))),
-        "declared_dependency_record_count": str(len(dependency_rows)),
-        "unparsed_dependency_record_count": str(sum(row["parse_status"] == "unparsed" for row in dependency_rows)),
+        "packaging_files": json_text(sorted(set(declarations.declaration_files))),
+        "build_backends": json_text(sorted(set(declarations.build_backends))),
+        "python_constraints": json_text(sorted(set(declarations.python_constraints))),
+        "declared_dependency_record_count": str(len(declarations.dependency_rows)),
+        "unparsed_dependency_record_count": str(sum(row["parse_status"] == "unparsed" for row in declarations.dependency_rows)),
         "source_python_file_count": str(source_file_count),
+        "source_python_unread_file_count": str(unread_sources),
         "source_python_line_count": str(source_lines),
         "ast_parse_failure_count": str(ast_parse_failures),
         "syntactic_api_symbol_count": str(len(api_rows)),
@@ -769,24 +659,37 @@ def extract_snapshot(
         "code_of_conduct": str(governance["code_of_conduct"]).lower(),
         "security_policy": str(governance["security_policy"]).lower(),
         "changelog": str(governance["changelog"]).lower(),
-        "dependency_parse_complete": str(not parser_issues and not any(row["parse_status"] == "unparsed" for row in dependency_rows)).lower(),
-        "api_parse_complete": str(ast_parse_failures == 0 and view.skipped_large_text_count == 0).lower(),
-        "parser_issues": json_text(sorted(set(parser_issues))),
+        "archive_listing_status": "complete",
+        "dependency_observation_status": dependency_status,
+        "dependency_incomplete_reasons": json_text(dependency_reasons),
+        "python_constraint_observation_status": declarations.python_constraint_observation_status(),
+        "build_backend_observation_status": "incomplete" if pyproject_failed else "complete",
+        "source_line_observation_status": "incomplete" if unread_sources else "complete",
+        "api_observation_status": "incomplete" if ast_parse_failures else "complete",
         "parser_version": PARSER_VERSION,
         "third_party_code_executed": "false",
     }
-    for issue in sorted(set(parser_issues)):
-        validation_rows.append(validation_row(snapshot, "metadata_parse", "warning", "", issue))
-    return structure, dependency_rows, api_rows
+    mtime_mode, mtime_uniform = view.member_mtime_mode()
+    identity = {
+        "content_tree_sha256": view.content_tree_sha256(),
+        "content_member_count": str(len(view.member_digests)),
+        "member_mtime_utc_mode": mtime_mode,
+        "member_mtime_uniform": mtime_uniform,
+    }
+    return SnapshotExtraction(structure, declarations.dependency_rows, api_rows, declarations.field_rows,
+                              identity, view.member_digests)
 
 
 def aggregate_dependencies(rows: list[dict[str, str]]) -> dict[str, tuple[str, str]]:
     grouped: dict[str, dict[str, set[str]]] = defaultdict(lambda: {"values": set(), "evidence": set()})
     for row in rows:
-        if not row["normalized_name"] or not row["parse_status"].startswith("parsed"):
+        if not row["normalized_name"] or row["parse_status"] not in PARSED_STATUSES:
             continue
         key = f"{row['dependency_group']}|{row['normalized_name']}"
-        semantic = json_text({"specifier": row["specifier"], "marker": row["marker"], "extras": row["extras"]})
+        semantic = json_text({
+            "specifier": row["specifier"], "marker": row["marker"], "extras": row["extras"],
+            "attributes": json.loads(row["attributes"]) if row["attributes"] else {},
+        })
         grouped[key]["values"].add(semantic)
         grouped[key]["evidence"].add(f"{row['source_file']}:{row['raw_declaration']}")
     return {
@@ -844,15 +747,68 @@ def delta_rows_for_pair(
     return rows
 
 
+COMPLETE = "complete"
+# Spec Section 6: the observation status that governs each compared feature.
+STRUCTURE_LIST_STATUS = {
+    "packaging_files": "archive_listing_status",
+    "build_backends": "build_backend_observation_status",
+    "python_constraints": "python_constraint_observation_status",
+    "ci_providers": "archive_listing_status",
+}
+STRUCTURE_SCALAR_STATUS = {
+    "source_python_file_count": "archive_listing_status",
+    "source_python_line_count": "source_line_observation_status",
+    "test_python_file_count": "archive_listing_status",
+    "ci_workflow_file_count": "archive_listing_status",
+    "citation_cff": "archive_listing_status",
+    "codemeta": "archive_listing_status",
+    "zenodo_metadata": "archive_listing_status",
+    "contributing": "archive_listing_status",
+    "code_of_conduct": "archive_listing_status",
+    "security_policy": "archive_listing_status",
+    "changelog": "archive_listing_status",
+}
+
+
+def comparison_status(publication: dict[str, str], endpoint: dict[str, str], status_field: str) -> str:
+    def complete(row: dict[str, str]) -> bool:
+        value = row[status_field]
+        return value == COMPLETE or (status_field == "dependency_observation_status" and value == "no_declaration_file")
+    return "comparable" if complete(publication) and complete(endpoint) else "incomplete_observation"
+
+
+def parse_date(value: str) -> datetime | None:
+    value = (value or "").strip()
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
+
+
+def days_between(start: str, end: str) -> str:
+    first, second = parse_date(start), parse_date(end)
+    if first is None or second is None:
+        return ""
+    return str((second.date() - first.date()).days)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--candidates", default="data/candidate_frame_v0.1/pilot_candidates.csv")
     parser.add_argument("--publication-inspection", default="data/candidate_frame_v0.1/archive_static_inspection.csv")
     parser.add_argument("--publication-inventory", default="")
+    parser.add_argument("--linkage-ledger", default="", help="archive_linkage_ledger.csv for archive publication dates")
     parser.add_argument("--publication-cache", default="data/raw/zenodo_archives")
     parser.add_argument("--endpoint-resolution", default="data/pilot_v0.2/endpoint_resolution.csv")
     parser.add_argument("--endpoint-cache", default="data/raw/endpoint_archives")
+    parser.add_argument("--endpoint-as-of", default="2026-08-14", help="date the endpoint policy refers to")
     parser.add_argument("--output-dir", default="data/pilot_v0.2/tables")
+    parser.add_argument("--member-manifest", default="", help="optional .csv.gz path for per-member content digests")
+    parser.add_argument("--archive-paths-out", default="",
+                        help="optional local-only CSV mapping snapshot_id to the archive path used")
     args = parser.parse_args()
 
     candidates = {row["doi"]: row for row in csv.DictReader(Path(args.candidates).open(encoding="utf-8-sig", newline=""))}
@@ -866,6 +822,12 @@ def main() -> int:
         }
         selected_publication_key = {
             doi: file_key for doi, file_key in publication_inventory
+        }
+    linkage: dict[str, dict[str, str]] = {}
+    if args.linkage_ledger:
+        linkage = {
+            row["scholarly_doi"]: row
+            for row in csv.DictReader(Path(args.linkage_ledger).open(encoding="utf-8-sig", newline=""))
         }
     publication_groups: dict[str, list[dict[str, str]]] = defaultdict(list)
     for row in csv.DictReader(Path(args.publication_inspection).open(encoding="utf-8-sig", newline="")):
@@ -881,12 +843,10 @@ def main() -> int:
     snapshot_rows: list[dict[str, str]] = []
     structure_rows: list[dict[str, str]] = []
     dependency_rows: list[dict[str, str]] = []
+    declaration_rows: list[dict[str, str]] = []
     api_rows: list[dict[str, str]] = []
     delta_rows: list[dict[str, str]] = []
-
-    by_project_dependencies: dict[tuple[str, str], list[dict[str, str]]] = defaultdict(list)
-    by_project_api: dict[tuple[str, str], list[dict[str, str]]] = defaultdict(list)
-    by_project_structure: dict[tuple[str, str], dict[str, str]] = {}
+    member_rows: list[tuple[str, str, int, str]] = []
 
     for endpoint in sorted(endpoints, key=lambda row: int(row["selection_rank"])):
         doi = endpoint["scholarly_doi"]
@@ -912,29 +872,6 @@ def main() -> int:
         pub_snapshot_id = f"{pid}__publication__{pub_sha[:16]}"
         end_snapshot_id = f"{pid}__endpoint__{end_sha[:16]}"
         pair_id = f"{pid}__{pub_sha[:12]}__{end_sha[:12]}"
-        project_rows.append(
-            {
-                "project_id": pid,
-                "pair_id": pair_id,
-                "scholarly_doi": doi,
-                "title": candidate["title"],
-                "publication_date": candidate["publication_date"],
-                "joss_url": candidate["joss_url"],
-                "input_repository_url": candidate["repository_url"],
-                "resolved_repository_url": endpoint["resolved_repository_url"],
-                "selection_rank": candidate["rank"],
-                "selected_role": candidate["selected_role"],
-                "publication_archive_doi": publication["archive_doi"],
-                "publication_snapshot_id": pub_snapshot_id,
-                "endpoint_snapshot_id": end_snapshot_id,
-                "endpoint_policy": endpoint["endpoint_policy"],
-                "endpoint_ref_type": endpoint["endpoint_ref_type"],
-                "endpoint_ref_name": endpoint["endpoint_ref_name"],
-                "endpoint_commit_sha": endpoint["endpoint_commit_sha"],
-                "repository_archived_at_endpoint": endpoint["repository_archived"],
-                "repository_license_spdx_at_endpoint": endpoint["repository_license_spdx"],
-            }
-        )
         snapshots = [
             {
                 "snapshot_id": pub_snapshot_id,
@@ -967,59 +904,94 @@ def main() -> int:
                 "upstream_checksum": "",
             },
         ]
+        extracted: dict[str, SnapshotExtraction] = {}
         for snapshot in snapshots:
-            snapshot_rows.append({**snapshot, "parser_version": PARSER_VERSION, "third_party_code_executed": "false"})
-            structure, dependencies, symbols = extract_snapshot(snapshot, validation_rows)
-            structure_rows.append(structure)
-            dependency_rows.extend(dependencies)
-            api_rows.extend(symbols)
-            by_project_dependencies[(pid, snapshot["snapshot_role"])].extend(dependencies)
-            by_project_api[(pid, snapshot["snapshot_role"])].extend(symbols)
-            by_project_structure[(pid, snapshot["snapshot_role"])] = structure
+            result = extract_snapshot(snapshot, validation_rows)
+            extracted[snapshot["snapshot_role"]] = result
+            snapshot_rows.append({**snapshot, **result.identity, "parser_version": PARSER_VERSION, "third_party_code_executed": "false"})
+            structure_rows.append(result.structure)
+            dependency_rows.extend(result.dependency_rows)
+            declaration_rows.extend(result.declaration_rows)
+            api_rows.extend(result.api_rows)
+            if args.member_manifest:
+                member_rows.extend(
+                    (snapshot["snapshot_id"], name, size, digest)
+                    for name, (size, digest) in sorted(result.member_digests.items())
+                )
 
-        pub_structure = by_project_structure[(pid, "publication")]
-        end_structure = by_project_structure[(pid, "endpoint")]
-        dependency_status = (
-            "comparable" if pub_structure["dependency_parse_complete"] == "true" and end_structure["dependency_parse_complete"] == "true"
-            else "partial_parse"
+        # Spec Section 1 and reviewer request: article, archive and endpoint dates with intervals.
+        endpoint_identity = extracted["endpoint"].identity
+        commit_time = endpoint_identity["member_mtime_utc_mode"] if endpoint_identity["member_mtime_uniform"] == "true" else ""
+        ref_date = endpoint["endpoint_release_published_at"] if endpoint["endpoint_ref_type"] == "release" else commit_time
+        archive_date = linkage.get(doi, {}).get("archive_publication_date", "")
+        project_rows.append(
+            {
+                "project_id": pid,
+                "pair_id": pair_id,
+                "scholarly_doi": doi,
+                "title": candidate["title"],
+                "publication_date": candidate["publication_date"],
+                "publication_year": candidate["publication_date"][:4],
+                "joss_url": candidate["joss_url"],
+                "input_repository_url": candidate["repository_url"],
+                "resolved_repository_url": endpoint["resolved_repository_url"],
+                "selection_rank": candidate["rank"],
+                "selected_role": candidate["selected_role"],
+                "publication_archive_doi": publication["archive_doi"],
+                "publication_archive_date": archive_date,
+                "publication_snapshot_id": pub_snapshot_id,
+                "endpoint_snapshot_id": end_snapshot_id,
+                "endpoint_policy": endpoint["endpoint_policy"],
+                "endpoint_as_of_date": args.endpoint_as_of,
+                "endpoint_resolution_mode": endpoint.get("resolution_mode") or "live",
+                "endpoint_resolved_at_utc": endpoint["resolved_at_utc"],
+                "endpoint_ref_type": endpoint["endpoint_ref_type"],
+                "endpoint_ref_name": endpoint["endpoint_ref_name"],
+                "endpoint_commit_sha": endpoint["endpoint_commit_sha"],
+                "endpoint_release_published_at": endpoint["endpoint_release_published_at"],
+                "endpoint_commit_time_utc": commit_time,
+                "endpoint_ref_date": ref_date,
+                "archive_to_article_days": days_between(archive_date, candidate["publication_date"]),
+                "article_to_endpoint_ref_days": days_between(candidate["publication_date"], ref_date),
+                "article_to_endpoint_as_of_days": days_between(candidate["publication_date"], args.endpoint_as_of),
+                "repository_archived_at_endpoint": endpoint["repository_archived"],
+                "repository_license_spdx_at_endpoint": endpoint["repository_license_spdx"],
+            }
         )
-        api_status = (
-            "comparable" if pub_structure["api_parse_complete"] == "true" and end_structure["api_parse_complete"] == "true"
-            else "partial_parse"
-        )
+
+        pub_structure = extracted["publication"].structure
+        end_structure = extracted["endpoint"].structure
         delta_rows.extend(
             delta_rows_for_pair(
                 pair_id, pid, "dependency", "declared_dependency",
-                aggregate_dependencies(by_project_dependencies[(pid, "publication")]),
-                aggregate_dependencies(by_project_dependencies[(pid, "endpoint")]),
-                dependency_status,
+                aggregate_dependencies(extracted["publication"].dependency_rows),
+                aggregate_dependencies(extracted["endpoint"].dependency_rows),
+                comparison_status(pub_structure, end_structure, "dependency_observation_status"),
             )
         )
         delta_rows.extend(
             delta_rows_for_pair(
                 pair_id, pid, "api", "syntactic_symbol",
-                aggregate_api(by_project_api[(pid, "publication")]),
-                aggregate_api(by_project_api[(pid, "endpoint")]),
-                api_status,
+                aggregate_api(extracted["publication"].api_rows),
+                aggregate_api(extracted["endpoint"].api_rows),
+                comparison_status(pub_structure, end_structure, "api_observation_status"),
             )
         )
-        for field in ("packaging_files", "build_backends", "python_constraints", "ci_providers"):
+        for field_name, status_field in STRUCTURE_LIST_STATUS.items():
             delta_rows.extend(
                 delta_rows_for_pair(
-                    pair_id, pid, "structure", field,
-                    set_features(pub_structure, field), set_features(end_structure, field), "comparable",
+                    pair_id, pid, "structure", field_name,
+                    set_features(pub_structure, field_name), set_features(end_structure, field_name),
+                    comparison_status(pub_structure, end_structure, status_field),
                 )
             )
-        scalar_fields = (
-            "source_python_file_count", "source_python_line_count", "test_python_file_count",
-            "ci_workflow_file_count", "citation_cff", "codemeta", "zenodo_metadata",
-            "contributing", "code_of_conduct", "security_policy", "changelog",
-        )
-        for field in scalar_fields:
+        for field_name, status_field in STRUCTURE_SCALAR_STATUS.items():
             delta_rows.extend(
                 delta_rows_for_pair(
                     pair_id, pid, "structure", "scalar",
-                    {field: (pub_structure[field], field)}, {field: (end_structure[field], field)}, "comparable",
+                    {field_name: (pub_structure[field_name], field_name)},
+                    {field_name: (end_structure[field_name], field_name)},
+                    comparison_status(pub_structure, end_structure, status_field),
                 )
             )
 
@@ -1027,6 +999,7 @@ def main() -> int:
     snapshot_rows.sort(key=lambda row: (row["project_id"], row["snapshot_role"]))
     structure_rows.sort(key=lambda row: (row["project_id"], row["snapshot_role"]))
     dependency_rows.sort(key=lambda row: (row["project_id"], row["snapshot_role"], row["dependency_group"], row["normalized_name"], row["source_file"], row["raw_declaration"]))
+    declaration_rows.sort(key=lambda row: (row["project_id"], row["snapshot_role"], row["source_file"], row["field"]))
     api_rows.sort(key=lambda row: (row["project_id"], row["snapshot_role"], row["symbol_key"]))
     delta_rows.sort(key=lambda row: (row["project_id"], row["family"], row["feature_group"], row["feature_key"]))
     validation_rows.sort(key=lambda row: (row["project_id"], row["snapshot_role"], row["check_name"], row["evidence"]))
@@ -1041,7 +1014,11 @@ def main() -> int:
     write_csv(output_dir / "dependency_records.csv", dependency_rows, [
         "snapshot_id", "project_id", "snapshot_role", "source_file", "source_kind",
         "dependency_group", "normalized_name", "raw_declaration", "specifier",
-        "marker", "extras", "parse_status", "parse_error",
+        "marker", "extras", "attributes", "parse_status", "parse_error",
+    ])
+    write_csv(output_dir / "declaration_source_records.csv", declaration_rows, [
+        "snapshot_id", "project_id", "snapshot_role", "source_file", "source_kind", "field",
+        "field_kind", "observation_status", "entry_count", "unparsed_entry_count", "detail",
     ])
     write_csv(output_dir / "api_symbol_records.csv", api_rows, [
         "snapshot_id", "project_id", "snapshot_role", "symbol_key", "source_file",
@@ -1056,11 +1033,24 @@ def main() -> int:
     write_csv(output_dir / "validation_records.csv", validation_rows, [
         "snapshot_id", "project_id", "snapshot_role", "check_name", "status", "evidence", "detail",
     ])
+    if args.archive_paths_out:
+        write_csv(Path(args.archive_paths_out),
+                  [{"snapshot_id": row["snapshot_id"], "local_archive_path": row["local_archive_path"]} for row in snapshot_rows])
+    if args.member_manifest:
+        manifest_path = Path(args.member_manifest)
+        manifest_path.parent.mkdir(parents=True, exist_ok=True)
+        # mtime=0 and an empty stored filename keep the gzip bytes reproducible.
+        with manifest_path.open("wb") as target, \
+                gzip.GzipFile(filename="", mode="wb", fileobj=target, mtime=0) as raw, \
+                io.TextIOWrapper(raw, encoding="utf-8", newline="") as handle:
+            writer = csv.writer(handle)
+            writer.writerow(["snapshot_id", "member_path", "member_bytes", "member_sha256"])
+            writer.writerows(sorted(member_rows))
 
     table_names = [
         "project_records.csv", "snapshot_records.csv", "structure_records.csv",
-        "dependency_records.csv", "api_symbol_records.csv", "pair_delta_records.csv",
-        "validation_records.csv",
+        "dependency_records.csv", "declaration_source_records.csv", "api_symbol_records.csv",
+        "pair_delta_records.csv", "validation_records.csv",
     ]
     input_paths = {
         "candidates": Path(args.candidates),
@@ -1069,13 +1059,17 @@ def main() -> int:
     }
     if args.publication_inventory:
         input_paths["publication_inventory"] = Path(args.publication_inventory)
+    if args.linkage_ledger:
+        input_paths["linkage_ledger"] = Path(args.linkage_ledger)
     manifest = {
         "schema_version": SCHEMA_VERSION,
         "parser_version": PARSER_VERSION,
+        "extraction_specification": "docs/extraction_specification_v0.3.md",
         "projects": len(project_rows),
         "snapshots": len(snapshot_rows),
         "structure_records": len(structure_rows),
         "dependency_records": len(dependency_rows),
+        "declaration_source_records": len(declaration_rows),
         "api_symbol_records": len(api_rows),
         "pair_delta_records": len(delta_rows),
         "validation_records": len(validation_rows),

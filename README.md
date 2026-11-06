@@ -1,89 +1,77 @@
 # Publication-anchored paired snapshots of Python research software
 
-Version `v0.2.4` is the data, code, figure and manuscript package for a
-Scientific Data Data Descriptor. It links the immutable software archive
-associated with a Journal of Open Source Software (JOSS) article to a later
-immutable GitHub endpoint for 345 Python projects published in 2018-2020.
+Version `v0.3.0` links the source archive associated with a Journal of Open Source
+Software (JOSS) article to the repository endpoint selected as of 14 August 2026.
+The frame covers 1,671 articles published in 2018–2022 and yields 692 paired
+Python research-software projects. Source evidence and observation status make
+the field-level records reusable for studies of dependencies, syntactic
+interfaces, packaging, CI and citation metadata after publication.
 
-## Released data object
+## Data object
 
-Each resolved project has one publication snapshot and one endpoint snapshot.
-The seven linked core tables contain:
+The eight core CSV tables contain 692 projects, 1,384 snapshots, 27,764 dependency
+records, 279,728 syntactic interface records, 11,167 declaration-source records,
+214,440 pair-delta records and 5,550 validation records. Every comparison retains
+its two values, source evidence, delta type and comparison status. Field-level
+observation states distinguish confirmed absence from incomplete extraction.
 
-- 345 project pairs and 690 immutable snapshots;
-- 9,074 declared-dependency records;
-- 121,085 syntactic-interface records;
-- 95,787 evidence-linked pair-delta records; and
-- 2,876 validation records.
+## Package contents
 
-Selection, publication-archive and endpoint-resolution ledgers retain excluded
-and unresolved records with reason codes. Static extraction never installs,
-imports or executes indexed third-party software. Syntactic differences are not
-runtime compatibility results, dependency declarations are not solved
-environments, and the bounded JOSS/Python cohort is not a prevalence or
-software-quality estimate.
+- `data/census_v0.3/tables/` — eight core tables and their extraction manifest.
+- `data/census_v0.3/summary_tables/` — summaries with explicit denominators,
+  observation rules and publication-year strata.
+- `data/census_v0.3/dictionary/` — human-readable field dictionary and
+  Supplementary Table 1, including definitions, types, allowed values and examples.
+- `data/census_v0.3/reference_audit/` — signed annotations, item-level comparisons
+  and the findings log; third-party source exports are excluded.
+- `data/census_v0.3/release_comparison/` — machine-readable comparison with v0.2.4.
+- `data/census_frame_v0.3/` — screening, archive linkage, inventory, inspection
+  and eligibility ledgers, retaining exclusions and unresolved cases.
+- `data/candidate_frame_v0.3/` — frozen Crossref frame and acquisition metadata.
+- `schema/` — machine-readable schemas; `docs/` — the extraction specification.
+- `scripts/` and `tests/` — construction, audit, verification and regression code.
+- `figures/census_v0.3/` — the four figures and their source-data exports.
+- `CHANGES_v0.2.4_to_v0.3.0.md` — corrections on the original cohort, followed by
+  the separate extension of the frame.
 
-## What is included
+## Verification
 
-- `data/census_v0.2/tables/`: seven canonical CSV tables and extraction manifest
-- `data/census_v0.2/summary_tables/`: denominator-aware descriptive summaries
-- `data/census_frame_v0.2/`: frozen screening, archive and endpoint ledgers
-- `schema/`: the data-package descriptor and controlled vocabularies
-- `figures/census_v0.2/`: four publication figures and source-data CSV files
-- `scripts/`: acquisition, extraction, audit, validation and figure code
-- `tests/`: packaged unit and contract tests
-- `manuscript/`: the exact LaTeX source, bibliography, figures and PDF
-- `REPRODUCE.md`: verification and archive-reacquisition instructions
-
-Raw Zenodo, Figshare and GitHub source archives are not redistributed. The
-released snapshot records retain the archive DOI or immutable commit, source
-URL, provider checksum where available, local SHA-256 and byte size needed to
-reacquire and verify those inputs under the original providers' terms.
-
-## Verify this release
-
-After downloading and extracting the release ZIP, enter the extracted package
-directory and run:
+From an extracted v0.3.0 release package, run:
 
 ```text
-cd release_candidate_v0.2
-python scripts/verify_release_candidate.py --root .
+python scripts/verify_release_v03.py --root .
 python -B -m pytest -q tests
 ```
 
-From a Git clone, run:
+The verifier checks every managed file hash, core-table counts and hashes,
+schema coverage, validation results and the completed source-based audit. It
+requires no source archive or network access. See `REPRODUCE.md` for regeneration
+from retained archives and reacquisition under the original providers' terms.
 
-```text
-python scripts/verify_release_candidate.py --root .
-python -B -m pytest -q tests
-```
+## Validation and interpretation
 
-The expected self-check result is `PASS` for 138 managed files. The reference
-environment is Python 3.12.10; exact versions and a hash-pinned Windows lockfile
-are included.
+The canonical validation passed and regeneration from retained input archives
+reproduced the core tables byte for byte. Independent reconstruction covered
+40 projects and 80 snapshots. The source-based audit covered 31 projects,
+62 snapshots and 3,321 items, with all final items agreeing after correction.
+The released audit documents the defects detected and the corrections made.
 
-## Validation evidence
+The static pipeline never installs, imports or executes third-party software.
+Interface records describe syntax; dependency records describe declarations.
+Observation status governs whether a recorded absence or zero is interpretable.
+Dates, interval fields and year strata support comparisons across publication
+cohorts with different lengths of exposure.
 
-- strict schema, key, vocabulary, archive-hash, path-safety and no-execution checks;
-- a byte-identical rerun of the canonical tables from cached immutable inputs;
-- an independent 24-project, 48-snapshot semantic audit reproducing 22,065 API
-  symbol keys, 658 dependency records and all audited structure values; and
-- a separate 20-project reconstruction matching 40 snapshot hashes and locating
-  38 sampled evidence paths.
+## Citation, access and licenses
 
-These are bounded reconstruction and exact-agreement checks. They are not a
-population parser-accuracy estimate or a runtime test.
+The versioned data and code are preserved through the GitHub–Zenodo integration.
+The archival record supplies the version DOI and anonymous download. The release
+page links to that record and provides the complete derived-data archive:
+https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.3.0.
+`CITATION.cff` supplies the author, title and version metadata. The public package
+contains data, construction code, validation evidence and figures. Manuscript
+and referee-response submission documents are maintained separately.
 
-## Access, citation and licences
-
-The public GitHub repository and tagged release provide anonymous first-round
-review access. A formal data-repository record and archived code DOI will be
-added before the second review round; no DOI is inferred in this package.
-
-- Derived tabular data: CC BY 4.0 (`LICENSE-DATA`)
-- Custom code: MIT (`LICENSE-CODE`)
-- Third-party source archives: not redistributed and not relicensed
-
-Use `CITATION.cff` for versioned citation metadata. The repository is
-https://github.com/bianyanbo44-afk/reprodecay-scidata and the release page is
-https://github.com/bianyanbo44-afk/reprodecay-scidata/releases/tag/v0.2.4.
+- Derived data — CC BY 4.0 (`LICENSE-DATA`).
+- Custom code — MIT (`LICENSE-CODE`).
+- Third-party source archives — reacquired from their providers; not redistributed.

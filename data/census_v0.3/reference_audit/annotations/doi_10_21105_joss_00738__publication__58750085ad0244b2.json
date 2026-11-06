@@ -1,0 +1,232 @@
+{
+ "snapshot_id": "doi_10_21105_joss_00738__publication__58750085ad0244b2",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "boltons",
+     ""
+    ],
+    [
+     "runtime",
+     "contextlib2",
+     ""
+    ],
+    [
+     "runtime",
+     "debtcollector",
+     ""
+    ],
+    [
+     "runtime",
+     "networkx",
+     ""
+    ],
+    [
+     "runtime",
+     "numpy",
+     ">=1.11"
+    ],
+    [
+     "runtime",
+     "prettytable",
+     ""
+    ],
+    [
+     "runtime",
+     "scipy",
+     ">=0.15.0"
+    ],
+    [
+     "runtime",
+     "six",
+     ">=1.4.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "requirements_lt33.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "contextlib2",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "requirements_optional.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "colorama",
+     ""
+    ],
+    [
+     "runtime",
+     "cython",
+     ""
+    ],
+    [
+     "runtime",
+     "hypothesis",
+     ">=3.16.0"
+    ],
+    [
+     "runtime",
+     "hypothesis",
+     "",
+     "numpy"
+    ],
+    [
+     "runtime",
+     "matplotlib",
+     ""
+    ],
+    [
+     "runtime",
+     "numdifftools",
+     ""
+    ],
+    [
+     "runtime",
+     "pint",
+     ""
+    ],
+    [
+     "runtime",
+     "python-ternary",
+     ""
+    ],
+    [
+     "runtime",
+     "scikit-learn",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "requirements_testing.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "test",
+     "coverage",
+     ""
+    ],
+    [
+     "test",
+     "codecov",
+     ""
+    ],
+    [
+     "test",
+     "hypothesis",
+     ">=3.56.2"
+    ],
+    [
+     "test",
+     "hypothesis",
+     "",
+     "numpy"
+    ],
+    [
+     "test",
+     "pytest",
+     ">=3.2"
+    ],
+    [
+     "test",
+     "pytest-cov",
+     ""
+    ],
+    [
+     "test",
+     "pytest-rerunfailures",
+     ""
+    ],
+    [
+     "test",
+     "pytest-xdist",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.install_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "unsupported_syntax",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "unsupported_syntax",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  }
+ ],
+ "python_constraints": [],
+ "build_backends": [],
+ "dependency_observation_status": "incomplete",
+ "api_module": {},
+ "notes": "setup() is called inside main(); install_requires and python_requires are local variables of main(), not module-level bindings, so they are not statically evaluable. requirements_optional.txt does not match any group keyword and is runtime. flit.ini is not a declaration source."
+}

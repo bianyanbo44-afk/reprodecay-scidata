@@ -1,0 +1,43 @@
+{
+  "schema_version": "0.3",
+  "status": "PASS",
+  "strict": false,
+  "archive_bytes_verified": true,
+  "failures": [],
+  "warnings": [
+    "endpoint_unresolved:5",
+    "extraction_incomplete:692/697",
+    "expected_static_parse_errors:221"
+  ],
+  "counts": {
+    "eligible_projects": 697,
+    "endpoint_records": 697,
+    "resolved_endpoints": 692,
+    "projects": 692,
+    "snapshots": 1384,
+    "structure_records": 1384,
+    "dependency_records": 27764,
+    "declaration_source_records": 11167,
+    "api_symbol_records": 279728,
+    "pair_delta_records": 214440,
+    "validation_records": 5550
+  },
+  "input_sha256": {
+    "data/census_frame_v0.3/archive_eligibility_ledger.csv": "935f388ce12b334134c3448ae71b823c0bf9e585a9efb834323a43bd06875a7d",
+    "data/census_frame_v0.3/archive_file_inventory.csv": "221803c304efa82a95765effb8e4845c479504b4fe079f2d5b25c58618d91533",
+    "data/census_frame_v0.3/archive_static_inspection.csv": "37fbc8d6aca0051beaf7db90781ce84c423a7dff5f0383cc50533b4dc54c37c9",
+    "data/census_frame_v0.3/provisional_eligible.csv": "2d4f4c5f06b9d65b5c898328c6d1fd57856fd274977137ab843f733ce9b28ec2",
+    "data/census_v0.3/endpoint_resolution.csv": "3019b80a24e4d7888023efa2623c352d8ad1b2639220fd27b58751f42ba4c29f",
+    "data/census_v0.3/endpoint_resolution_manifest.json": "78224c912e1874417913cb350034d6edf24ca02c89d765a1c10fba69405d222d",
+    "data/census_v0.3/tables/api_symbol_records.csv": "422d0dc7eccbc8025e3579dafd7d751103ccdd70ae4c2384f11cd5d48d05d2d6",
+    "data/census_v0.3/tables/declaration_source_records.csv": "9d87b51e55bc4a64d2c38110c9ed2ac459fab3d9b0d1807c8029623ab982ced8",
+    "data/census_v0.3/tables/dependency_records.csv": "170c514cfed2a24835f245e3165c0bda8aee6170b8cfaf0ee8a3615bef87c4d1",
+    "data/census_v0.3/tables/extraction_manifest.json": "3a990f9e6f697db16be5c3754c41c9a31f4b6cf52f8736df6b7fdff42c6536fd",
+    "data/census_v0.3/tables/pair_delta_records.csv": "80b349950c2cf4ce5e9e9a78a2903172221b29f4d168909612423e12a9d04d6d",
+    "data/census_v0.3/tables/project_records.csv": "2a97dbbc7bd23a6801c33f685103c10fd2645862f79165a01726daf5444a9c8a",
+    "data/census_v0.3/tables/snapshot_records.csv": "dedb399608219bcb525e866f3889ea4ccdd0f35351fe6dcbfd7313f865416a8b",
+    "data/census_v0.3/tables/structure_records.csv": "419bdd760d5ab982fe2b1f862c31200db810d32d8e5562557274f8f397a8532a",
+    "data/census_v0.3/tables/validation_records.csv": "4f64e3cc0b35518839cd7f3c34c630c410d5ed1ebeae6f6223351b6cf529609c"
+  },
+  "deterministic_rerun_byte_identical": true
+}

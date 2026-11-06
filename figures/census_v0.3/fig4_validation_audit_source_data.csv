@@ -1,0 +1,22 @@
+﻿agreeing,audit,checked,complete_pairs,observation_status,pairs,panel,proportion,snapshot_role,snapshots,snapshots_with_status_any_dependency_field,status_field,wilson_high,wilson_low
+,,,692,,692,a,1.0,,,,archive_listing_status,1.0,0.994479
+,,,692,,692,a,1.0,,,,build_backend_observation_status,1.0,0.994479
+,,,643,,692,a,0.929191,,,,python_constraint_observation_status,0.946027,0.907616
+,,,691,,692,a,0.998555,,,,source_line_observation_status,0.999745,0.99186
+,,,665,,692,a,0.960983,,,,api_observation_status,0.973048,0.943827
+,,,457,,692,a,0.660405,,,,dependency_observation_status,0.694717,0.624321
+,,,,extracted,,b,,publication,692,645,,,
+,,,,confirmed_absent,,b,,publication,692,616,,,
+,,,,extracted_partial,,b,,publication,692,34,,,
+,,,,dynamic_metadata,,b,,publication,692,0,,,
+,,,,unsupported_syntax,,b,,publication,692,191,,,
+,,,,parse_failure,,b,,publication,692,2,,,
+,,,,extracted,,b,,endpoint,692,667,,,
+,,,,confirmed_absent,,b,,endpoint,692,494,,,
+,,,,extracted_partial,,b,,endpoint,692,30,,,
+,,,,dynamic_metadata,,b,,endpoint,692,16,,,
+,,,,unsupported_syntax,,b,,endpoint,692,140,,,
+,,,,parse_failure,,b,,endpoint,692,1,,,
+2419,Independent re- implementation (dependency rows),2419,,,,c,1.0,,,,,,
+3321,Reference audit (annotated items),3321,,,,c,1.0,,,,,,
+342,Retrospective vs live endpoint (same commit),345,,,,c,0.991304,,,,,,

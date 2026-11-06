@@ -1,0 +1,156 @@
+{
+ "snapshot_id": "doi_10_21105_joss_02178__publication__b0c904bbede56708",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "setuptools",
+     ">=30.3.0"
+    ],
+    [
+     "build",
+     "wheel",
+     ""
+    ],
+    [
+     "build",
+     "setuptools-scm",
+     ">=3.3.1"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.install_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.tests_require",
+   "status": "extracted",
+   "entries": [
+    [
+     "test",
+     "pytest",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "coolprop",
+     "<7,>=6.4"
+    ],
+    [
+     "runtime",
+     "numpy",
+     "<2,>=1.13.3"
+    ],
+    [
+     "runtime",
+     "pandas",
+     "!=1.0.0,<2,>=0.19.2"
+    ],
+    [
+     "runtime",
+     "scipy",
+     "<2,>=0.19.1"
+    ],
+    [
+     "runtime",
+     "tabulate",
+     "<0.9,>=0.8.2"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require.dev",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:dev",
+     "pytest",
+     ""
+    ],
+    [
+     "optional:dev",
+     "sphinx",
+     ""
+    ],
+    [
+     "optional:dev",
+     "sphinx-rtd-theme",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require.dummy",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:dummy",
+     "tespy",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "setup.py:>=3.6, <3.9"
+ ],
+ "build_backends": [],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "pyproject.toml declares build requirements without a build backend. setup.cfg [options] declares only tests_require."
+}

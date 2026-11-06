@@ -1,0 +1,43 @@
+{
+  "schema_version": "0.2",
+  "endpoint_policy_version": "endpoint-resolution-v0.3.1",
+  "created_at_utc": "2026-11-01T13:05:41.438880+00:00",
+  "endpoint_snapshot_date": "2026-11-01",
+  "retrospective_as_of_utc": "2026-08-14T05:21:07Z",
+  "resolution_modes": {
+    "live": 345,
+    "retrospective_as_of": 352
+  },
+  "projects_attempted": 697,
+  "projects_resolved": 692,
+  "stable_release_endpoints": 657,
+  "default_branch_endpoints": 35,
+  "resolution_methods": {
+    "github_rest_api": 83,
+    "github_rest_api_as_of": 347,
+    "github_web_git_refs": 262
+  },
+  "third_party_code_executed": false,
+  "github_token_present": true,
+  "max_archive_bytes": 209715200,
+  "endpoint_resolution_sha256": "3019b80a24e4d7888023efa2623c352d8ad1b2639220fd27b58751f42ba4c29f",
+  "input_sha256": {
+    "candidates": "2d4f4c5f06b9d65b5c898328c6d1fd57856fd274977137ab843f733ce9b28ec2",
+    "publication_inspection": "37fbc8d6aca0051beaf7db90781ce84c423a7dff5f0383cc50533b4dc54c37c9",
+    "eligibility_ledger": "935f388ce12b334134c3448ae71b823c0bf9e585a9efb834323a43bd06875a7d"
+  },
+  "selection_role": "census_provisional",
+  "release_date_backfill": {
+    "ledger": "endpoint_release_date_backfill.csv",
+    "ledger_sha256": "e85d80fbe4dd500e246cc22fe45015bc5ae0748136fb66a189a935c0b3baa147",
+    "statuses": {
+      "filled": 248
+    },
+    "fetched_from_utc": "2026-11-01T16:02:40.358023Z",
+    "fetched_to_utc": "2026-11-01T16:08:52.514991Z",
+    "changed_columns": [
+      "endpoint_release_id",
+      "endpoint_release_published_at"
+    ]
+  }
+}

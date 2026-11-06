@@ -1,0 +1,254 @@
+{
+ "snapshot_id": "doi_10_21105_joss_04611__publication__eddf9a904e619aab",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "hydra-core",
+     ">=1.1.2"
+    ],
+    [
+     "runtime",
+     "hydra-colorlog",
+     ">=1.1.0"
+    ],
+    [
+     "runtime",
+     "numpy",
+     ">=1.19"
+    ],
+    [
+     "runtime",
+     "pandas",
+     ">=1.1"
+    ],
+    [
+     "runtime",
+     "scikit-learn",
+     ">=0.24"
+    ],
+    [
+     "runtime",
+     "humanfriendly",
+     ">=9"
+    ],
+    [
+     "runtime",
+     "shortuuid",
+     ">=1.0"
+    ],
+    [
+     "runtime",
+     "dataclasses",
+     ">=0.6"
+    ],
+    [
+     "runtime",
+     "types-dataclasses",
+     ">=0.6"
+    ],
+    [
+     "runtime",
+     "pyyaml",
+     ">=6"
+    ],
+    [
+     "runtime",
+     "types-pyyaml",
+     ">=6"
+    ],
+    [
+     "runtime",
+     "sqlalchemy",
+     ">=1"
+    ],
+    [
+     "runtime",
+     "wandb",
+     "==0.12.11"
+    ],
+    [
+     "runtime",
+     "featboost",
+     ""
+    ],
+    [
+     "runtime",
+     "infinite-selection",
+     ""
+    ],
+    [
+     "runtime",
+     "stability-selection",
+     ""
+    ],
+    [
+     "runtime",
+     "l2x-synthetic",
+     ">=2"
+    ],
+    [
+     "runtime",
+     "openml",
+     ">=0.12"
+    ],
+    [
+     "runtime",
+     "boruta",
+     ">=0.3"
+    ],
+    [
+     "runtime",
+     "scipy",
+     ">=1.5"
+    ],
+    [
+     "runtime",
+     "skfeature-chappers",
+     ">=1.0"
+    ],
+    [
+     "runtime",
+     "skrebate",
+     ">=0.62"
+    ],
+    [
+     "runtime",
+     "xgboost",
+     ">=1"
+    ],
+    [
+     "runtime",
+     "pytest-dependency",
+     ""
+    ],
+    [
+     "runtime",
+     "overrides",
+     ">=6"
+    ],
+    [
+     "runtime",
+     "protobuf",
+     "==3.20.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "hydra-core",
+     ">=1.1.2"
+    ],
+    [
+     "runtime",
+     "hydra-colorlog",
+     ">=1.1.0"
+    ],
+    [
+     "runtime",
+     "numpy",
+     ">=1.19"
+    ],
+    [
+     "runtime",
+     "pandas",
+     ">=1.1"
+    ],
+    [
+     "runtime",
+     "scikit-learn",
+     ">=0.24"
+    ],
+    [
+     "runtime",
+     "humanfriendly",
+     ">=9"
+    ],
+    [
+     "runtime",
+     "shortuuid",
+     ">=1.0"
+    ],
+    [
+     "runtime",
+     "overrides",
+     ">=6"
+    ],
+    [
+     "runtime",
+     "sqlalchemy",
+     ">=1"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "black",
+     "==21.12b0"
+    ],
+    [
+     "build",
+     "pytest-runner",
+     ">=5"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "extracted",
+   "entries": [
+    [
+     "test",
+     "pytest",
+     ">=6"
+    ],
+    [
+     "test",
+     "pytest-cov",
+     ">=3"
+    ],
+    [
+     "test",
+     "pytest-dependency",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "setup.py:>= 3.7"
+ ],
+ "build_backends": [],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "Three editable git URLs with #egg= names are dependencies named by the egg. The setup() call sits inside a with block and has literal arguments. Publication and endpoint files are identical."
+}

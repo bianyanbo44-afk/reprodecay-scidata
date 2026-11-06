@@ -1,0 +1,21 @@
+{
+  "combined_output": "../data/candidate_frame_v0.3/crossref_joss_2018_2022.json",
+  "combined_records": 1671,
+  "combined_sha256": "9f98fa3d37028ab80dbfc3d51930f38a5930e840ea4026625cff9825ff423034",
+  "created_at_utc": "2026-11-01T05:50:11.532112+00:00",
+  "extension_output": "../data/candidate_frame_v0.3/crossref_joss_2021_2022.json",
+  "extension_records": 731,
+  "extension_records_outside_window_by_published_date": [],
+  "extension_request_urls": [
+    "https://api.crossref.org/journals/2475-9066/works?filter=from-pub-date%3A2021-01-01%2Cuntil-pub-date%3A2022-12-31&rows=1000&select=DOI%2Ctitle%2Cpublished%2CURL%2Crelation%2Cresource%2Clicense&cursor=%2A"
+  ],
+  "extension_sha256": "9fc79888f359f186727ea934929e8f3fcf02b99abfade8f334bcbf269506827d",
+  "extension_window": {
+    "from_pub_date": "2021-01-01",
+    "until_pub_date": "2022-12-31"
+  },
+  "frozen_input": "../data/candidate_frame_v0.1/crossref_joss_2018_2020.json",
+  "frozen_input_sha256": "343eb098decc383477c33f8e7c5b9fa97e0b23c81e6410f85e7284a89cdb4ca9",
+  "frozen_records": 940,
+  "schema_version": "0.3"
+}

@@ -1,0 +1,50 @@
+{
+ "snapshot_id": "doi_10_21105_joss_01306__publication__a788532228f5958a",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "coverage",
+     ""
+    ],
+    [
+     "runtime",
+     "ddt",
+     ""
+    ],
+    [
+     "runtime",
+     "numpy",
+     ""
+    ],
+    [
+     "runtime",
+     "f90wrap",
+     ""
+    ],
+    [
+     "runtime",
+     "pymatgen",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup(**...)",
+   "status": "unsupported_syntax",
+   "entries": []
+  }
+ ],
+ "python_constraints": [],
+ "build_backends": [],
+ "dependency_observation_status": "incomplete",
+ "api_module": {},
+ "notes": "setup(**config2) is the last setup call. config2 = dict(config, **config_tort.todict()) is built inside the if __name__ == '__main__' block from a function result, so it is not statically evaluable and no setup field is confirmed absent."
+}

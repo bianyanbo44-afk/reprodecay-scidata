@@ -1,0 +1,151 @@
+{
+ "snapshot_id": "doi_10_21105_joss_03362__endpoint__2bb19684cd300c02",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "environment.yml",
+   "field": "dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "viennarna",
+     "==2.6.4"
+    ],
+    [
+     "runtime",
+     "setuptools",
+     ""
+    ],
+    [
+     "runtime",
+     "wheel",
+     ""
+    ],
+    [
+     "runtime",
+     "numpy",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "environment.yml",
+   "field": "dependencies.python",
+   "status": "extracted",
+   "entries": []
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "setuptools",
+     ""
+    ],
+    [
+     "build",
+     "wheel",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.install_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require.status",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:status",
+     "progress",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require.nice_text",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:nice_text",
+     "rich",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "extracted",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "environment.yml:python>=3.8.1",
+  "setup.py:>=3.8"
+ ],
+ "build_backends": [
+  "setuptools.build_meta"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "pyproject.toml has only [build-system]. setup.cfg has only [options.entry_points]."
+}

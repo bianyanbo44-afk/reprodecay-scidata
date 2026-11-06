@@ -1,0 +1,140 @@
+{
+ "snapshot_id": "doi_10_21105_joss_00501__publication__4f46583068bfdd02",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "requirements.txt",
+   "field": "requirements",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">=1.9.0"
+    ],
+    [
+     "runtime",
+     "scipy",
+     ">=0.9"
+    ],
+    [
+     "runtime",
+     "pandas",
+     ">=0.16.0"
+    ],
+    [
+     "runtime",
+     "scikit-learn",
+     ">=0.15.0"
+    ],
+    [
+     "runtime",
+     "statsmodels",
+     ">=0.6.0"
+    ],
+    [
+     "runtime",
+     "patsy",
+     ">=0.4.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.install_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.install_requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "numpy",
+     ">=1.8.0"
+    ],
+    [
+     "runtime",
+     "scipy",
+     ">=0.9"
+    ],
+    [
+     "runtime",
+     "pandas",
+     ">=0.15.0"
+    ],
+    [
+     "runtime",
+     "scikit-learn",
+     ">=0.15.0"
+    ],
+    [
+     "runtime",
+     "statsmodels",
+     ">=0.6.0"
+    ],
+    [
+     "runtime",
+     "patsy",
+     ">=0.4.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.py",
+   "field": "setup.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  }
+ ],
+ "python_constraints": [],
+ "build_backends": [],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "setup.cfg has no [options] section."
+}

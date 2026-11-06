@@ -1,0 +1,258 @@
+{
+  "status": "PASS",
+  "sampled_projects": 40,
+  "sampled_snapshots": 80,
+  "sample_strata": {
+    "parser_partial": 8,
+    "large_source": 8,
+    "high_churn": 7,
+    "default_branch": 8,
+    "extension_2021_2022": 8,
+    "complete_reference": 1
+  },
+  "located_archives": 80,
+  "missing_archives": [],
+  "api": {
+    "symbol_key": {
+      "expected": 39825,
+      "independent": 39825,
+      "agreement": 39825,
+      "agreement_rate": 1.0
+    },
+    "symbol_kind": {
+      "expected": 39825,
+      "independent": 39825,
+      "agreement": 39825,
+      "agreement_rate": 1.0
+    },
+    "source_file": {
+      "expected": 39825,
+      "independent": 39825,
+      "agreement": 39825,
+      "agreement_rate": 1.0
+    },
+    "line_start": {
+      "expected": 39825,
+      "independent": 39825,
+      "agreement": 39825,
+      "agreement_rate": 1.0
+    },
+    "signature": {
+      "expected": 39825,
+      "independent": 39825,
+      "agreement": 39825,
+      "agreement_rate": 1.0
+    },
+    "decorators": {
+      "expected": 39825,
+      "independent": 39825,
+      "agreement": 39825,
+      "agreement_rate": 1.0
+    },
+    "export_evidence": {
+      "expected": 39825,
+      "independent": 39825,
+      "agreement": 39825,
+      "agreement_rate": 1.0
+    }
+  },
+  "dependency": {
+    "exact_record": {
+      "expected": 2419,
+      "independent": 2419,
+      "agreement": 2419,
+      "agreement_rate": 1.0
+    },
+    "source_file": {
+      "expected": 2419,
+      "independent": 2419,
+      "agreement": 2419,
+      "agreement_rate": 1.0
+    },
+    "source_kind": {
+      "expected": 2419,
+      "independent": 2419,
+      "agreement": 2419,
+      "agreement_rate": 1.0
+    },
+    "dependency_group": {
+      "expected": 2419,
+      "independent": 2419,
+      "agreement": 2419,
+      "agreement_rate": 1.0
+    },
+    "normalized_name": {
+      "expected": 2419,
+      "independent": 2419,
+      "agreement": 2419,
+      "agreement_rate": 1.0
+    },
+    "raw_declaration": {
+      "expected": 2419,
+      "independent": 2419,
+      "agreement": 2419,
+      "agreement_rate": 1.0
+    },
+    "specifier": {
+      "expected": 2419,
+      "independent": 2419,
+      "agreement": 2419,
+      "agreement_rate": 1.0
+    },
+    "marker": {
+      "expected": 2419,
+      "independent": 2419,
+      "agreement": 2419,
+      "agreement_rate": 1.0
+    },
+    "extras": {
+      "expected": 2419,
+      "independent": 2419,
+      "agreement": 2419,
+      "agreement_rate": 1.0
+    },
+    "attributes": {
+      "expected": 2419,
+      "independent": 2419,
+      "agreement": 2419,
+      "agreement_rate": 1.0
+    },
+    "parse_status": {
+      "expected": 2419,
+      "independent": 2419,
+      "agreement": 2419,
+      "agreement_rate": 1.0
+    }
+  },
+  "structure": {
+    "archive_type": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "archive_member_count": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "packaging_files": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "build_backends": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "python_constraints": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "ci_providers": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "dependency_observation_status": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "python_constraint_observation_status": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "build_backend_observation_status": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "source_python_file_count": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "source_python_line_count": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "test_python_file_count": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "ci_workflow_file_count": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "citation_cff": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "codemeta": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "zenodo_metadata": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "contributing": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "code_of_conduct": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "security_policy": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    },
+    "changelog": {
+      "expected": 80,
+      "independent": 80,
+      "agreement": 80,
+      "agreement_rate": 1.0
+    }
+  },
+  "unaudited_released_fields": [
+    "api_observation_status and source_line_observation_status (derived from the API pass, not re-derived)",
+    "content_tree_sha256 and member manifests (recomputed by validate_census_dataset.py, not here)",
+    "endpoint resolution fields (checked against the GitHub API only by check_retrospective_agreement.py)"
+  ],
+  "scope": "stratified exact-agreement audit of released fields; not a population accuracy estimate",
+  "parser_independence": "does not import scripts/extract_version_pairs.py",
+  "output_csv": "data/census_v0.3/independent_semantic_audit.csv",
+  "limitation": "written by the same authors from the same specification; shared misreadings of the specification are not detected here (see the reference-based audit)"
+}

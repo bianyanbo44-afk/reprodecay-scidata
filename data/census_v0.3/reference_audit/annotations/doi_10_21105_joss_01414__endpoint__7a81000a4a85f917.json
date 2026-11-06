@@ -1,0 +1,282 @@
+{
+ "snapshot_id": "doi_10_21105_joss_01414__endpoint__7a81000a4a85f917",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "setuptools",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "scipy",
+     "<2.0.0"
+    ],
+    [
+     "runtime",
+     "numpy",
+     "<3.0.0,>=1.26.0"
+    ],
+    [
+     "runtime",
+     "pandas",
+     "<3.1.0,>=2.2.0"
+    ],
+    [
+     "runtime",
+     "matplotlib",
+     "<3.12.0,>=3.6.1"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.docs",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:docs",
+     "sphinx",
+     ">=4.2.0"
+    ],
+    [
+     "optional:docs",
+     "sphinx-rtd-theme",
+     ">=1.2.2"
+    ],
+    [
+     "optional:docs",
+     "sphinx-copybutton",
+     ""
+    ],
+    [
+     "optional:docs",
+     "sphinx-autodoc-typehints",
+     ""
+    ],
+    [
+     "optional:docs",
+     "numpydoc",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.test",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:test",
+     "pytest",
+     ""
+    ],
+    [
+     "optional:test",
+     "pytest-cov",
+     ""
+    ],
+    [
+     "optional:test",
+     "flake8",
+     ""
+    ],
+    [
+     "optional:test",
+     "pydocstyle",
+     ""
+    ],
+    [
+     "optional:test",
+     "packaging",
+     ""
+    ],
+    [
+     "optional:test",
+     "pre-commit",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.ultranest",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:ultranest",
+     "h5py",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.astropy",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:astropy",
+     "astropy",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.fastkde",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:fastkde",
+     "fastkde",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.getdist",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:getdist",
+     "getdist",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.hdf5",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:hdf5",
+     "tables",
+     ""
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.all",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:all",
+     "anesthetic",
+     "",
+     "ultranest"
+    ],
+    [
+     "optional:all",
+     "anesthetic",
+     "",
+     "astropy"
+    ],
+    [
+     "optional:all",
+     "anesthetic",
+     "",
+     "fastkde"
+    ],
+    [
+     "optional:all",
+     "anesthetic",
+     "",
+     "getdist"
+    ],
+    [
+     "optional:all",
+     "anesthetic",
+     "",
+     "hdf5"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.optional-dependencies.dev",
+   "status": "extracted",
+   "entries": [
+    [
+     "optional:dev",
+     "anesthetic",
+     "",
+     "all"
+    ],
+    [
+     "optional:dev",
+     "anesthetic",
+     "",
+     "docs"
+    ],
+    [
+     "optional:dev",
+     "anesthetic",
+     "",
+     "test"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "project.requires-python",
+   "status": "extracted",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.install_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.setup_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.tests_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.extras_require",
+   "status": "confirmed_absent",
+   "entries": []
+  },
+  {
+   "source_file": "setup.cfg",
+   "field": "options.python_requires",
+   "status": "confirmed_absent",
+   "entries": []
+  }
+ ],
+ "python_constraints": [
+  "pyproject.toml:>=3.10"
+ ],
+ "build_backends": [
+  "setuptools.build_meta"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "tool.setuptools.dynamic covers only the version, so it adds no dependency field. setup.cfg [options] has no dependency keys."
+}

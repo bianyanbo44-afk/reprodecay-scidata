@@ -1,233 +1,1381 @@
 {
   "profile": "data-package",
-  "name": "reprodecay-census-v0-2",
-  "title": "Version-paired dependency and interface evolution in Python research software",
-  "version": "0.2.0",
-  "description": "Seven relational CSV tables derived by static analysis of publication and endpoint snapshots for 345 JOSS-associated Python projects.",
+  "name": "reprodecay-census-v0-3",
+  "version": "0.3.0",
+  "title": "Publication-anchored paired snapshots of Python research software",
+  "description": "Eight linked static-observation tables for 692 publication-linked projects.",
   "resources": [
     {
-      "name": "project-records",
-      "path": "../data/census_v0.2/tables/project_records.csv",
+      "name": "api-symbol-records",
+      "path": "../data/census_v0.3/tables/api_symbol_records.csv",
       "profile": "tabular-data-resource",
       "format": "csv",
-      "mediatype": "text/csv",
       "encoding": "utf-8-sig",
       "schema": {
         "fields": [
-          {"name": "project_id", "type": "string", "constraints": {"required": true, "unique": true, "pattern": "^doi_10_21105_joss_[0-9]{5}$"}},
-          {"name": "pair_id", "type": "string", "constraints": {"required": true, "unique": true, "pattern": "^doi_10_21105_joss_[0-9]{5}__[0-9a-f]{12}__[0-9a-f]{12}$"}},
-          {"name": "scholarly_doi", "type": "string", "constraints": {"required": true, "unique": true, "pattern": "^10\\.21105/joss\\.[0-9]{5}$"}},
-          {"name": "title", "type": "string", "constraints": {"required": true}},
-          {"name": "publication_date", "type": "date", "constraints": {"required": true}},
-          {"name": "joss_url", "type": "string", "format": "uri", "constraints": {"required": true}},
-          {"name": "input_repository_url", "type": "string", "format": "uri", "constraints": {"required": true}},
-          {"name": "resolved_repository_url", "type": "string", "format": "uri", "constraints": {"required": true}},
-          {"name": "selection_rank", "type": "integer", "constraints": {"required": true, "unique": true, "minimum": 1}},
-          {"name": "selected_role", "type": "string", "constraints": {"required": true, "enum": ["census_provisional"]}},
-          {"name": "publication_archive_doi", "type": "string", "constraints": {"required": true, "pattern": "^10\\."}},
-          {"name": "publication_snapshot_id", "type": "string", "constraints": {"required": true, "unique": true}},
-          {"name": "endpoint_snapshot_id", "type": "string", "constraints": {"required": true, "unique": true}},
-          {"name": "endpoint_policy", "type": "string", "constraints": {"required": true, "enum": ["latest_stable_release_else_default_branch_head"]}},
-          {"name": "endpoint_ref_type", "type": "string", "constraints": {"required": true, "enum": ["release", "default_branch"]}},
-          {"name": "endpoint_ref_name", "type": "string", "constraints": {"required": true}},
-          {"name": "endpoint_commit_sha", "type": "string", "constraints": {"required": true, "pattern": "^[0-9a-f]{40}$"}},
-          {"name": "repository_archived_at_endpoint", "type": "boolean", "constraints": {"required": true}},
-          {"name": "repository_license_spdx_at_endpoint", "type": "string"}
+          {
+            "name": "snapshot_id",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "project_id",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "snapshot_role",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "symbol_key",
+            "type": "string",
+            "description": "Comparison key <module>|<symbol_kind>|<qualified_name>.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "source_file",
+            "type": "string",
+            "description": "Python source file.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "module",
+            "type": "string",
+            "description": "Dotted module name derived from the path.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "symbol_kind",
+            "type": "string",
+            "description": "Kind of definition.",
+            "constraints": {
+              "enum": [
+                "class",
+                "constructor",
+                "method",
+                "function",
+                "async_function"
+              ]
+            },
+            "x-allowed-values": "class | constructor | method | function | async_function",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "qualified_name",
+            "type": "string",
+            "description": "Top-level name or Class.member.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "signature",
+            "type": "string",
+            "description": "Argument list as written (classes: JSON list of base classes); variants joined by ' || '.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "decorators",
+            "type": "string",
+            "description": "Decorators as written.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "export_evidence",
+            "type": "string",
+            "description": "Why the symbol is considered public.",
+            "constraints": {
+              "enum": [
+                "literal_all",
+                "lexical_nonprivate",
+                "class_member"
+              ]
+            },
+            "x-allowed-values": "literal_all | lexical_nonprivate | class_member",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "line_start",
+            "type": "integer",
+            "description": "Source location of the first variant.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "line_end",
+            "type": "integer",
+            "description": "Source location of the first variant.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "variant_count",
+            "type": "integer",
+            "description": "Definitions with the same key (for example conditional definitions).",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          }
         ],
-        "primaryKey": "project_id"
-      }
-    },
-    {
-      "name": "snapshot-records",
-      "path": "../data/census_v0.2/tables/snapshot_records.csv",
-      "profile": "tabular-data-resource",
-      "format": "csv",
-      "mediatype": "text/csv",
-      "encoding": "utf-8-sig",
-      "schema": {
-        "fields": [
-          {"name": "snapshot_id", "type": "string", "constraints": {"required": true, "unique": true, "pattern": "^doi_10_21105_joss_[0-9]{5}__(publication|endpoint)__[0-9a-f]{16}$"}},
-          {"name": "project_id", "type": "string", "constraints": {"required": true}},
-          {"name": "pair_id", "type": "string", "constraints": {"required": true}},
-          {"name": "snapshot_role", "type": "string", "constraints": {"required": true, "enum": ["publication", "endpoint"]}},
-          {"name": "source_provider", "type": "string", "constraints": {"required": true, "enum": ["zenodo", "figshare", "caltechdata", "github"]}},
-          {"name": "source_identifier", "type": "string", "constraints": {"required": true}},
-          {"name": "source_ref", "type": "string", "constraints": {"required": true}},
-          {"name": "commit_sha", "type": "string", "constraints": {"pattern": "^$|^[0-9a-f]{40}$"}},
-          {"name": "source_url", "type": "string", "format": "uri", "constraints": {"required": true}},
-          {"name": "archive_bytes", "type": "integer", "constraints": {"required": true, "minimum": 1}},
-          {"name": "archive_sha256", "type": "string", "constraints": {"required": true, "pattern": "^[0-9a-f]{64}$"}},
-          {"name": "upstream_checksum", "type": "string"},
-          {"name": "parser_version", "type": "string", "constraints": {"required": true}},
-          {"name": "third_party_code_executed", "type": "boolean", "constraints": {"required": true, "enum": [false]}}
-        ],
-        "primaryKey": "snapshot_id",
-        "foreignKeys": [
-          {"fields": "project_id", "reference": {"resource": "project-records", "fields": "project_id"}},
-          {"fields": "pair_id", "reference": {"resource": "project-records", "fields": "pair_id"}}
+        "missingValues": [
+          ""
         ]
       }
     },
     {
-      "name": "structure-records",
-      "path": "../data/census_v0.2/tables/structure_records.csv",
+      "name": "declaration-source-records",
+      "path": "../data/census_v0.3/tables/declaration_source_records.csv",
       "profile": "tabular-data-resource",
       "format": "csv",
-      "mediatype": "text/csv",
       "encoding": "utf-8-sig",
       "schema": {
         "fields": [
-          {"name": "snapshot_id", "type": "string", "constraints": {"required": true, "unique": true}},
-          {"name": "project_id", "type": "string", "constraints": {"required": true}},
-          {"name": "snapshot_role", "type": "string", "constraints": {"required": true, "enum": ["publication", "endpoint"]}},
-          {"name": "archive_type", "type": "string", "constraints": {"required": true, "enum": ["zip", "tar"]}},
-          {"name": "archive_member_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
-          {"name": "archive_bytes", "type": "integer", "constraints": {"required": true, "minimum": 1}},
-          {"name": "archive_sha256", "type": "string", "constraints": {"required": true, "pattern": "^[0-9a-f]{64}$"}},
-          {"name": "suspicious_member_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
-          {"name": "link_member_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
-          {"name": "duplicate_normalized_member_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
-          {"name": "skipped_large_text_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
-          {"name": "packaging_files", "type": "array", "constraints": {"required": true}},
-          {"name": "build_backends", "type": "array", "constraints": {"required": true}},
-          {"name": "python_constraints", "type": "array", "constraints": {"required": true}},
-          {"name": "declared_dependency_record_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
-          {"name": "unparsed_dependency_record_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
-          {"name": "source_python_file_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
-          {"name": "source_python_line_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
-          {"name": "ast_parse_failure_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
-          {"name": "syntactic_api_symbol_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
-          {"name": "test_python_file_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
-          {"name": "ci_workflow_file_count", "type": "integer", "constraints": {"required": true, "minimum": 0}},
-          {"name": "ci_providers", "type": "array", "constraints": {"required": true}},
-          {"name": "citation_cff", "type": "boolean", "constraints": {"required": true}},
-          {"name": "codemeta", "type": "boolean", "constraints": {"required": true}},
-          {"name": "zenodo_metadata", "type": "boolean", "constraints": {"required": true}},
-          {"name": "contributing", "type": "boolean", "constraints": {"required": true}},
-          {"name": "code_of_conduct", "type": "boolean", "constraints": {"required": true}},
-          {"name": "security_policy", "type": "boolean", "constraints": {"required": true}},
-          {"name": "changelog", "type": "boolean", "constraints": {"required": true}},
-          {"name": "dependency_parse_complete", "type": "boolean", "constraints": {"required": true}},
-          {"name": "api_parse_complete", "type": "boolean", "constraints": {"required": true}},
-          {"name": "parser_issues", "type": "array", "constraints": {"required": true}},
-          {"name": "parser_version", "type": "string", "constraints": {"required": true}},
-          {"name": "third_party_code_executed", "type": "boolean", "constraints": {"required": true, "enum": [false]}}
+          {
+            "name": "snapshot_id",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "project_id",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "snapshot_role",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "source_file",
+            "type": "string",
+            "description": "Root-level declaration file (or '(file)' rows refer to the whole file).",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "source_kind",
+            "type": "string",
+            "description": "Declaration format.",
+            "constraints": {
+              "enum": [
+                "pyproject",
+                "pep517",
+                "pep621",
+                "pep735",
+                "poetry",
+                "poetry_dev",
+                "poetry_group",
+                "flit",
+                "setuptools_dynamic",
+                "setup_cfg",
+                "setup_py",
+                "requirements",
+                "conda_environment",
+                "pipfile"
+              ]
+            },
+            "x-allowed-values": "pyproject | pep517 | pep621 | pep735 | poetry | poetry_dev | poetry_group | flit | setuptools_dynamic | setup_cfg | setup_py | requirements | conda_environment | pipfile",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "field",
+            "type": "string",
+            "description": "Declaration field, named by its path in the file (specification Section 2); '(file)' for file-level failures; 'setup(**...)' for an unresolvable keyword mapping.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "field_kind",
+            "type": "string",
+            "description": "What the field carries.",
+            "constraints": {
+              "enum": [
+                "dependency",
+                "python_constraint",
+                "file",
+                "setup_kwargs"
+              ]
+            },
+            "x-allowed-values": "dependency | python_constraint | file | setup_kwargs",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "observation_status",
+            "type": "string",
+            "description": "Observation status of the field (specification Section 4).",
+            "constraints": {
+              "enum": [
+                "extracted",
+                "extracted_partial",
+                "confirmed_absent",
+                "dynamic_metadata",
+                "unsupported_syntax",
+                "parse_failure"
+              ]
+            },
+            "x-allowed-values": "extracted | extracted_partial | confirmed_absent | dynamic_metadata | unsupported_syntax | parse_failure",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "entry_count",
+            "type": "integer",
+            "description": "Dependency rows produced by the field.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "unparsed_entry_count",
+            "type": "integer",
+            "description": "Of entry_count, rows with parse_status unparsed.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "detail",
+            "type": "string",
+            "description": "Reason or source text for non-extracted statuses (for example the unresolved name, the file: reference, text_not_read_size_limit or link_target_unresolved).",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          }
         ],
-        "primaryKey": "snapshot_id",
-        "foreignKeys": [
-          {"fields": "snapshot_id", "reference": {"resource": "snapshot-records", "fields": "snapshot_id"}},
-          {"fields": "project_id", "reference": {"resource": "project-records", "fields": "project_id"}}
+        "missingValues": [
+          ""
         ]
       }
     },
     {
       "name": "dependency-records",
-      "path": "../data/census_v0.2/tables/dependency_records.csv",
+      "path": "../data/census_v0.3/tables/dependency_records.csv",
       "profile": "tabular-data-resource",
       "format": "csv",
-      "mediatype": "text/csv",
       "encoding": "utf-8-sig",
       "schema": {
         "fields": [
-          {"name": "snapshot_id", "type": "string", "constraints": {"required": true}},
-          {"name": "project_id", "type": "string", "constraints": {"required": true}},
-          {"name": "snapshot_role", "type": "string", "constraints": {"required": true, "enum": ["publication", "endpoint"]}},
-          {"name": "source_file", "type": "string", "constraints": {"required": true}},
-          {"name": "source_kind", "type": "string", "constraints": {"required": true}},
-          {"name": "dependency_group", "type": "string", "constraints": {"required": true}},
-          {"name": "normalized_name", "type": "string"},
-          {"name": "raw_declaration", "type": "string", "constraints": {"required": true}},
-          {"name": "specifier", "type": "string"},
-          {"name": "marker", "type": "string"},
-          {"name": "extras", "type": "string"},
-          {"name": "parse_status", "type": "string", "constraints": {"required": true, "enum": ["parsed", "parsed_non_pep508", "parsed_poetry", "directive", "unparsed"]}},
-          {"name": "parse_error", "type": "string"}
+          {
+            "name": "snapshot_id",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "project_id",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "snapshot_role",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "source_file",
+            "type": "string",
+            "description": "File containing the declaration (an included requirements file for source_kind requirements_include).",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "source_kind",
+            "type": "string",
+            "description": "Declaration format.",
+            "constraints": {
+              "enum": [
+                "pep517",
+                "pep621",
+                "pep735",
+                "poetry",
+                "poetry_dev",
+                "poetry_group",
+                "flit",
+                "setup_cfg",
+                "setup_py",
+                "requirements",
+                "requirements_include",
+                "conda_environment",
+                "conda_pip",
+                "pipfile"
+              ]
+            },
+            "x-allowed-values": "pep517 | pep621 | pep735 | poetry | poetry_dev | poetry_group | flit | setup_cfg | setup_py | requirements | requirements_include | conda_environment | conda_pip | pipfile",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "dependency_group",
+            "type": "string",
+            "description": "Declared role of the dependency.",
+            "x-allowed-values": "runtime | build | test | development | optional:<extra> | group:<name>",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "normalized_name",
+            "type": "string",
+            "description": "PEP 503 canonical package name; empty for directives and unparsed rows.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "raw_declaration",
+            "type": "string",
+            "description": "Declaration as written in the source; table entries are rendered as '<name> = <value as JSON>'.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "specifier",
+            "type": "string",
+            "description": "Version constraint in the source syntax (PEP 440, Poetry or conda); empty when unconstrained.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "marker",
+            "type": "string",
+            "description": "PEP 508 environment marker, or the Poetry markers value.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "extras",
+            "type": "string",
+            "description": "Requested extras, sorted and joined by ';'.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "attributes",
+            "type": "string",
+            "description": "Other keys of a Poetry or Pipfile table entry (for example optional, python, git, path, source, or a list of alternative constraints).",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "parse_status",
+            "type": "string",
+            "description": "How the declaration was parsed (specification Section 3).",
+            "constraints": {
+              "enum": [
+                "parsed",
+                "parsed_poetry",
+                "parsed_pipfile",
+                "parsed_non_pep508",
+                "parsed_url",
+                "directive",
+                "unparsed"
+              ]
+            },
+            "x-allowed-values": "parsed | parsed_poetry | parsed_pipfile | parsed_non_pep508 | parsed_url | directive | unparsed",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "parse_error",
+            "type": "string",
+            "description": "Parser error for unparsed rows.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          }
         ],
-        "foreignKeys": [
-          {"fields": "snapshot_id", "reference": {"resource": "snapshot-records", "fields": "snapshot_id"}},
-          {"fields": "project_id", "reference": {"resource": "project-records", "fields": "project_id"}}
-        ]
-      }
-    },
-    {
-      "name": "api-symbol-records",
-      "path": "../data/census_v0.2/tables/api_symbol_records.csv",
-      "profile": "tabular-data-resource",
-      "format": "csv",
-      "mediatype": "text/csv",
-      "encoding": "utf-8-sig",
-      "schema": {
-        "fields": [
-          {"name": "snapshot_id", "type": "string", "constraints": {"required": true}},
-          {"name": "project_id", "type": "string", "constraints": {"required": true}},
-          {"name": "snapshot_role", "type": "string", "constraints": {"required": true, "enum": ["publication", "endpoint"]}},
-          {"name": "symbol_key", "type": "string", "constraints": {"required": true}},
-          {"name": "source_file", "type": "string", "constraints": {"required": true}},
-          {"name": "module", "type": "string", "constraints": {"required": true}},
-          {"name": "symbol_kind", "type": "string", "constraints": {"required": true, "enum": ["class", "constructor", "method", "function", "async_function"]}},
-          {"name": "qualified_name", "type": "string", "constraints": {"required": true}},
-          {"name": "signature", "type": "string"},
-          {"name": "decorators", "type": "array", "constraints": {"required": true}},
-          {"name": "export_evidence", "type": "string", "constraints": {"required": true, "enum": ["literal_all", "lexical_nonprivate", "class_member"]}},
-          {"name": "line_start", "type": "integer", "constraints": {"required": true, "minimum": 1}},
-          {"name": "line_end", "type": "integer", "constraints": {"required": true, "minimum": 1}},
-          {"name": "variant_count", "type": "integer", "constraints": {"required": true, "minimum": 1}}
-        ],
-        "primaryKey": ["snapshot_id", "symbol_key"],
-        "foreignKeys": [
-          {"fields": "snapshot_id", "reference": {"resource": "snapshot-records", "fields": "snapshot_id"}},
-          {"fields": "project_id", "reference": {"resource": "project-records", "fields": "project_id"}}
+        "missingValues": [
+          ""
         ]
       }
     },
     {
       "name": "pair-delta-records",
-      "path": "../data/census_v0.2/tables/pair_delta_records.csv",
+      "path": "../data/census_v0.3/tables/pair_delta_records.csv",
       "profile": "tabular-data-resource",
       "format": "csv",
-      "mediatype": "text/csv",
       "encoding": "utf-8-sig",
       "schema": {
         "fields": [
-          {"name": "pair_id", "type": "string", "constraints": {"required": true}},
-          {"name": "project_id", "type": "string", "constraints": {"required": true}},
-          {"name": "family", "type": "string", "constraints": {"required": true, "enum": ["api", "dependency", "structure"]}},
-          {"name": "feature_group", "type": "string", "constraints": {"required": true}},
-          {"name": "feature_key", "type": "string", "constraints": {"required": true}},
-          {"name": "publication_value", "type": "string"},
-          {"name": "endpoint_value", "type": "string"},
-          {"name": "delta_type", "type": "string", "constraints": {"required": true, "enum": ["added", "removed", "changed", "unchanged", "unavailable"]}},
-          {"name": "comparison_status", "type": "string", "constraints": {"required": true, "enum": ["comparable", "partial_parse", "unavailable"]}},
-          {"name": "publication_evidence", "type": "string"},
-          {"name": "endpoint_evidence", "type": "string"}
+          {
+            "name": "pair_id",
+            "type": "string",
+            "description": "Pair and project keys.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "project_id",
+            "type": "string",
+            "description": "Pair and project keys.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "family",
+            "type": "string",
+            "description": "Compared family.",
+            "constraints": {
+              "enum": [
+                "dependency",
+                "api",
+                "structure"
+              ]
+            },
+            "x-allowed-values": "dependency | api | structure",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "feature_group",
+            "type": "string",
+            "description": "Sub-family.",
+            "x-allowed-values": "declared_dependency | syntactic_symbol | packaging_files | build_backends | python_constraints | ci_providers | scalar",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "feature_key",
+            "type": "string",
+            "description": "Compared item: <dependency_group>|<normalized_name>, the API symbol_key, a list element or a structure field name.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "publication_value",
+            "type": "string",
+            "description": "Value on each side (dependencies: sorted set of {specifier, marker, extras, attributes}); empty when the key is absent on that side.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "endpoint_value",
+            "type": "string",
+            "description": "Value on each side (dependencies: sorted set of {specifier, marker, extras, attributes}); empty when the key is absent on that side.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "delta_type",
+            "type": "string",
+            "description": "added: absent in the publication snapshot; removed: absent at the endpoint; changed: present on both sides with different values; unchanged: equal values.",
+            "constraints": {
+              "enum": [
+                "added",
+                "removed",
+                "changed",
+                "unchanged"
+              ]
+            },
+            "x-allowed-values": "added | removed | changed | unchanged",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "comparison_status",
+            "type": "string",
+            "description": "comparable when the governing observation status is complete in both snapshots; incomplete_observation otherwise, in which case added, removed or changed may reflect a change in what could be observed.",
+            "constraints": {
+              "enum": [
+                "comparable",
+                "incomplete_observation"
+              ]
+            },
+            "x-allowed-values": "comparable | incomplete_observation",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "publication_evidence",
+            "type": "string",
+            "description": "Source evidence for each side (file:line or the declarations behind the value).",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "endpoint_evidence",
+            "type": "string",
+            "description": "Source evidence for each side (file:line or the declarations behind the value).",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          }
         ],
-        "primaryKey": ["pair_id", "family", "feature_group", "feature_key"],
-        "foreignKeys": [
-          {"fields": "project_id", "reference": {"resource": "project-records", "fields": "project_id"}},
-          {"fields": "pair_id", "reference": {"resource": "project-records", "fields": "pair_id"}}
+        "missingValues": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "project-records",
+      "path": "../data/census_v0.3/tables/project_records.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "encoding": "utf-8-sig",
+      "schema": {
+        "fields": [
+          {
+            "name": "project_id",
+            "type": "string",
+            "description": "Stable project identifier derived from the normalized JOSS DOI.",
+            "x-allowed-values": "doi_10_21105_joss_<number>",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "pair_id",
+            "type": "string",
+            "description": "Identifier of the publication/endpoint pair: project_id plus 12-character prefixes of both archive SHA-256 values.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "scholarly_doi",
+            "type": "string",
+            "description": "Normalized (lower-case) JOSS article DOI.",
+            "x-allowed-values": "10.21105/joss.<number>",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "description": "Article title as supplied by Crossref.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "publication_date",
+            "type": "string",
+            "description": "JOSS article publication date from Crossref.",
+            "x-allowed-values": "2018-01-01 to 2022-12-31",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "publication_year",
+            "type": "integer",
+            "description": "Year of publication_date; the stratum used in publication-year summaries.",
+            "x-allowed-values": "2018-2022",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "joss_url",
+            "type": "string",
+            "description": "JOSS article page.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "input_repository_url",
+            "type": "string",
+            "description": "Software repository URL declared on the JOSS article page.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "resolved_repository_url",
+            "type": "string",
+            "description": "Canonical GitHub repository URL at endpoint resolution; differs from input_repository_url after a rename or transfer.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "selection_rank",
+            "type": "integer",
+            "description": "Position of the article in SHA-256 hash order of the frame. It fixed processing order only and is not a sampling weight or eligibility input.",
+            "x-allowed-values": "1-1671",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "selected_role",
+            "type": "string",
+            "description": "Frame role of the project.",
+            "constraints": {
+              "enum": [
+                "census_provisional"
+              ]
+            },
+            "x-allowed-values": "census_provisional",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "publication_archive_doi",
+            "type": "string",
+            "description": "DOI of the archive record linked to the JOSS article (the publication snapshot).",
+            "x-allowed-values": "Zenodo or Figshare DOI",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "publication_archive_date",
+            "type": "string",
+            "description": "Publication date of the archive record. The eligibility rule requires it to be no later than publication_date.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "publication_snapshot_id",
+            "type": "string",
+            "description": "Foreign key to the publication row of snapshot_records.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "endpoint_snapshot_id",
+            "type": "string",
+            "description": "Foreign key to the endpoint row of snapshot_records.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "endpoint_policy",
+            "type": "string",
+            "description": "Rule that selected the endpoint: the latest non-draft, non-prerelease GitHub release, otherwise the default-branch head.",
+            "constraints": {
+              "enum": [
+                "latest_stable_release_else_default_branch_head"
+              ]
+            },
+            "x-allowed-values": "latest_stable_release_else_default_branch_head",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "endpoint_as_of_date",
+            "type": "string",
+            "description": "Date to which the endpoint policy refers.",
+            "x-allowed-values": "2026-08-14",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "endpoint_resolution_mode",
+            "type": "string",
+            "description": "live: the policy was applied to the repository state on the endpoint date. retrospective_as_of: the policy was applied later to the repository history, restricted to releases and commits that existed at endpoint_as_of_date.",
+            "constraints": {
+              "enum": [
+                "live",
+                "retrospective_as_of"
+              ]
+            },
+            "x-allowed-values": "live | retrospective_as_of",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "endpoint_resolved_at_utc",
+            "type": "string",
+            "description": "Time at which the endpoint was resolved (not the date of the selected release or commit).",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "endpoint_ref_type",
+            "type": "string",
+            "description": "Kind of reference selected by the endpoint policy.",
+            "constraints": {
+              "enum": [
+                "release",
+                "default_branch"
+              ]
+            },
+            "x-allowed-values": "release | default_branch",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "endpoint_ref_name",
+            "type": "string",
+            "description": "Release tag or default-branch name.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "endpoint_commit_sha",
+            "type": "string",
+            "description": "Git commit of the endpoint archive.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "endpoint_release_published_at",
+            "type": "string",
+            "description": "GitHub publication time of the selected release; empty for default-branch endpoints.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "endpoint_commit_time_utc",
+            "type": "string",
+            "description": "Committer time of the endpoint commit, read from the uniform member timestamps that git archive writes into GitHub tarballs; empty when timestamps are not uniform.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "endpoint_ref_date",
+            "type": "string",
+            "description": "Date of the endpoint state: endpoint_release_published_at for releases, endpoint_commit_time_utc for default-branch endpoints.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "archive_to_article_days",
+            "type": "integer",
+            "description": "Days from publication_archive_date to publication_date (non-negative by the eligibility rule).",
+            "x-allowed-values": ">= 0",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "article_to_endpoint_ref_days",
+            "type": "integer",
+            "description": "Days from publication_date to endpoint_ref_date: the observed post-publication interval.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "article_to_endpoint_as_of_days",
+            "type": "integer",
+            "description": "Days from publication_date to endpoint_as_of_date: the maximum possible interval.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "repository_archived_at_endpoint",
+            "type": "boolean",
+            "description": "GitHub archived flag at endpoint resolution.",
+            "trueValues": [
+              "true"
+            ],
+            "falseValues": [
+              "false"
+            ],
+            "x-allowed-values": "true | false",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "repository_license_spdx_at_endpoint",
+            "type": "string",
+            "description": "GitHub-reported license of the repository at endpoint resolution.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          }
+        ],
+        "missingValues": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "snapshot-records",
+      "path": "../data/census_v0.3/tables/snapshot_records.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "encoding": "utf-8-sig",
+      "schema": {
+        "fields": [
+          {
+            "name": "snapshot_id",
+            "type": "string",
+            "description": "Snapshot identifier: project_id, role and the first 16 hex characters of archive_sha256.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "project_id",
+            "type": "string",
+            "description": "Foreign key to project_records.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "pair_id",
+            "type": "string",
+            "description": "Foreign key to project_records.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "snapshot_role",
+            "type": "string",
+            "description": "Role of the snapshot in the pair.",
+            "constraints": {
+              "enum": [
+                "publication",
+                "endpoint"
+              ]
+            },
+            "x-allowed-values": "publication | endpoint",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "source_provider",
+            "type": "string",
+            "description": "Provider of the archive.",
+            "constraints": {
+              "enum": [
+                "zenodo",
+                "figshare",
+                "caltechdata",
+                "github"
+              ]
+            },
+            "x-allowed-values": "zenodo | figshare | caltechdata | github",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "source_identifier",
+            "type": "string",
+            "description": "Archive DOI (publication) or owner/repository (endpoint).",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "source_ref",
+            "type": "string",
+            "description": "Archive file key (publication) or release tag or branch (endpoint).",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "commit_sha",
+            "type": "string",
+            "description": "Endpoint commit; empty for publication archives.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "source_url",
+            "type": "string",
+            "description": "Public URL from which the archive can be reacquired.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "archive_bytes",
+            "type": "integer",
+            "description": "Size of the archive in bytes.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "archive_sha256",
+            "type": "string",
+            "description": "SHA-256 of the archive bytes.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "upstream_checksum",
+            "type": "string",
+            "description": "Provider-reported checksum (md5:<hex>) for publication archives; empty for endpoints.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "content_tree_sha256",
+            "type": "string",
+            "description": "SHA-256 over the sorted list of (member path, size, member SHA-256). Equal values mean the same files at the same paths even when the archive bytes differ, for example after a hosting service re-creates a tarball.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "content_member_count",
+            "type": "integer",
+            "description": "Number of member files covered by content_tree_sha256.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "member_mtime_utc_mode",
+            "type": "string",
+            "description": "Most common member modification time in tar archives; empty for ZIP archives.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "member_mtime_uniform",
+            "type": "string",
+            "description": "Whether all tar members share member_mtime_utc_mode.",
+            "x-allowed-values": "true | false | empty",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "parser_version",
+            "type": "string",
+            "description": "Version of the static extractor.",
+            "x-allowed-values": "static-pair-extractor-0.3.0",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "third_party_code_executed",
+            "type": "boolean",
+            "description": "Safety assertion.",
+            "trueValues": [
+              "true"
+            ],
+            "falseValues": [
+              "false"
+            ],
+            "x-allowed-values": "false",
+            "x-governing-observation-status": ""
+          }
+        ],
+        "missingValues": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "structure-records",
+      "path": "../data/census_v0.3/tables/structure_records.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "encoding": "utf-8-sig",
+      "schema": {
+        "fields": [
+          {
+            "name": "snapshot_id",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "project_id",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "snapshot_role",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "archive_type",
+            "type": "string",
+            "description": "Container format.",
+            "constraints": {
+              "enum": [
+                "zip",
+                "tar"
+              ]
+            },
+            "x-allowed-values": "zip | tar",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "archive_member_count",
+            "type": "integer",
+            "description": "Member files after removing a single wrapper directory and archive junk.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "archive_bytes",
+            "type": "integer",
+            "description": "Archive size in bytes.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "archive_sha256",
+            "type": "string",
+            "description": "Verified archive hash.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "suspicious_member_count",
+            "type": "integer",
+            "description": "Members with absolute paths, '..' segments or drive prefixes; never extracted.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "link_member_count",
+            "type": "integer",
+            "description": "Symbolic or hard links. A text member that is a link is read as the member it points to inside the same archive (specification Section 1); nothing outside the archive is read.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "duplicate_normalized_member_count",
+            "type": "integer",
+            "description": "Path collisions after wrapper removal.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "skipped_large_text_count",
+            "type": "integer",
+            "description": "Text members not read because of the 2 MiB per-file or 128 MiB total limit.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "packaging_files",
+            "type": "string",
+            "description": "Root-level declaration files present (specification Section 2).",
+            "x-allowed-values": "",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "build_backends",
+            "type": "string",
+            "description": "build-system.build-backend values in pyproject.toml.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": "build_backend_observation_status"
+          },
+          {
+            "name": "python_constraints",
+            "type": "string",
+            "description": "Declared Python-version constraints, each prefixed by its source file.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": "python_constraint_observation_status"
+          },
+          {
+            "name": "declared_dependency_record_count",
+            "type": "integer",
+            "description": "Rows of dependency_records for the snapshot (including directives and unparsed rows). A measurement of extracted record volume.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": "dependency_observation_status"
+          },
+          {
+            "name": "unparsed_dependency_record_count",
+            "type": "integer",
+            "description": "Dependency rows with parse_status unparsed.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": "dependency_observation_status"
+          },
+          {
+            "name": "source_python_file_count",
+            "type": "integer",
+            "description": "Python files selected as package source by the source-root rule.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "source_python_unread_file_count",
+            "type": "integer",
+            "description": "Selected package source files that could not be read within the size limits.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "source_python_line_count",
+            "type": "integer",
+            "description": "Physical lines in the selected package source files that were read.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": "source_line_observation_status"
+          },
+          {
+            "name": "ast_parse_failure_count",
+            "type": "integer",
+            "description": "Selected source files that were unread or failed AST parsing.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "syntactic_api_symbol_count",
+            "type": "integer",
+            "description": "Rows of api_symbol_records for the snapshot.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": "api_observation_status"
+          },
+          {
+            "name": "test_python_file_count",
+            "type": "integer",
+            "description": "Python files in test directories or named test_*.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "ci_workflow_file_count",
+            "type": "integer",
+            "description": "YAML files under .github/workflows.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "ci_providers",
+            "type": "string",
+            "description": "CI systems detected from configuration file names.",
+            "x-allowed-values": "github_actions | travis | appveyor | azure_pipelines | circleci",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "citation_cff",
+            "type": "boolean",
+            "description": "Presence of CITATION.cff, codemeta.json or .zenodo.json at the root or under .github.",
+            "trueValues": [
+              "true"
+            ],
+            "falseValues": [
+              "false"
+            ],
+            "x-allowed-values": "true | false",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "codemeta",
+            "type": "boolean",
+            "description": "Presence of CITATION.cff, codemeta.json or .zenodo.json at the root or under .github.",
+            "trueValues": [
+              "true"
+            ],
+            "falseValues": [
+              "false"
+            ],
+            "x-allowed-values": "true | false",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "zenodo_metadata",
+            "type": "boolean",
+            "description": "Presence of CITATION.cff, codemeta.json or .zenodo.json at the root or under .github.",
+            "trueValues": [
+              "true"
+            ],
+            "falseValues": [
+              "false"
+            ],
+            "x-allowed-values": "true | false",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "contributing",
+            "type": "boolean",
+            "description": "Presence of the corresponding governance or change-log file at the root or under .github.",
+            "trueValues": [
+              "true"
+            ],
+            "falseValues": [
+              "false"
+            ],
+            "x-allowed-values": "true | false",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "code_of_conduct",
+            "type": "boolean",
+            "description": "Presence of the corresponding governance or change-log file at the root or under .github.",
+            "trueValues": [
+              "true"
+            ],
+            "falseValues": [
+              "false"
+            ],
+            "x-allowed-values": "true | false",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "security_policy",
+            "type": "boolean",
+            "description": "Presence of the corresponding governance or change-log file at the root or under .github.",
+            "trueValues": [
+              "true"
+            ],
+            "falseValues": [
+              "false"
+            ],
+            "x-allowed-values": "true | false",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "changelog",
+            "type": "boolean",
+            "description": "Presence of the corresponding governance or change-log file at the root or under .github.",
+            "trueValues": [
+              "true"
+            ],
+            "falseValues": [
+              "false"
+            ],
+            "x-allowed-values": "true | false",
+            "x-governing-observation-status": "archive_listing_status"
+          },
+          {
+            "name": "archive_listing_status",
+            "type": "string",
+            "description": "Whether the member listing is complete (always complete for extracted snapshots).",
+            "constraints": {
+              "enum": [
+                "complete"
+              ]
+            },
+            "x-allowed-values": "complete",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "dependency_observation_status",
+            "type": "string",
+            "description": "complete: every declaration field was extracted or confirmed absent; incomplete: at least one field is partial, dynamic, unsupported or failed; no_declaration_file: no supported declaration file at the root.",
+            "constraints": {
+              "enum": [
+                "complete",
+                "incomplete",
+                "no_declaration_file"
+              ]
+            },
+            "x-allowed-values": "complete | incomplete | no_declaration_file",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "dependency_incomplete_reasons",
+            "type": "string",
+            "description": "source_file:field:status for each field that makes the dependency observation incomplete.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "python_constraint_observation_status",
+            "type": "string",
+            "description": "complete when every field that can carry a Python constraint was extracted or confirmed absent and no declaration file failed to parse.",
+            "constraints": {
+              "enum": [
+                "complete",
+                "incomplete"
+              ]
+            },
+            "x-allowed-values": "complete | incomplete",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "build_backend_observation_status",
+            "type": "string",
+            "description": "complete when there is no root pyproject.toml or it was parsed.",
+            "constraints": {
+              "enum": [
+                "complete",
+                "incomplete"
+              ]
+            },
+            "x-allowed-values": "complete | incomplete",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "source_line_observation_status",
+            "type": "string",
+            "description": "complete when every selected package source file was read.",
+            "constraints": {
+              "enum": [
+                "complete",
+                "incomplete"
+              ]
+            },
+            "x-allowed-values": "complete | incomplete",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "api_observation_status",
+            "type": "string",
+            "description": "complete when every selected package source file was read and parsed.",
+            "constraints": {
+              "enum": [
+                "complete",
+                "incomplete"
+              ]
+            },
+            "x-allowed-values": "complete | incomplete",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "parser_version",
+            "type": "string",
+            "description": "Extractor version.",
+            "x-allowed-values": "static-pair-extractor-0.3.0",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "third_party_code_executed",
+            "type": "boolean",
+            "description": "Safety assertion.",
+            "trueValues": [
+              "true"
+            ],
+            "falseValues": [
+              "false"
+            ],
+            "x-allowed-values": "false",
+            "x-governing-observation-status": ""
+          }
+        ],
+        "missingValues": [
+          ""
         ]
       }
     },
     {
       "name": "validation-records",
-      "path": "../data/census_v0.2/tables/validation_records.csv",
+      "path": "../data/census_v0.3/tables/validation_records.csv",
       "profile": "tabular-data-resource",
       "format": "csv",
-      "mediatype": "text/csv",
       "encoding": "utf-8-sig",
       "schema": {
         "fields": [
-          {"name": "snapshot_id", "type": "string", "constraints": {"required": true}},
-          {"name": "project_id", "type": "string", "constraints": {"required": true}},
-          {"name": "snapshot_role", "type": "string", "constraints": {"required": true, "enum": ["publication", "endpoint"]}},
-          {"name": "check_name", "type": "string", "constraints": {"required": true}},
-          {"name": "status", "type": "string", "constraints": {"required": true, "enum": ["pass", "warning", "error"]}},
-          {"name": "evidence", "type": "string"},
-          {"name": "detail", "type": "string"}
+          {
+            "name": "snapshot_id",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "project_id",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "snapshot_role",
+            "type": "string",
+            "description": "snapshot_id, project_id, snapshot_role: snapshot and project keys; snapshot_role is publication or endpoint",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "check_name",
+            "type": "string",
+            "description": "Validation check.",
+            "x-allowed-values": "archive_sha256 | archive_paths | declaration_observation | api_source_read | python_ast_parse | python_ast_warning",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "description": "Outcome.",
+            "constraints": {
+              "enum": [
+                "pass",
+                "warning",
+                "error"
+              ]
+            },
+            "x-allowed-values": "pass | warning | error",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "evidence",
+            "type": "string",
+            "description": "Checked locator (snapshot, file or file:line).",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          },
+          {
+            "name": "detail",
+            "type": "string",
+            "description": "Hash, count or message.",
+            "x-allowed-values": "",
+            "x-governing-observation-status": ""
+          }
         ],
-        "foreignKeys": [
-          {"fields": "snapshot_id", "reference": {"resource": "snapshot-records", "fields": "snapshot_id"}},
-          {"fields": "project_id", "reference": {"resource": "project-records", "fields": "project_id"}}
+        "missingValues": [
+          ""
         ]
       }
     }

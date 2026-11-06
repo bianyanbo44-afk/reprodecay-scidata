@@ -1,0 +1,88 @@
+{
+ "snapshot_id": "doi_10_21105_joss_04448__publication__70fb8c024c27b3fa",
+ "annotated_by": "AI-assisted first pass from exported source files and docs/extraction_specification_v0.3.md",
+ "verified_by": "Yanbo Bian, 2026-11-02",
+ "fields": [
+  {
+   "source_file": "pyproject.toml",
+   "field": "build-system.requires",
+   "status": "extracted",
+   "entries": [
+    [
+     "build",
+     "poetry-core",
+     ">=1.0.0"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "tool.poetry.dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "runtime",
+     "niapy",
+     "^2.0.1"
+    ],
+    [
+     "runtime",
+     "numpy",
+     "^1.21.5 || ^1.22.3"
+    ],
+    [
+     "runtime",
+     "pandas",
+     "^1.3.5 || ^1.4.0"
+    ],
+    [
+     "runtime",
+     "nltk",
+     "^3.7"
+    ],
+    [
+     "optional:docs",
+     "sphinx",
+     "^4.4.0"
+    ],
+    [
+     "optional:docs",
+     "sphinx-rtd-theme",
+     "^1.0.0"
+    ],
+    [
+     "optional:docs",
+     "sphinxcontrib-bibtex",
+     "^2.4.1"
+    ]
+   ]
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "tool.poetry.dependencies.python",
+   "status": "extracted",
+   "entries": []
+  },
+  {
+   "source_file": "pyproject.toml",
+   "field": "tool.poetry.dev-dependencies",
+   "status": "extracted",
+   "entries": [
+    [
+     "development",
+     "pytest",
+     "^7.0.1"
+    ]
+   ]
+  }
+ ],
+ "python_constraints": [
+  "pyproject.toml:^3.7"
+ ],
+ "build_backends": [
+  "poetry.core.masonry.api"
+ ],
+ "dependency_observation_status": "complete",
+ "api_module": {},
+ "notes": "numpy and pandas are declared as lists of inline tables (multiple constraints); the specifiers are joined with ' || '. The extra 'docs' lists 'Sphinx', which matches the canonical name 'sphinx'."
+}

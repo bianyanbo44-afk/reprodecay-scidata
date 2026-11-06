@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate census endpoint resolution and the seven-table static extraction.
+"""Validate census endpoint resolution and the eight-table static extraction (schema v0.3).
 
 This gate reads and hashes local archives but never imports, installs, extracts,
 or executes candidate software.
@@ -32,6 +32,7 @@ TABLE_NAMES = (
     "snapshot_records.csv",
     "structure_records.csv",
     "dependency_records.csv",
+    "declaration_source_records.csv",
     "api_symbol_records.csv",
     "pair_delta_records.csv",
     "validation_records.csv",
@@ -42,10 +43,35 @@ RESOLUTION_METHODS = {
     "github_rest_api",
     "github_web_git_refs",
     "official_github_release_html_manual_verification",
+    "github_rest_api_as_of",
 }
-DELTA_TYPES = {"added", "removed", "changed", "unchanged", "unavailable"}
-COMPARISON_STATUSES = {"comparable", "partial_parse", "unavailable"}
-DEPENDENCY_PARSE_STATUSES = {"parsed", "parsed_non_pep508", "parsed_poetry", "directive", "unparsed"}
+RESOLUTION_MODES = {"live", "retrospective_as_of"}
+DELTA_TYPES = {"added", "removed", "changed", "unchanged"}
+COMPARISON_STATUSES = {"comparable", "incomplete_observation"}
+DEPENDENCY_PARSE_STATUSES = {
+    "parsed", "parsed_non_pep508", "parsed_poetry", "parsed_pipfile", "parsed_url", "directive", "unparsed",
+}
+FIELD_OBSERVATION_STATUSES = {
+    "extracted", "extracted_partial", "confirmed_absent", "dynamic_metadata", "unsupported_syntax", "parse_failure",
+}
+SNAPSHOT_STATUS_VALUES = {
+    "archive_listing_status": {"complete"},
+    "dependency_observation_status": {"complete", "incomplete", "no_declaration_file"},
+    "python_constraint_observation_status": {"complete", "incomplete"},
+    "build_backend_observation_status": {"complete", "incomplete"},
+    "source_line_observation_status": {"complete", "incomplete"},
+    "api_observation_status": {"complete", "incomplete"},
+}
+# Specification v0.3 Section 6, restated here so that the released statuses are re-derived independently.
+GOVERNING_STATUS = {
+    ("dependency", "declared_dependency"): "dependency_observation_status",
+    ("api", "syntactic_symbol"): "api_observation_status",
+    ("structure", "packaging_files"): "archive_listing_status",
+    ("structure", "build_backends"): "build_backend_observation_status",
+    ("structure", "python_constraints"): "python_constraint_observation_status",
+    ("structure", "ci_providers"): "archive_listing_status",
+}
+SCALAR_GOVERNING_STATUS = {"source_python_line_count": "source_line_observation_status"}
 SYMBOL_KINDS = {"class", "constructor", "method", "function", "async_function"}
 EXPORT_EVIDENCE = {"literal_all", "lexical_nonprivate", "class_member"}
 ABSOLUTE_PATH = re.compile(r"(?:^|[\s'\"])(?:[A-Za-z]:[\\/]|/(?:home|Users)/[^/\s]+/)")
@@ -124,6 +150,7 @@ def validate(
     endpoint_path: Path,
     endpoint_manifest_path: Path,
     tables: Path,
+    linkage_path: Path | None = None,
     strict: bool = False,
     verify_archives: bool = True,
 ) -> dict[str, Any]:
@@ -139,6 +166,7 @@ def validate(
     endpoint_path = rooted(endpoint_path)
     endpoint_manifest_path = rooted(endpoint_manifest_path)
     tables = rooted(tables)
+    linkage_path = rooted(linkage_path) if linkage_path else None
     failures: list[str] = []
     warnings: list[str] = []
 
@@ -198,6 +226,21 @@ def validate(
         check(bool(re.fullmatch(r"[0-9a-f]{40}", row.get("endpoint_commit_sha", ""))), f"invalid_endpoint_commit_sha:{doi}")
         check(row.get("endpoint_ref_type") in ENDPOINT_REF_TYPES, f"invalid_endpoint_ref_type:{doi}")
         check(row.get("resolution_method") in RESOLUTION_METHODS, f"invalid_resolution_method:{doi}")
+        mode = row.get("resolution_mode", "")
+        check(mode in RESOLUTION_MODES, f"invalid_resolution_mode:{doi}")
+        if mode == "retrospective_as_of":
+            as_of = parse_utc(row.get("endpoint_as_of_utc", ""))
+            check(as_of is not None, f"retrospective_endpoint_missing_as_of:{doi}")
+            check(row.get("resolution_method") == "github_rest_api_as_of", f"retrospective_endpoint_method_mismatch:{doi}")
+            published = parse_utc(row.get("endpoint_release_published_at", ""))
+            if row.get("endpoint_ref_type") == "release":
+                check(published is not None and as_of is not None and published <= as_of, f"retrospective_release_after_as_of:{doi}")
+        elif mode == "live":
+            check(not row.get("endpoint_as_of_utc"), f"live_endpoint_has_as_of:{doi}")
+            published = parse_utc(row.get("endpoint_release_published_at", ""))
+            if published is not None:
+                resolved_time = parse_utc(row.get("resolved_at_utc", ""))
+                check(resolved_time is not None and published <= resolved_time, f"live_release_published_after_resolution:{doi}")
         check(row.get("endpoint_policy") == "latest_stable_release_else_default_branch_head", f"invalid_endpoint_policy:{doi}")
         check(bool(row.get("endpoint_ref_name")), f"missing_endpoint_ref_name:{doi}")
         check(row.get("endpoint_archive_url", "").startswith("https://codeload.github.com/"), f"invalid_endpoint_archive_url:{doi}")
@@ -232,6 +275,8 @@ def validate(
     check(endpoint_manifest.get("third_party_code_executed") is False, "endpoint_manifest_execution_flag")
     check(endpoint_manifest.get("selection_role") == "census_provisional", "endpoint_manifest_selection_role_mismatch")
     check(endpoint_manifest.get("endpoint_resolution_sha256") == sha256_file(endpoint_path), "endpoint_manifest_resolution_hash_mismatch")
+    mode_counts = dict(sorted(Counter(row.get("resolution_mode", "") for row in endpoints).items()))
+    check(endpoint_manifest.get("resolution_modes") == mode_counts, "endpoint_manifest_mode_counts_mismatch")
     expected_endpoint_inputs = {
         "candidates": sha256_file(candidates_path),
         "publication_inspection": sha256_file(inspection_path),
@@ -269,10 +314,12 @@ def validate(
             if verify_archives:
                 check(sha256_file(archive) == inspection.get("local_sha256"), f"publication_archive_hash_mismatch:{doi}")
 
+    linkage = {row["scholarly_doi"]: row for row in read_csv(linkage_path)} if linkage_path else {}
     projects = table_rows["project_records.csv"]
     snapshots = table_rows["snapshot_records.csv"]
     structures = table_rows["structure_records.csv"]
     dependencies = table_rows["dependency_records.csv"]
+    declarations = table_rows["declaration_source_records.csv"]
     symbols = table_rows["api_symbol_records.csv"]
     deltas = table_rows["pair_delta_records.csv"]
     validations = table_rows["validation_records.csv"]
@@ -322,6 +369,27 @@ def validate(
         check(endpoint_snapshot.get("source_identifier") == endpoint.get("resolved_full_name"), f"endpoint_snapshot_identifier_mismatch:{pid}")
         check(endpoint_snapshot.get("source_ref") == endpoint.get("endpoint_ref_name"), f"endpoint_snapshot_ref_mismatch:{pid}")
         check(endpoint_snapshot.get("source_url") == endpoint.get("endpoint_archive_url"), f"endpoint_snapshot_url_mismatch:{pid}")
+        check(project.get("endpoint_resolution_mode") == endpoint.get("resolution_mode"), f"project_resolution_mode_mismatch:{pid}")
+        check(project.get("endpoint_release_published_at") == endpoint.get("endpoint_release_published_at"), f"project_release_date_mismatch:{pid}")
+        expected_ref_date = (
+            project.get("endpoint_release_published_at") if project.get("endpoint_ref_type") == "release"
+            else project.get("endpoint_commit_time_utc")
+        )
+        check(project.get("endpoint_ref_date") == expected_ref_date, f"project_endpoint_ref_date_rule:{pid}")
+        check(project.get("publication_year") == project.get("publication_date", "")[:4], f"project_publication_year_mismatch:{pid}")
+        for days_field, start_field, end_field in (
+            ("archive_to_article_days", "publication_archive_date", "publication_date"),
+            ("article_to_endpoint_ref_days", "publication_date", "endpoint_ref_date"),
+            ("article_to_endpoint_as_of_days", "publication_date", "endpoint_as_of_date"),
+        ):
+            start, end = parse_day(project.get(start_field, "")), parse_day(project.get(end_field, ""))
+            expected_days = str((end - start).days) if start and end else ""
+            check(project.get(days_field) == expected_days, f"project_interval_mismatch:{days_field}:{pid}")
+        if project.get("archive_to_article_days"):
+            check(int(project["archive_to_article_days"]) >= 0, f"archive_later_than_article:{pid}")
+        if linkage_path is not None:
+            check(project.get("publication_archive_date") == linkage.get(project["scholarly_doi"], {}).get("archive_publication_date"),
+                  f"project_archive_date_mismatch:{pid}")
         publication_snapshot = snapshot_by_id.get(project.get("publication_snapshot_id", ""), {})
         matching = [row for (doi, _), row in selected_inventory.items() if doi == project["scholarly_doi"]]
         if len(matching) == 1:
@@ -340,7 +408,7 @@ def validate(
         if name == "project_records.csv":
             continue
         check(all(row.get("project_id") in project_ids for row in rows), f"orphan_project_reference:{name}")
-    for name in ("structure_records.csv", "dependency_records.csv", "api_symbol_records.csv", "validation_records.csv"):
+    for name in ("structure_records.csv", "dependency_records.csv", "declaration_source_records.csv", "api_symbol_records.csv", "validation_records.csv"):
         check(all(row.get("snapshot_id") in snapshot_ids for row in table_rows[name]), f"orphan_snapshot_reference:{name}")
         check(all(snapshot_by_id.get(row.get("snapshot_id", ""), {}).get("snapshot_role") == row.get("snapshot_role") for row in table_rows[name]), f"snapshot_role_reference_mismatch:{name}")
     check(all(row.get("pair_id") in pair_ids for row in deltas), "orphan_delta_pair_reference")
@@ -353,6 +421,42 @@ def validate(
     check(all(row.get("family") in {"api", "dependency", "structure"} for row in deltas), "invalid_delta_family")
     check(all(row.get("delta_type") in DELTA_TYPES for row in deltas), "invalid_delta_type")
     check(all(row.get("comparison_status") in COMPARISON_STATUSES for row in deltas), "invalid_comparison_status")
+    check(all(row.get("observation_status") in FIELD_OBSERVATION_STATUSES for row in declarations), "invalid_field_observation_status")
+    check(all(row.get("field_kind") in {"dependency", "python_constraint", "file", "setup_kwargs"} for row in declarations), "invalid_field_kind")
+    for field, allowed in SNAPSHOT_STATUS_VALUES.items():
+        check(all(row.get(field) in allowed for row in structures), f"invalid_snapshot_status:{field}")
+    check(all(bool(re.fullmatch(r"[0-9a-f]{64}", row.get("content_tree_sha256", ""))) for row in snapshots), "invalid_content_tree_sha256")
+    # A snapshot's dependency status must follow from its field rows (specification Section 5).
+    field_rows_by_snapshot: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for row in declarations:
+        field_rows_by_snapshot[row["snapshot_id"]].append(row)
+    for row in structures:
+        rows_for_snapshot = field_rows_by_snapshot.get(row["snapshot_id"], [])
+        packaging = json.loads(row.get("packaging_files") or "[]")
+        if not packaging:
+            expected_status = "no_declaration_file"
+        elif any(item["field_kind"] in {"dependency", "file", "setup_kwargs"}
+                 and item["observation_status"] not in {"extracted", "confirmed_absent"} for item in rows_for_snapshot):
+            expected_status = "incomplete"
+        else:
+            expected_status = "complete"
+        check(row.get("dependency_observation_status") == expected_status, f"dependency_status_not_derivable:{row['snapshot_id']}")
+        check(int(row.get("declared_dependency_record_count") or -1) == sum(int(item["entry_count"]) for item in rows_for_snapshot),
+              f"dependency_count_field_rows_mismatch:{row['snapshot_id']}")
+    structure_by_pair_role = {
+        (snapshot_by_id[row["snapshot_id"]]["pair_id"], row["snapshot_role"]): row
+        for row in structures if row["snapshot_id"] in snapshot_by_id
+    }
+    status_mismatches = 0
+    for row in deltas:
+        if row["family"] == "structure" and row["feature_group"] == "scalar":
+            governing = SCALAR_GOVERNING_STATUS.get(row["feature_key"], "archive_listing_status")
+        else:
+            governing = GOVERNING_STATUS.get((row["family"], row["feature_group"]), "")
+        sides = [structure_by_pair_role.get((row["pair_id"], role), {}).get(governing, "") for role in ("publication", "endpoint")]
+        expected = "comparable" if all(value in {"complete", "no_declaration_file"} for value in sides) else "incomplete_observation"
+        status_mismatches += row["comparison_status"] != expected
+    check(status_mismatches == 0, f"delta_comparison_status_not_derivable:{status_mismatches}")
     check(all(row.get("status") in {"pass", "warning", "error"} for row in validations), "invalid_validation_status")
     unexpected_validation_errors = [
         row for row in validations
@@ -388,6 +492,7 @@ def validate(
         "snapshots": len(snapshots),
         "structure_records": len(structures),
         "dependency_records": len(dependencies),
+        "declaration_source_records": len(declarations),
         "api_symbol_records": len(symbols),
         "pair_delta_records": len(deltas),
         "validation_records": len(validations),
@@ -405,6 +510,8 @@ def validate(
         "publication_inspection": sha256_file(inspection_path),
         "publication_inventory": sha256_file(inventory_path),
     }
+    if linkage_path is not None:
+        expected_extraction_inputs["linkage_ledger"] = sha256_file(linkage_path)
     check(manifest.get("input_sha256") == expected_extraction_inputs, "extraction_manifest_input_hash_mismatch")
 
     input_paths = {
@@ -438,6 +545,13 @@ def validate(
     }
 
 
+def parse_day(value: str) -> date | None:
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00")).date() if value else None
+    except ValueError:
+        return None
+
+
 def project_id(doi: str) -> str:
     suffix = doi.strip().lower().removeprefix("https://doi.org/")
     return "doi_" + "".join(ch if ch.isalnum() else "_" for ch in suffix).strip("_")
@@ -445,15 +559,16 @@ def project_id(doi: str) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--candidates", type=Path, default=Path("data/census_frame_v0.2/provisional_eligible.csv"))
-    parser.add_argument("--eligibility-ledger", type=Path, default=Path("data/census_frame_v0.2/archive_eligibility_ledger.csv"))
-    parser.add_argument("--publication-inventory", type=Path, default=Path("data/census_frame_v0.2/archive_file_inventory.csv"))
-    parser.add_argument("--publication-inspection", type=Path, default=Path("data/census_frame_v0.2/archive_static_inspection.csv"))
+    parser.add_argument("--candidates", type=Path, default=Path("data/census_frame_v0.3/provisional_eligible.csv"))
+    parser.add_argument("--eligibility-ledger", type=Path, default=Path("data/census_frame_v0.3/archive_eligibility_ledger.csv"))
+    parser.add_argument("--publication-inventory", type=Path, default=Path("data/census_frame_v0.3/archive_file_inventory.csv"))
+    parser.add_argument("--publication-inspection", type=Path, default=Path("data/census_frame_v0.3/archive_static_inspection.csv"))
     parser.add_argument("--publication-cache", type=Path, default=Path("data/raw/zenodo_archives_v0.2"))
-    parser.add_argument("--endpoint-resolution", type=Path, default=Path("data/census_v0.2/endpoint_resolution.csv"))
+    parser.add_argument("--endpoint-resolution", type=Path, default=Path("data/census_v0.3/endpoint_resolution.csv"))
     parser.add_argument("--endpoint-cache", type=Path, default=Path("data/raw/endpoint_archives_v0.2"))
-    parser.add_argument("--endpoint-manifest", type=Path, default=Path("data/census_v0.2/endpoint_resolution_manifest.json"))
-    parser.add_argument("--tables", type=Path, default=Path("data/census_v0.2/tables"))
+    parser.add_argument("--endpoint-manifest", type=Path, default=Path("data/census_v0.3/endpoint_resolution_manifest.json"))
+    parser.add_argument("--tables", type=Path, default=Path("data/census_v0.3/tables"))
+    parser.add_argument("--linkage-ledger", type=Path, default=Path("data/census_frame_v0.3/archive_linkage_ledger.csv"))
     parser.add_argument("--strict", action="store_true")
     parser.add_argument("--skip-archive-hash", action="store_true")
     parser.add_argument("--rerun", action="store_true")
@@ -469,6 +584,7 @@ def main() -> int:
         "endpoint_path": args.endpoint_resolution,
         "endpoint_manifest_path": args.endpoint_manifest,
         "tables": args.tables,
+        "linkage_path": args.linkage_ledger,
         "strict": args.strict,
         "verify_archives": not args.skip_archive_hash,
     }
@@ -483,6 +599,7 @@ def main() -> int:
                 "--candidates", str(args.candidates),
                 "--publication-inspection", str(args.publication_inspection),
                 "--publication-inventory", str(args.publication_inventory),
+                "--linkage-ledger", str(args.linkage_ledger),
                 "--publication-cache", str(args.publication_cache),
                 "--endpoint-resolution", str(args.endpoint_resolution),
                 "--endpoint-cache", str(args.endpoint_cache),

@@ -20,6 +20,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -38,12 +39,12 @@ PUBLIC_ENDPOINT_FIELDS = (
     "endpoint_release_id", "endpoint_release_published_at", "endpoint_archive_url",
     "endpoint_archive_bytes", "endpoint_archive_sha256", "resolution_status",
     "resolution_error", "resolution_method", "resolution_evidence_url",
-    "github_rate_limit_remaining", "resolved_at_utc", "third_party_code_executed",
+    "github_rate_limit_remaining", "resolved_at_utc", "resolution_mode", "endpoint_as_of_utc",
+    "third_party_code_executed",
 )
 TRANSIENT_RESOLUTION_ERRORS = frozenset(
     {
         "curl_download_failed:33",
-        "curl_download_failed:63",
         "github_http_301",
         "github_http_403",
         "github_http_429",
@@ -327,8 +328,91 @@ def resolve_via_github_api(
     return metadata, canonical_repo_api
 
 
-def resolve_endpoint_metadata(candidate: dict[str, str], token: str | None) -> dict[str, str]:
+def resolve_via_github_api_as_of(candidate: dict[str, str], token: str | None, as_of: str) -> dict[str, str]:
+    """Apply the endpoint policy retrospectively, to the repository state at ``as_of``.
+
+    Mirrors GitHub's ``releases/latest`` rule (the non-draft, non-prerelease release
+    with the newest ``created_at``) over releases already published at ``as_of``;
+    otherwise selects the newest default-branch commit dated no later than ``as_of``.
+    Releases deleted, or draft/prerelease flags changed, after ``as_of`` cannot be
+    seen, and the current default branch name is used.
+    """
+    owner = candidate["repository_owner"]
+    name = candidate["repository_name"]
+    repo, headers = request_json(f"https://api.github.com/repos/{urllib.parse.quote(owner)}/{urllib.parse.quote(name)}", token)
+    if not isinstance(repo, dict):
+        raise RuntimeError("repository_response_invalid")
+    full_name, repository_url, resolved_slug, canonical_repo_api = canonical_repository_coordinates(repo)
+    default_branch = str(repo["default_branch"])
+    licence = repo.get("license") or {}
+    metadata = {
+        "resolved_repository_url": repository_url,
+        "resolved_full_name": full_name,
+        "repository_node_id": str(repo.get("node_id") or ""),
+        "repository_archived": str(bool(repo.get("archived"))).lower(),
+        "repository_disabled": str(bool(repo.get("disabled"))).lower(),
+        "repository_fork": str(bool(repo.get("fork"))).lower(),
+        "repository_default_branch": default_branch,
+        "repository_created_at": str(repo.get("created_at") or ""),
+        "repository_updated_at": str(repo.get("updated_at") or ""),
+        "repository_pushed_at": str(repo.get("pushed_at") or ""),
+        "repository_license_spdx": str(licence.get("spdx_id") or ""),
+    }
+    releases: list[dict[str, Any]] = []
+    for page in range(1, 21):
+        batch, headers = request_json(
+            f"https://api.github.com/repos/{resolved_slug}/releases?per_page=100&page={page}", token
+        )
+        if not isinstance(batch, list) or not batch:
+            break
+        releases.extend(item for item in batch if isinstance(item, dict))
+        if len(batch) < 100:
+            break
+    eligible = [
+        item for item in releases
+        if not item.get("draft") and not item.get("prerelease")
+        and item.get("published_at") and str(item["published_at"]) <= as_of
+    ]
+    if eligible:
+        release = max(eligible, key=lambda item: (str(item.get("created_at") or ""), str(item["published_at"]), int(item.get("id") or 0)))
+        ref_type, ref_name = "release", str(release["tag_name"])
+        metadata["endpoint_release_id"] = str(release.get("id") or "")
+        metadata["endpoint_release_published_at"] = str(release.get("published_at") or "")
+        commit, headers = request_json(
+            f"https://api.github.com/repos/{resolved_slug}/commits/{urllib.parse.quote(ref_name, safe='')}", token
+        )
+    else:
+        ref_type, ref_name = "default_branch", default_branch
+        commits, headers = request_json(
+            f"https://api.github.com/repos/{resolved_slug}/commits?sha={urllib.parse.quote(default_branch, safe='')}"
+            f"&until={urllib.parse.quote(as_of)}&per_page=1",
+            token,
+        )
+        if not isinstance(commits, list) or not commits:
+            raise RuntimeError("no_default_branch_commit_before_as_of")
+        commit = commits[0]
+    if not isinstance(commit, dict):
+        raise RuntimeError("selected_ref_commit_response_invalid")
+    commit_sha = str(commit.get("sha") or "")
+    if not re.fullmatch(r"[0-9a-fA-F]{40}", commit_sha):
+        raise RuntimeError("selected_ref_not_resolved_to_sha")
+    metadata.update(
+        {
+            "endpoint_ref_type": ref_type,
+            "endpoint_ref_name": ref_name,
+            "endpoint_commit_sha": commit_sha.lower(),
+            "resolution_method": "github_rest_api_as_of",
+            "resolution_evidence_url": canonical_repo_api,
+            "github_rate_limit_remaining": headers.get("x-ratelimit-remaining", ""),
+        }
+    )
+    return metadata
+
+
+def resolve_endpoint_metadata(candidate: dict[str, str], token: str | None, as_of: str = "") -> dict[str, str]:
     """Use REST first and fall back to official Web/git refs only at API rate limits."""
+    if as_of:
+        return resolve_via_github_api_as_of(candidate, token, as_of)
     try:
         metadata, _ = resolve_via_github_api(candidate, token)
         return metadata
@@ -417,6 +501,9 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+DOWNLOAD_MAX_SECONDS = 300
+
+
 def download_archive(url: str, destination: Path) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
     partial = destination.with_suffix(destination.suffix + ".part")
@@ -432,7 +519,7 @@ def download_archive(url: str, destination: Path) -> None:
             "--connect-timeout",
             "20",
             "--max-time",
-            "300",
+            str(DOWNLOAD_MAX_SECONDS),
             "--retry",
             "3",
             "--retry-delay",
@@ -452,7 +539,7 @@ def download_archive(url: str, destination: Path) -> None:
     completed = subprocess.run(
         command,
         check=False,
-        timeout=330,
+        timeout=DOWNLOAD_MAX_SECONDS + 30,
     )
     if completed.returncode == 33:
         partial.unlink(missing_ok=True)
@@ -462,7 +549,7 @@ def download_archive(url: str, destination: Path) -> None:
         completed = subprocess.run(
             non_resuming_command,
             check=False,
-            timeout=330,
+            timeout=DOWNLOAD_MAX_SECONDS + 30,
         )
     if completed.returncode != 0:
         raise RuntimeError(f"curl_download_failed:{completed.returncode}")
@@ -542,8 +629,16 @@ def main() -> int:
     parser.add_argument("--role", default="primary", choices=("primary", "replacement", "census_provisional", "all"))
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--delay", type=float, default=0.2)
+    parser.add_argument("--as-of", default="",
+                        help="resolve new projects retrospectively at this UTC time (ISO 8601 with Z)")
+    parser.add_argument("--workers", type=int, default=1, help="worker threads for network resolution and download")
+    parser.add_argument("--download-max-seconds", type=int, default=300, help="per-attempt time limit for one archive download")
+    parser.add_argument("--retry-all-unresolved", action="store_true",
+                        help="retry earlier unresolved rows whatever their error")
     args = parser.parse_args()
 
+    global DOWNLOAD_MAX_SECONDS
+    DOWNLOAD_MAX_SECONDS = args.download_max_seconds
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN") or None
     candidate_rows = list(csv.DictReader(Path(args.candidates).open(encoding="utf-8-sig", newline="")))
     inspected_rows = list(csv.DictReader(Path(args.publication_inspection).open(encoding="utf-8-sig", newline="")))
@@ -580,6 +675,8 @@ def main() -> int:
     existing: dict[str, dict[str, str]] = {}
     if existing_path.exists():
         for prior in csv.DictReader(existing_path.open(encoding="utf-8-sig", newline="")):
+            prior["resolution_mode"] = prior.get("resolution_mode") or "live"
+            prior["endpoint_as_of_utc"] = prior.get("endpoint_as_of_utc") or ""
             existing[prior["scholarly_doi"]] = prior
     rows_by_doi: dict[str, dict[str, str]] = {}
 
@@ -589,33 +686,9 @@ def main() -> int:
             for row in selected if row["doi"] in rows_by_doi
         ]
 
-    for candidate in selected:
+    def resolve_candidate(candidate: dict[str, str]) -> dict[str, str]:
+        """Network part of endpoint resolution for one candidate; safe to run in a worker thread."""
         doi = candidate["doi"]
-        prior = existing.get(doi)
-        if prior and prior.get("resolution_status") == "resolved":
-            prior_path = Path(prior.get("endpoint_local_cache") or (
-                cache / f"{prior['project_id']}_{prior['endpoint_commit_sha']}.tar.gz"
-            ))
-            if (
-                prior_path.exists()
-                and prior.get("endpoint_archive_sha256")
-                and sha256_file(prior_path) == prior["endpoint_archive_sha256"]
-            ):
-                prior.setdefault("resolution_method", "github_rest_api")
-                prior.setdefault("resolution_evidence_url", prior.get("endpoint_archive_url", ""))
-                prior.pop("endpoint_local_cache", None)
-                rows_by_doi[doi] = prior
-                write_csv(output_dir / "endpoint_resolution.csv", ordered_rows())
-                continue
-        if (
-            prior
-            and prior.get("resolution_status") == "unresolved"
-            and not retryable_resolution_error(prior.get("resolution_error", ""))
-        ):
-            prior.pop("endpoint_local_cache", None)
-            rows_by_doi[doi] = prior
-            write_csv(output_dir / "endpoint_resolution.csv", ordered_rows())
-            continue
         row = {
             "project_id": project_id(doi),
             "scholarly_doi": doi,
@@ -648,6 +721,8 @@ def main() -> int:
             "resolution_evidence_url": "",
             "github_rate_limit_remaining": "",
             "resolved_at_utc": now_utc(),
+            "resolution_mode": "retrospective_as_of" if args.as_of else "live",
+            "endpoint_as_of_utc": args.as_of,
             "third_party_code_executed": "false",
         }
         try:
@@ -682,10 +757,8 @@ def main() -> int:
                         "resolution_evidence_url": override["resolution_evidence_url"],
                     }
                 )
-                rows_by_doi[doi] = row
-                write_csv(output_dir / "endpoint_resolution.csv", ordered_rows())
-                continue
-            metadata = resolve_endpoint_metadata(candidate, token)
+                return row
+            metadata = resolve_endpoint_metadata(candidate, token, args.as_of)
             row.update(metadata)
             resolved_owner, resolved_name = row["resolved_full_name"].split("/", 1)
             commit_sha = row["endpoint_commit_sha"]
@@ -704,9 +777,48 @@ def main() -> int:
         except Exception as exc:
             row["resolution_status"] = "unresolved"
             row["resolution_error"] = stable_resolution_error(exc)
-        rows_by_doi[doi] = row
-        write_csv(output_dir / "endpoint_resolution.csv", ordered_rows())
         time.sleep(max(args.delay, 0.0))
+        return row
+
+    pending: list[dict[str, str]] = []
+    for candidate in selected:
+        doi = candidate["doi"]
+        prior = existing.get(doi)
+        if prior and prior.get("resolution_status") == "resolved":
+            prior_path = Path(prior.get("endpoint_local_cache") or (
+                cache / f"{prior['project_id']}_{prior['endpoint_commit_sha']}.tar.gz"
+            ))
+            if (
+                prior_path.exists()
+                and prior.get("endpoint_archive_sha256")
+                and sha256_file(prior_path) == prior["endpoint_archive_sha256"]
+            ):
+                prior.setdefault("resolution_method", "github_rest_api")
+                prior.setdefault("resolution_evidence_url", prior.get("endpoint_archive_url", ""))
+                prior.pop("endpoint_local_cache", None)
+                rows_by_doi[doi] = prior
+                write_csv(output_dir / "endpoint_resolution.csv", ordered_rows())
+                continue
+        if (
+            prior
+            and prior.get("resolution_status") == "unresolved"
+            and not args.retry_all_unresolved
+            and not retryable_resolution_error(prior.get("resolution_error", ""))
+        ):
+            prior.pop("endpoint_local_cache", None)
+            rows_by_doi[doi] = prior
+            write_csv(output_dir / "endpoint_resolution.csv", ordered_rows())
+            continue
+        pending.append(candidate)
+
+    # Candidates that need the network are resolved by worker threads; only this thread writes the ledger.
+    with ThreadPoolExecutor(max_workers=args.workers) as executor:
+        futures = {executor.submit(resolve_candidate, candidate): candidate["doi"] for candidate in pending}
+        for completed, future in enumerate(as_completed(futures), start=1):
+            rows_by_doi[futures[future]] = future.result()
+            write_csv(output_dir / "endpoint_resolution.csv", ordered_rows())
+            if completed % 25 == 0:
+                print(json.dumps({"event": "progress", "resolved_this_run": completed, "pending": len(pending)}), flush=True)
 
     rows = ordered_rows()
     resolved_summary = summarize_resolved_rows(rows)
@@ -715,6 +827,11 @@ def main() -> int:
         "endpoint_policy_version": ENDPOINT_POLICY_VERSION,
         "created_at_utc": now_utc(),
         "endpoint_snapshot_date": datetime.now(timezone.utc).date().isoformat(),
+        "retrospective_as_of_utc": args.as_of,
+        "resolution_modes": {
+            mode: sum(row.get("resolution_mode") == mode for row in rows)
+            for mode in sorted({row.get("resolution_mode", "") for row in rows})
+        },
         "projects_attempted": len(rows),
         **resolved_summary,
         "third_party_code_executed": False,
